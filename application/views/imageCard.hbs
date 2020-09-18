@@ -1,0 +1,17 @@
+<div class="itemContainer">
+    {{#each data}}
+    <div class="container-fluid">
+            <h1>{{this.title}}</h1>
+            <div class="main_photo">
+                <img data-enlargable 
+                    src="/images/uploads/{{this.userid}}/postImages/{{this.filename}}" id="postImage"
+                    alt="Responsive image">
+            </div>
+            <div class="featured_text">
+                <p class="user">posted by: <b>{{this.user}}</b></p>
+                <p class="date"><b>Date:</b> {{this.date}}</p>
+                <p class="description" id="cDes"><b>Description:</b><br/>{{this.description}}</p>
+            </div>
+    </div>
+    {{/each}}
+</div>

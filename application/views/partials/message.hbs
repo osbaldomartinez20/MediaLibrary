@@ -1,0 +1,23 @@
+{{!-- General error --}}
+{{#if error}}
+<div class="alert alert-danger" role="alert">
+    {{error}} <br/>
+</div>
+<br/>
+{{/if}}
+
+{{!-- General success --}}
+{{#if success}}
+<div class="alert alert-success" role="alert">
+    {{success}} 
+</div>
+<br/>
+{{/if}}
+
+{{!-- Registration error --}}
+{{#each regError}}
+<div class="alert alert-danger" role="alert">
+    {{this.message}} <br/>
+</div>
+<br/>
+{{/each}}

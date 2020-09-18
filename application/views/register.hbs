@@ -1,0 +1,36 @@
+<div>
+{{#each regError}}
+    <h2 class="errMsg">{{this.message}}</h2>
+{{/each}}
+</div>
+
+<div class="header">
+    <h1>Create An Account</h1>
+</div>
+<br>
+
+<!-- Registration form -->
+<div>
+    <form action="/moderators/register" method="POST">
+        <div class="form-group">
+            <input type="text" id="username" name="username" placeholder="Enter an username" value="{{dataPassedBack.username}}"
+            maxlength="40" required />
+        </div>
+        <br>
+        <div class="form-group">
+            <input type="password" id="password" name="password" class="form-control"
+                placeholder="Create password (8-20 characters)" minlength="8" maxlength="20" required />
+        </div>
+        <div class="mb-3" id="passwordMsg"></div>
+        <div class="form-group">
+            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
+                placeholder="Confirm password" minlength="8" maxlength="20" required />
+        </div>
+        <br>
+        <div class="form-group">
+            <button type="submit" class="submit" id="register">
+                Register
+            </button>
+        </div>
+    </form>
+</div>

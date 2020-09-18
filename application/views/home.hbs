@@ -1,0 +1,30 @@
+<div class="container home mt-4">
+    <!-- Display logout message -->
+    <div>
+        {{> message}}
+    </div>
+    <div class="header">
+        <h1>Welcome to the TSFC Library Directory</h1>
+    </div>
+    <div class="row home-page-icons justify-content-center">
+        <h2 style="text-align: center;">Newest Posts:</h2>
+        <br/>
+        <ul>
+        {{#each newPost}}
+        <li>
+        <div class="col-7 col-sm-5 col-md-4 col-lg-3">
+            <div class="card home-card img-fluid" style="text-align: center;">
+                <a href="/imageCard/{{this.pid}}" class="stretched-link">
+                <img class="card-img home-image" src="/images/uploads/{{this.userid}}/postImages/{{this.filename}}" 
+                alt="Card image"  width="150" height="180" href="">
+                </a>
+                <div class="card-img-overlay">
+                    <a href="/imageCard/{{this.pid}}" class="stretched-link"><h4 class="card-title home-page text-center">{{this.title}}</h4></a>
+                </div>
+            </div>
+        </div>
+        </li>
+        {{/each}}
+        </ul>
+    </div>
+</div>

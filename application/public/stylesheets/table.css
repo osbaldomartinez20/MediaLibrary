@@ -1,0 +1,35 @@
+#imageTable {
+    width: 100%;
+    text-align: center;
+}
+
+#searchTable {
+    width: 100%;
+    text-align: center;
+}
+
+#TableTitle {
+    text-align: center;
+}
+
+.table, .th, .td {
+    border: 1px solid black;
+}
+
+.imagePrev {
+    border-bottom: 1px solid black;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.sortButton {
+    background-color: green;
+    float: right;
+    cursor: pointer;
+}
+
+#dDes {
+    white-space: pre-wrap;
+}

@@ -1,0 +1,26 @@
+<div class="container error-template my-4">
+    <div class="row">
+        <div class="col-auto col-lg-auto mx-auto">
+            <div style="font-size: 3vw;">
+                <b>
+                    {{#if error}}
+                    {{error}}
+                    {{else}}
+                    Sorry, that page does not exist!
+                    {{/if}}
+                </b>
+            </div>
+            <br/>
+            <div style="font-size: 2vw;">
+                {{#if advice}}
+                {{advice}}
+                {{else}}
+                Try searching for something or go to the <a href="/" style="text-decoration: underline;">home page.</a>
+                {{/if}}
+            </div>
+            <div style="padding-top: 50px;">
+                <img src="/images/error_image/Super_Monopax.png" alt="Cartoon Aligator" style="width: 200px; height: auto;">
+            </div>
+        </div>
+    </div>
+</div>
