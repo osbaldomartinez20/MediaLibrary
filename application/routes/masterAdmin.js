@@ -23,12 +23,12 @@ router.get('/logout', ensureAdminAuthenticated, administratorController.logout);
 router.get('/dashboard', ensureAdminAuthenticated, administratorController.dashboard);
 
 // GET request for approving sales item
-router.get('/approve', ensureAdminAuthenticated, administratorController.approve);
+router.get(':mid/approve', ensureAdminAuthenticated, administratorController.approve);
 
 // GET request for disapproving sales item
-router.get('/disapprove', ensureAdminAuthenticated, administratorController.disapprove);
+router.get(':mid/disapprove', ensureAdminAuthenticated, administratorController.disapprove);
 
 // GET request for removing sales item
-router.get('/remove', ensureAdminAuthenticated, administratorController.remove);
+router.get(':mid/remove', ensureAdminAuthenticated, administratorController.remove);
 
 module.exports = router;

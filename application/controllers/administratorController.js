@@ -24,101 +24,101 @@ exports.logout = (req, res, next) => {
 }
 
 // Display administrator's dashboard page on GET
-// Contains list of active and unapproved sales item
-// Author @Osbaldo Martinez
+// Contains list of active and unapproved mods
 exports.dashboard = (req, res, next) => {
-    let activeSalesItem = [];
-    let unapprovedSalesItem = [];
+    let activeMods = [];
+    let unapprovedMods = [];
 
-    // Retrieve information of all sales items, and include the seller email
-    let sql = "SELECT SI.*, S.username AS sellerEmail FROM SalesItems SI INNER JOIN Students S on SI.seller = S.sid";
+    // Retrieve the data from the mods table
+    let sql = "SELECT id,username,status FROM mods";
 
     db.query(sql, (err, result) => {
         if (err) throw err;
 
         for (let i = 0; i < result.length; i++) {
-            if (result[i].status == "Active") {
-                activeSalesItem.push(result[i])
+            //status of 1 in a mod means that it is an active mod and 0 means a mod awaiting approval.
+            if (result[i].status == 1) {
+                activeMods.push(result[i])
             }
-            else if (result[i].status == "Unapproved") {
-                unapprovedSalesItem.push(result[i]);
+            else if (result[i].status == 0) {
+                unapprovedMods.push(result[i]);
             }
         }
 
         res.render('adminDashboard', {
-            activeSalesItem: activeSalesItem,
-            unapprovedSalesItem: unapprovedSalesItem
+            activeMods: activeMods,
+            unapprovedMods: unapprovedMods
         });
     });
 }
 
-// Handle approving of sales item on GET
+// Handle approving of mods on GET
 exports.approve = (req, res, next) => {
-    let productId = req.query.pid;
+    let modId = req.params.mid;
 
-    // Update status of a sales item to 'Active'
-    let sql = "UPDATE SalesItems SET status = 2 WHERE pid = ?";
+    // Update status of a mod to 'Active'
+    let sql = "UPDATE mods SET status = 1 WHERE id = ?";
 
-    db.query(sql, [productId], (err, result) => {
+    db.query(sql, [modId], (err, result) => {
         if (err) {
-            req.flash('error', 'Error approving item');
+            req.flash('error', 'Error approving mod');
             res.redirect('/user/dashboard');
         }
 
         if (result.changedRows > 0) {
-            req.flash('success', 'Sucessfully approved item');
+            req.flash('success', 'Sucessfully approved mod');
             res.redirect('/admin/dashboard');
         }
         else {
-            req.flash('error', 'Error approving item');
+            req.flash('error', 'Error approving mod');
             res.redirect('/user/dashboard');
         }
     });
 }
 
-// Handle disapproving of sales item on GET
+// Handle disapproving of mods on GET
 exports.disapprove = (req, res, next) => {
-    let productId = req.query.pid;
+    let modId = req.params.mid;
 
-    // Update status of a sales item to 'Disapproved'
-    let sql = "UPDATE SalesItems SET status = 3 WHERE pid = ?";
+    // Update status of a mod to 'Disapproved'
+    let sql = "UPDATE mods SET status = 0 WHERE id = ?";
 
-    db.query(sql, [productId], (err, result) => {
+    db.query(sql, [modId], (err, result) => {
         if (err) {
-            req.flash('error', 'Error disapproving item');
+            req.flash('error', 'Error disapproving mod');
             res.redirect('/user/dashboard');
         }
 
         if (result.changedRows > 0) {
-            req.flash('success', 'Sucessfully disapproved item');
+            req.flash('success', 'Sucessfully disapproved mod');
             res.redirect('/admin/dashboard');
         }
         else {
-            req.flash('error', 'Error disapproving item');
+            req.flash('error', 'Error disapproving mod');
             res.redirect('/user/dashboard');
         }
     });
 }
 
-// Handle removing of sales item on GET (CURRENTLY NOT BEING USED)
+// Handle removing of mods on GET 
 exports.remove = (req, res, next) => {
-    let productId = req.query.pid;
+    let modId = req.params.mid;
 
-    // Update status of a sales item to 'Removed'
-    let sql = "UPDATE SalesItems SET status = 4 WHERE pid = ?";
+    // Deletes a mod from the database
+    let sql = "DELETE FROM mods WHERE id = ?";
 
-    db.query(sql, [productId], (err, result) => {
+    db.query(sql, [modId], (err, result) => {
         if (err) {
-            req.flash('error', 'Error removing item');
+            req.flash('error', 'Error removing mod');
             res.redirect('/user/dashboard');
         }
 
         if (result.changedRows > 0) {
-            req.flash('success', 'Sucessfully removed item');
+            req.flash('success', 'Sucessfully removed mod');
             res.redirect('/admin/dashboard');
         }
         else {
-            req.flash('error', 'Error removing item');
+            req.flash('error', 'Error removing mod');
             res.redirect('/user/dashboard');
         }
     });

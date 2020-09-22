@@ -6,10 +6,10 @@ const db = require('./db');
 module.exports = () => {
     passport.use('user-login', new LocalStrategy(
         (username, password, done) => {
-            db.query("SELECT * FROM users WHERE username = ? LIMIT 1", username, (error, result) => {
+            db.query("SELECT * FROM mods WHERE username = ? and status = 1 LIMIT 1", username, (error, result) => {
                 if (error) return done(error);
                 if (result.length == 0) {
-                    return done(null, false, { message: 'Username and/or password is incorrect' });
+                    return done(null, false, { message: 'Username and/or password is incorrect or unapproved user' });
                 }
                 // Match password
                 bcrypt.compare(password, result[0].password, (error, isMatch) => {
@@ -30,7 +30,7 @@ module.exports = () => {
     });
 
     passport.deserializeUser((id, done) => {
-        db.query("SELECT * FROM users WHERE id = ?", id, (err, result) => {
+        db.query("SELECT * FROM mods WHERE id = ?", id, (err, result) => {
             if (err) throw err;
 
             return done(null, result[0]);

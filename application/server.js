@@ -66,7 +66,7 @@ server.listen(app.get('port'), function () {
     console.log('Starting server on port ' + app.get('port'));
 });
 
-// Limit max concurrent connections to 50 (non-functional requirement)
-server.maxConnections = 50;
+// Limit max concurrent connections to n (non-functional requirement)
+//server.maxConnections = 1000;
 
 module.exports = app;
