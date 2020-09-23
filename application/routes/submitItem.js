@@ -10,6 +10,6 @@ const postImageUpload = require('../middlewares/postImageUpload');
 router.get('/', imagePostController.imagePost_get);
 
 // POST request for submit page
-router.post('/', postImageUpload.array('mangaImages', 2), imagePostController.imagePost_post);
+router.post('/', postImageUpload.fields([{name:'coverImage', maxCount: 1}, {name:'mangaImage', maxCount: 1}]), imagePostController.imagePost_post);
 
 module.exports = router;

@@ -1,7 +1,6 @@
 const db = require('../config/db');
 const passport = require('passport');
 const { v4: uuidv4 } = require('uuid');
-const emailValidator = require('../util/email-validator');
 const bcrypt = require('bcryptjs');
 
 // Handle showing student login page on GET

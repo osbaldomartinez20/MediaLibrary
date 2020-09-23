@@ -23,6 +23,7 @@ app.use(bodyParser.json())
 app.use(passport.initialize());
 app.use(passport.session());
 require('./config/userPassport')(passport);
+require('./config/administratorPassport')(passport);
 
 // Connect flash
 app.use(flash());

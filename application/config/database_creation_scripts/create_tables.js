@@ -15,7 +15,7 @@ connnection.connect(function (err) {
   console.log("Connected!");
   var sql = "CREATE TABLE mods (id VARCHAR(36) PRIMARY KEY, username VARCHAR(255), password VARCHAR(255), status INT);" +
   "CREATE TABLE admin (aid VARCHAR(36) PRIMARY KEY, username VARCHAR(255), passsword VARCHAR(255));" + 
-  "CREATE TABLE posts (pid VARCHAR(36) PRIMARY KEY, title VARCHAR(255), author NVARCHAR(MAX), jtitle NVARCHAR(MAX), description VARCHAR(255), type VARCHAR(50), cover VARCHAR(255), image VARCHAR(255));" +
+  "CREATE TABLE posts (pid VARCHAR(36) PRIMARY KEY, title VARCHAR(255), author NVARCHAR(MAX), jtitle NVARCHAR(MAX), description VARCHAR(255), details NVARCHAR(MAX), type VARCHAR(50), cover VARCHAR(255), image VARCHAR(255));" +
   "CREATE TABLE types (tid VARCHAR(36) PRIMARY KEY, name VARCHAR(255));" +
   "CREATE TABLE links (lid VARCHAR(36) PRIMARY KEY, link VARCHAR(255), pid VARCHAR(36) FOREIGN KEY REFERENCES posts(pid));" +
   "CREATE TABLE tags (tgid VARCHAR(36) PRIMARY KEY, tag VARCHAR(255), pid VARCHAR(36) FOREIGN KEY REFERENCES posts(pid));" +

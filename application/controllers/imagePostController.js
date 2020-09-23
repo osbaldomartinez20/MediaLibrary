@@ -8,23 +8,22 @@ exports.imagePost_get = (req, res, next) => {
 
 // Handle submitting sales item for sell on POST
 exports.imagePost_post = (req, res, next) => {
-    let productId = uuidv4();
-    let { title, description, terms } = req.body;
-    let userid = req.user.id;
+    let postId = uuidv4();
+    let { title, japTitle, author, publication, description, tags, type } = req.body;
     let postImage = req.file.filename;
     let postError = [];
 
     // Check if required fields are filled
-    if (!title || !description) {
-        postError.push({ message: 'Please fill in all fields' });
-    }
-    // Check if terms and conditions is checked
-    else if (!terms) {
-        postError.push({ message: 'Please indicate that you agree to the terms and conditions.' });
+    if (!title || !description || !author || !tags || !type || !publication) {
+        postError.push({ message: 'Please fill in all non-optional fields' });
     }
     //Check if there is image 
     else if (!postImage || postImage == undefined) {
         postError.push({ message: 'Please select an image.' });
+    }
+
+    if(!japTitle) {
+        japTitle = "NULL";
     }
 
     // Render posting error messages if necessary
@@ -35,25 +34,22 @@ exports.imagePost_post = (req, res, next) => {
     }
 
 
-    db.query("SELECT * FROM users WHERE id = ?", userid, (err1, result1) => {
-        let user = result1[0].username;
+    let sql = "INSERT INTO posts (pid, title, description, userid, filename, user) VALUES (?,?,?,?,?,?)";
 
-        let sql = "INSERT INTO posts (pid, title, description, userid, filename, user) VALUES (?,?,?,?,?,?)";
+    db.query(sql, [postId, title, description, userid, postImage, user], (err, result) => {
+        if (err) {
+            req.flash('error', 'Error posting');
+            res.render('imagePost');
+        }
 
-        db.query(sql, [productId, title, description, userid, postImage, user], (err, result) => {
-            if (err) {
-                req.flash('error', 'Error posting image');
-                res.render('imagePost');
-            }
-
-            if ((typeof result !== 'undefined')) {
-                req.flash('success', 'Successfully posted an image');
-                res.redirect('/user/dashboard');
-            }
-            else {
-                req.flash('error', 'Error posting image');
-                res.redirect('/post');
-            }
-        });
+        if ((typeof result !== 'undefined')) {
+            req.flash('success', 'Successfully submitted for review');
+            res.redirect('/');
+        }
+        else {
+            req.flash('error', 'Error posting');
+            res.redirect('/post');
+        }
     });
+
 }
