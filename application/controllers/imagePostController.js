@@ -1,16 +1,25 @@
 const db = require('../config/db');
+const types = require('./typeController');
+let cache = require('./cacheController');
 const { v4: uuidv4 } = require('uuid');
+const typesCache = new cache.cache(types.retrieve, 1440);
 
 // Handle showing sell page on GET
 exports.imagePost_get = (req, res, next) => {
-    res.render('imagePost');
+    console.time("time");
+    typesCache.getData()
+        .then((result) => {
+            console.timeEnd("time");
+            res.render('imagePost', {type: result});
+        });
 }
 
 // Handle submitting sales item for sell on POST
 exports.imagePost_post = (req, res, next) => {
     let postId = uuidv4();
     let { title, japTitle, author, publication, description, tags, type } = req.body;
-    let postImage = req.file.filename;
+    let postImage = req.files;
+    let postCover = "";
     let postError = [];
 
     // Check if required fields are filled
@@ -22,6 +31,7 @@ exports.imagePost_post = (req, res, next) => {
         postError.push({ message: 'Please select an image.' });
     }
 
+    //Check if we have a japanese title
     if(!japTitle) {
         japTitle = "NULL";
     }
@@ -34,9 +44,9 @@ exports.imagePost_post = (req, res, next) => {
     }
 
 
-    let sql = "INSERT INTO posts (pid, title, description, userid, filename, user) VALUES (?,?,?,?,?,?)";
+    let sql = "INSERT INTO posts (pid, title, jtitle, description, details, type, cover, image) VALUES (?,?,?,?,?,?, ?, ?)";
 
-    db.query(sql, [postId, title, description, userid, postImage, user], (err, result) => {
+    db.query(sql, [postId, title, japTitle, description, type, publication, postCover, postImage], (err, result) => {
         if (err) {
             req.flash('error', 'Error posting');
             res.render('imagePost');

@@ -1,4 +1,4 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
 //fillout the information for your mysql server and database
 const connnection = mysql.createConnection({
@@ -15,11 +15,11 @@ connnection.connect(function (err) {
   console.log("Connected!");
   var sql = "CREATE TABLE mods (id VARCHAR(36) PRIMARY KEY, username VARCHAR(255), password VARCHAR(255), status INT);" +
   "CREATE TABLE admin (aid VARCHAR(36) PRIMARY KEY, username VARCHAR(255), passsword VARCHAR(255));" + 
-  "CREATE TABLE posts (pid VARCHAR(36) PRIMARY KEY, title VARCHAR(255), author NVARCHAR(MAX), jtitle NVARCHAR(MAX), description VARCHAR(255), details NVARCHAR(MAX), type VARCHAR(50), cover VARCHAR(255), image VARCHAR(255));" +
-  "CREATE TABLE types (tid VARCHAR(36) PRIMARY KEY, name VARCHAR(255));" +
-  "CREATE TABLE links (lid VARCHAR(36) PRIMARY KEY, link VARCHAR(255), pid VARCHAR(36) FOREIGN KEY REFERENCES posts(pid));" +
-  "CREATE TABLE tags (tgid VARCHAR(36) PRIMARY KEY, tag VARCHAR(255), pid VARCHAR(36) FOREIGN KEY REFERENCES posts(pid));" +
-  "CREATE TABLE issues (iid VARCHAR(36) PRIMARY KEY, issue VARCAHR(255), pid VARCHAR(36) FOREIGN KEY REFERENCES posts(pid))";
+  "CREATE TABLE posts (pid VARCHAR(36) PRIMARY KEY, title VARCHAR(255), author NVARCHAR(255), jtitle NVARCHAR(255), description VARCHAR(255), details NVARCHAR(500), type VARCHAR(50), cover VARCHAR(255), image VARCHAR(255));" +
+  "CREATE TABLE tsftypes (tid INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255));" +
+  "CREATE TABLE links (lid VARCHAR(36) PRIMARY KEY, links VARCHAR(255), pid VARCHAR(36));" +
+  "CREATE TABLE tags (tgid VARCHAR(36) PRIMARY KEY, tags VARCHAR(255), pid VARCHAR(36));" +
+  "CREATE TABLE issues (iid VARCHAR(36) PRIMARY KEY, issues VARCHAR(255), pid VARCHAR(36))";
   connnection.query(sql, function (err, result) {
     if (err) throw err;
     console.log("Tables created");

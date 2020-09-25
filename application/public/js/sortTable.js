@@ -1,4 +1,4 @@
-//I used code from w3schools to sort the tables, any modifications were made by me.
+//I used code from w3schools to sort the tables, any modifications were made by Osbaldo Martinez.
 //https://www.w3schools.com/howto/howto_js_sort_table.asp
 function sortTable(n) {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
