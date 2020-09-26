@@ -2,11 +2,18 @@
 
 const express = require('express');
 const router = express.Router();
-//const db = require('../config/db');
+const getCount = require('../controllers/getPostController');
+const cache = require('../helper/dataCache');
+
+let numCache = new cache.cache(getCount.getNumberApproved, "1", 1);
 
 // GET home page
 router.get('/', (req, res) => {
-    res.render('home');
+    numCache.getData()
+    .then((result) => {
+        res.render('home', {count: result});
+    });
 });
+
 
 module.exports = router;

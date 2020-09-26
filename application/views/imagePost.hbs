@@ -6,10 +6,10 @@
     {{> message}}
 </div>
 
-<!-- Postimage form -->
+<!-- Post Submission form -->
 <script type="text/javascript" src="/js/imagePreview.js"></script>
 <div>
-    <form action="/post" method="POST" enctype="multipart/form-data">
+    <form action="/submit" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <h5>English/Romanji Title</h5>
             <input type="text" id="title" name="title" class="form-control" placeholder="Enter a title" maxlength="40"
@@ -45,15 +45,22 @@
             <h5>Tags</h5>
             <textarea type="text" id="tags" name="tags" class="form-control"
                 placeholder="Enter the tags that describe the work. Separate each tag with commas, ex: MILF,Yuri,etc"
-                required></textarea>
+                maxlength="1000" required></textarea>
         </div>
 
         <div class="form-group">
-            <h5>Category</h5>
+            <h5>Links</h5>
+            <textarea type="text" id="links" name="links" class="form-control"
+                placeholder="Enter the links where the work can be officially viewed or bought. If entering more than one link seperate them with commas."
+                maxlength="1000" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <h5>Type</h5>
             <label for="type">Choose a TSF Type:</label>
             <select name="type" id="type" required>
                 {{#each type}}
-                <option value="{{this.tid}}">
+                <option value="{{this.name}}">
                     {{this.name}}
                 </option>
                 {{/each}}

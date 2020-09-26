@@ -1,55 +1,95 @@
-const db = require('../config/db');
+const db = require('../config/db2');
 const types = require('./typeController');
-let cache = require('./cacheController');
+const cache = require('../helper/dataCache');
+const separate = require('../helper/separeteByCommas');
+const getCount = require('../controllers/getPostController');
 const { v4: uuidv4 } = require('uuid');
-const typesCache = new cache.cache(types.retrieve, 1440);
+let typesCache = new cache.cache(types.retrieve, "1", 1440);
+let numCache = new cache.cache(getCount.getNumberApproved, "2", 1);
 
-// Handle showing sell page on GET
+// Handle showing submit page on GET
 exports.imagePost_get = (req, res, next) => {
     console.time("time");
     typesCache.getData()
         .then((result) => {
-            console.timeEnd("time");
-            res.render('imagePost', {type: result});
+            numCache.getData()
+            .then((count) => {
+                res.render('imagePost', { type: result, count: count});
+            });
         });
 }
 
-// Handle submitting sales item for sell on POST
+// Handle submitting sales item for submit on POST
 exports.imagePost_post = (req, res, next) => {
     let postId = uuidv4();
-    let { title, japTitle, author, publication, description, tags, type } = req.body;
-    let postImage = req.files;
-    let postCover = "";
+    let { title, japTitle, author, publication, description, tags, links, type } = req.body;
+    let postImages = req.files;
+    let postCover = "noCover.png";
+    let postImage = postImages.mangaImage[0].filename;
     let postError = [];
+    let status = 0;
+    let placeholders = [];
+
+    //check if the user added a cover for the media work.
+    if (postImages.coverImage != undefined) {
+        postCover = postImages.coverImage[0].filename;
+    }
+
 
     // Check if required fields are filled
-    if (!title || !description || !author || !tags || !type || !publication) {
+    if (!title || !description || !author || !tags || !type || !publication || !links) {
         postError.push({ message: 'Please fill in all non-optional fields' });
     }
     //Check if there is image 
-    else if (!postImage || postImage == undefined) {
+    else if (!postImages || postImages == undefined) {
         postError.push({ message: 'Please select an image.' });
     }
 
-    //Check if we have a japanese title
-    if(!japTitle) {
+    //Check if we don't have a japanese title
+    if (!japTitle) {
         japTitle = "NULL";
     }
 
     // Render posting error messages if necessary
     if (postError.length > 0) {
-        res.render('imagePost', {
-            postError: postError
-        });
+        req.flash('error', 'Error posting');
+        res.redirect('/submit');
     }
 
+    let linksList = separate.separateLinks(links);
+    let tagsList = separate.separateTags(tags);
 
-    let sql = "INSERT INTO posts (pid, title, jtitle, description, details, type, cover, image) VALUES (?,?,?,?,?,?, ?, ?)";
 
-    db.query(sql, [postId, title, japTitle, description, type, publication, postCover, postImage], (err, result) => {
+
+    let sql = "INSERT INTO posts (pid, title, author, jtitle, description, details, type, cover, image, status) VALUES (?,?,?,?,?,?,?,?,?,?);";
+    let postPlaceholder = [postId, title, author, japTitle, description, publication, type, postCover, postImage, status];
+
+    placeholders.push(...postPlaceholder);
+
+    let tempId;//a tempId value to hold the newly generated id of links and tags.
+
+    //generate the SQL for the links insertion.
+    for(let i = 0; i < linksList.length; i++) {
+        tempId = uuidv4();
+        sql += "INSERT INTO links (lid, links, pid) VALUES (?,?,?);";
+        placeholders.push(tempId);
+        placeholders.push(linksList[i]);
+        placeholders.push(postId);
+    }
+
+    //generate the SQL for the links insertion.
+    for(let j = 0; j < tagsList.length; j++) {
+        tempId = uuidv4();
+        sql += "INSERT INTO tags (tgid, tags, pid) VALUES (?,?,?);";
+        placeholders.push(tempId);
+        placeholders.push(tagsList[j]);
+        placeholders.push(postId);
+    }
+
+    db.query(sql, placeholders, (err, result) => {
         if (err) {
             req.flash('error', 'Error posting');
-            res.render('imagePost');
+            res.redirect('/submit');
         }
 
         if ((typeof result !== 'undefined')) {
@@ -58,8 +98,7 @@ exports.imagePost_post = (req, res, next) => {
         }
         else {
             req.flash('error', 'Error posting');
-            res.redirect('/post');
+            res.redirect('/submit');
         }
     });
-
 }

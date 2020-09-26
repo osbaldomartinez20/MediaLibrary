@@ -23,6 +23,10 @@
         <!-- Navbar-->
         <nav class="frank">
             <a href="/">Home</a>
+            <a href="/submit">Post</a>
+            {{#if count}}
+            <a href="#">{{count.total}}</a>
+            {{/if}}
             {{#if loggedIn}}
             <div class="userOut">
                 <a href="/user/dashboard">Dashboard</a>

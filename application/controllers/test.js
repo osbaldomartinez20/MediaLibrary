@@ -1,23 +1,31 @@
-let typess = require("./typeController");
-let cache = require('./cacheController');
+const typess = require("./typeController");
+const cache = require('../helper/dataCache');
+const queue = require('../helper/cacheQueue');
+const po = require('./getPostController');
+
+const cQueue = new queue.cacheQueue(250);
 
 async function types() {
-    const typesCache = new cache.cache(typess.retrieve, 0.05);
-    typesCache.getData()
+    /*
+    console.time("time");
+    let used = process.memoryUsage();
+    for (let key in used) {
+        console.log(`${key} ${Math.round(used[key] / 1024 / 1024 * 100) / 100} MB`);
+    }
+    console.timeEnd("time");
+    //*/
+
+    let cache1 = new cache.cache(po.getNumberApproved, "1", 1444);
+    let cache2 = new cache.cache(po.getPostInfo, "2", 1444);
+    let cache3 = new cache.cache(po.getPostInfo, "3", 1444);
+    cQueue.addCache(cache1);
+    cQueue.addCache(cache2);
+    cQueue.addCache(cache3);
+    
+    cache1.getData()
         .then((result) => {
-            let types = [];
-            for (let i = 0; i < result.length; i++) {
-                types.push(result[i]);
-            }
             console.log(result);
         });//*/
-    setTimeout(typesCache.getData, 0);
-    setTimeout(typesCache.getData, 1000);
-    setTimeout(typesCache.getData, 2000);
-    setTimeout(typesCache.getData, 3000);
-    setTimeout(typesCache.getData, 4000);
-    setTimeout(typesCache.getData, 5000);
-    setTimeout(typesCache.getData, 6000);
 }
 
 types();

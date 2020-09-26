@@ -7,7 +7,7 @@
         <h1>Welcome to the TSFC Library Directory</h1>
     </div>
     <div class="row home-page-icons justify-content-center">
-        <h2 style="text-align: center;">Newest Posts:</h2>
+        <h2 style="text-align: center;">Posts:</h2>
         <br/>
         <ul>
         {{#each newPost}}
@@ -16,7 +16,7 @@
             <div class="card home-card img-fluid" style="text-align: center;">
                 <a href="/imageCard/{{this.pid}}" class="stretched-link">
                 <img class="card-img home-image" src="/images/uploads/{{this.userid}}/postImages/{{this.filename}}" 
-                alt="Card image"  width="150" height="180" href="">
+                alt="Card image"  width="150" height="180">
                 </a>
                 <div class="card-img-overlay">
                     <a href="/imageCard/{{this.pid}}" class="stretched-link"><h4 class="card-title home-page text-center">{{this.title}}</h4></a>
