@@ -49,7 +49,7 @@ exports.imagePost_post = (req, res, next) => {
 
     //Check if we don't have a japanese title
     if (!japTitle) {
-        japTitle = "NULL";
+        japTitle = "";
     }
 
     // Render posting error messages if necessary
@@ -64,11 +64,12 @@ exports.imagePost_post = (req, res, next) => {
     //get the date the post was submitted.
     let date = new Date();
     let dd = date.getDate();
-    let mm = date.getMonth();
+    let mm = date.getMonth() + 1; //counts months begining at 0, so we need a +1 offset
     let yyyy = date.getFullYear();
     let hh = date.getHours();
     let mi = date.getMinutes();
     let ss = date.getSeconds();
+
 
     let insertDate = yyyy + '/' + mm + '/' + dd + ' ' + hh + ':' + mi + ':' + ss;
 

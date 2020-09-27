@@ -9,6 +9,8 @@ const searchController = require('../controllers/searchController');
 // POST request for search
 router.post('/', searchController.post);
 
-router.get('/:character/firstletter', searchController.firstLetter);
+//GET requests for search
+router.get('/:character/firstletter', searchController.findByFirstLetter);
+router.get('/:type/bytype', searchController.findByType);
 
 module.exports = router;

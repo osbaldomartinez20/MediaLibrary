@@ -26,7 +26,6 @@ class DataCache {
     //it gets the cached data or it caches new data if it does not exist
     getData(id) {
       if (!this.cache || this.isCacheExpired()) {
-        console.log('expired - fetching new data');
         return this.fetchFunction(id)
           .then((data) => {
           this.cache = data;
@@ -34,7 +33,6 @@ class DataCache {
           return data;
         });
       } else {
-        console.log('cache hit');
         return Promise.resolve(this.cache);
       }
     }
@@ -47,7 +45,6 @@ class DataCache {
     //destroys the current cached data because of the isCacheExpired method.
     destroyCache() {
         this.millisecondsToLive = 0;
-        console.log("Cache destroyed.");
     }
 
 }

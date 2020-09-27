@@ -34,7 +34,7 @@ async function getNumberOfApprovedPosts() {
 
 
 async function getTenPosts() {
-    let sql = "SELECT * FROM posts ORDER BY date DESC LIMIT 10";
+    let sql = "SELECT * FROM posts WHERE status = 0 ORDER BY date DESC LIMIT 10";
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql);
         if (result[0].length < 1) {
@@ -49,13 +49,12 @@ async function getPostsBasedOnFirstTitleCharacter(firstCharacter) {
     let sql = "";
     let placeholders = [];
     if (firstCharacter == 'no') {
-        sql = "SELECT * FROM posts WHERE title NOT RLIKE ?"
+        sql = "SELECT * FROM posts WHERE title NOT RLIKE ? AND status = 0"
         placeholders.push('[a-z]');
     } else {
-        sql = "SELECT * FROM posts WHERE title LIKE ?";
+        sql = "SELECT * FROM posts WHERE title LIKE ? AND status = 0";
         placeholders.push(firstCharacter + '%');
     }
-    console.log(placeholders);
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders);
         if (result[0].length < 1) {
@@ -65,7 +64,36 @@ async function getPostsBasedOnFirstTitleCharacter(firstCharacter) {
     });
 }
 
+async function getByKeyWord(keyword) {
+    let sql = "SELECT * FROM posts WHERE status = 0";
+    let placeholders = [];
+    if (keyword != "") {
+        sql += " AND (title LIKE ? OR description LIKE ?)";
+        placeholders = ['%' + keyword + '%', '%' + keyword + '%'];
+    }
+    return new Promise(async function (resolve, reject) {
+        const result = await db.query(sql, placeholders);
+        if (result[0].length < 1) {
+            console.log("There was an error getting the posts.");
+        }
+        resolve(result[0]);
+    });
+}
+
+async function getByType(type) {
+    let sql = "SELECT * FROM posts WHERE status = 0 AND type = ?";
+    let placeholders = [type];
+    return new Promise(async function (resolve, reject) {
+        const result = await db.query(sql, placeholders);
+        if (result[0].length < 1) {
+            console.log("There was an error getting the posts.");
+        }
+        resolve(result[0]);
+    });
+}
 exports.getPostInfo = getPostInfoById;
 exports.getNumberApproved = getNumberOfApprovedPosts;
 exports.homePagePosts = getTenPosts;
 exports.getByLetter = getPostsBasedOnFirstTitleCharacter;
+exports.getByKeyWord = getByKeyWord;
+exports.getByType = getByType;

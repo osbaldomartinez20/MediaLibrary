@@ -3,7 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const { ensureUserAuthenticated } = require('../controllers/userAuthenticated');
-const imageCardController = require('../controllers/imageCardController');
+const imageCardController = require('../controllers/itemCardController');
 
 // GET image page
 router.get('/:pid', imageCardController.imageCard_get);

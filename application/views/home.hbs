@@ -21,7 +21,7 @@
                 href="/search/t/firstletter">t</a> <a href="/search/u/firstletter">u</a> <a
                 href="/search/v/firstletter">v</a> <a href="/search/w/firstletter">w</a> <a
                 href="/search/x/firstletter">x</a> <a href="/search/y/firstletter">y</a> <a
-                href="/search/z/firstletter">z</a> <a href="/search/b/firstletter">new</a></h2>
+                href="/search/z/firstletter">z</a> <a href="/">new</a></h2>
         <table id="imageTableHome" class="table">
             <colgroup>
                 <col span="1" style="width: 15%;">
@@ -45,11 +45,11 @@
                 {{#if post}}
                 {{#each post}}
                 <tr class="tr">
-                    <th class="th">{{this.title}}</th>
+                    <th class="th"><a href="/libraryitem/{{this.pid}}">{{this.title}}</a></th>
                     <th class="th">{{this.author}}</th>
                     <th class="th">{{this.description}}</th>
                     <th class="th">{{this.details}}</th>
-                    <th class="th">{{this.type}}</th>
+                    <th class="th"><a href="/search/{{this.type}}/bytype">{{this.type}}</a></th>
                     <th class="th"><img src='/images/upload/{{this.cover}}' width="50" height="60" /></th>
                     <th class="th"><img src='/images/upload/{{this.image}}' width="50" height="60" /></th>
                 </tr>
@@ -58,5 +58,6 @@
                 <h2 style="text-align: center;">No Posts Could Be Found</h2>
                 {{/if}}
             </tbody>
+        </table>
     </div>
 </div>
