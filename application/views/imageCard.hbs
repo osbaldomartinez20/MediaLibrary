@@ -31,7 +31,7 @@
                     <th class="th">{{this.description}}</th>
                     <th class="th"><a href="/search/{{this.type}}/bytype">{{this.type}}</a></th>
                     {{/each}}
-                    <th class="th">{{#each tags}} {{this.tags}} <br/>{{/each}}</th>
+                    <th class="th">{{#each tags}} <a href="/search/{{this.tags}}/bytag">{{this.tags}}</a> <br/>{{/each}}</th>
                     <th class="th">{{#each links}} <a href="{{this.links}}">{{this.links}}</a> <br/>{{/each}}</th>
                 </tr>
             </tbody>

@@ -12,5 +12,6 @@ router.post('/', searchController.post);
 //GET requests for search
 router.get('/:character/firstletter', searchController.findByFirstLetter);
 router.get('/:type/bytype', searchController.findByType);
+router.get('/:tag/bytag', searchController.findByTag);
 
 module.exports = router;

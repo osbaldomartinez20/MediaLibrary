@@ -23,6 +23,10 @@ exports.imageCard_get = (req, res, next) => {
                 .then((result) => {
                     console.timeEnd("h");
                     postInfo = result[0];
+                    if(result[0].status == 1) {
+                        req.flash('error', 'Error Posting Not Approved');
+                        res.render('error');
+                    }
                     linkList = result[1];
                     tagList = result[2];
                     res.render('imageCard', { count: count, postInfo: postInfo, links: linkList, tags: tagList });

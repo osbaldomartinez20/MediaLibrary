@@ -6,7 +6,7 @@ const e = require("express");
 //retrieves all the information in the tables that have the given post id.
 async function getPostInfoById(id) {
     let placeholders = [id, id, id];
-    let sql = "SELECT * FROM posts WHERE pid = ?;";
+    let sql = "SELECT * FROM posts WHERE pid = ? AND status = 0;";
 
     sql += "SELECT * FROM links WHERE pid = ?;";
     sql += "SELECT * FROM tags WHERE pid = ?";
@@ -91,9 +91,24 @@ async function getByType(type) {
         resolve(result[0]);
     });
 }
+
+async function getByTag(tag) {
+    let sql = "SELECT tags.pid, posts.title, posts.jtitle, posts.author, posts.description, posts.details, posts.type, posts.cover, posts.image" + 
+    " FROM tags INNER JOIN posts USING (pid) WHERE tags = ? AND posts.status = 0";
+    let placeholders = [tag];
+    return new Promise(async function (resolve, reject) {
+        const result = await db.query(sql, placeholders);
+        if (result[0].length < 1) {
+            console.log("There was an error getting the posts.");
+        }
+        resolve(result[0]);
+    });
+}
+
 exports.getPostInfo = getPostInfoById;
 exports.getNumberApproved = getNumberOfApprovedPosts;
 exports.homePagePosts = getTenPosts;
 exports.getByLetter = getPostsBasedOnFirstTitleCharacter;
 exports.getByKeyWord = getByKeyWord;
 exports.getByType = getByType;
+exports.getByTag = getByTag;
