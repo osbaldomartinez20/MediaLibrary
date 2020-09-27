@@ -14,9 +14,7 @@ class CacheQueue {
     //adds a new cache to the end of the queue and removes the caches at the front if the limit is surpassed.
     addCache(newCache) {
         let index = this.getCacheIndexById(newCache.id)
-        if (index  != -1) {
-            this.cQueue[index] = newCache;
-        } else {
+        if (index  == -1) {
             this.cQueue.push(newCache);
             if (this.cQueue.length > this.limit) {
                 this.cQueue.shift();

@@ -15,8 +15,10 @@ exports.imagePost_get = (req, res, next) => {
             numCache.getData()
             .then((count) => {
                 res.render('imagePost', { type: result, count: count});
-            });
-        });
+            }).catch((error) => {
+                res.sendStatus(503);});
+        }).catch((error) => {
+            res.sendStatus(503);});
 }
 
 // Handle submitting sales item for submit on POST
@@ -59,10 +61,19 @@ exports.imagePost_post = (req, res, next) => {
     let linksList = separate.separateLinks(links);
     let tagsList = separate.separateTags(tags);
 
+    //get the date the post was submitted.
+    let date = new Date();
+    let dd = date.getDate();
+    let mm = date.getMonth();
+    let yyyy = date.getFullYear();
+    let hh = date.getHours();
+    let mi = date.getMinutes();
+    let ss = date.getSeconds();
 
+    let insertDate = yyyy + '/' + mm + '/' + dd + ' ' + hh + ':' + mi + ':' + ss;
 
-    let sql = "INSERT INTO posts (pid, title, author, jtitle, description, details, type, cover, image, status) VALUES (?,?,?,?,?,?,?,?,?,?);";
-    let postPlaceholder = [postId, title, author, japTitle, description, publication, type, postCover, postImage, status];
+    let sql = "INSERT INTO posts (pid, title, author, jtitle, description, details, type, cover, image, status, date) VALUES (?,?,?,?,?,?,?,?,?,?,STR_TO_DATE(?,'%Y/%m/%d %H:%i:%s'));";
+    let postPlaceholder = [postId, title, author, japTitle, description, publication, type, postCover, postImage, status, insertDate];
 
     placeholders.push(...postPlaceholder);
 

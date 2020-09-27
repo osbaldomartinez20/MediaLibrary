@@ -17,6 +17,8 @@
     "express-paginatorjs": "^1.0.1",
     "express-session": "^1.17.1",
     "hepburn": "^1.2.0",
+    "http": "0.0.1-security",
+    "https": "^1.0.0",
     "mkdirp": "^0.5.1",
     "multer": "^1.4.2",
     "mysql": "^2.18.1",

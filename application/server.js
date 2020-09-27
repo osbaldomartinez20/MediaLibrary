@@ -1,5 +1,6 @@
 const express = require('express');
 const http = require('http');
+const https = require('https');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const passport = require('passport');
@@ -55,7 +56,7 @@ app.use('/submit', require('./routes/submitItem'));
 
 // Error-handling middleware
 app.use(function(req, res, next) {
-    res.status(404);
+    res.status(404 || 503);
     res.render('error');    
 });
 

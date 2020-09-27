@@ -25,7 +25,9 @@
             <a href="/">Home</a>
             <a href="/submit">Post</a>
             {{#if count}}
-            <a href="#">{{count.total}}</a>
+            {{#each count}}
+            <a href="#">{{this.total}}</a>
+            {{/each}}
             {{/if}}
             {{#if loggedIn}}
             <div class="userOut">
@@ -36,7 +38,7 @@
             {{/if}}
             <div class="search-container">
                 <form action="/search" method="POST">
-                        <input class="typeahead tt-query" autocomplete="off" spellcheck="false" 
+                        <input class="search-bar" autocomplete="off" spellcheck="false" 
                         type="text" placeholder="What are you looking for ?" name="keyword" value="{{searchCriteria.keyword}}"
                         id="searchKeyword" maxlength="40">
                     

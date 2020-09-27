@@ -7,24 +7,56 @@
         <h1>Welcome to the TSFC Library Directory</h1>
     </div>
     <div class="row home-page-icons justify-content-center">
-        <h2 style="text-align: center;">Posts:</h2>
-        <br/>
-        <ul>
-        {{#each newPost}}
-        <li>
-        <div class="col-7 col-sm-5 col-md-4 col-lg-3">
-            <div class="card home-card img-fluid" style="text-align: center;">
-                <a href="/imageCard/{{this.pid}}" class="stretched-link">
-                <img class="card-img home-image" src="/images/uploads/{{this.userid}}/postImages/{{this.filename}}" 
-                alt="Card image"  width="150" height="180">
-                </a>
-                <div class="card-img-overlay">
-                    <a href="/imageCard/{{this.pid}}" class="stretched-link"><h4 class="card-title home-page text-center">{{this.title}}</h4></a>
-                </div>
-            </div>
-        </div>
-        </li>
-        {{/each}}
-        </ul>
+        <h2 style="text-align: center; width:100%;"><a href="/search/no/firstletter">#</a> <a
+                href="/search/a/firstletter">a</a>
+            <a href="/search/b/firstletter">b</a> <a href="/search/c/firstletter">c</a> <a
+                href="/search/d/firstletter">d</a> <a href="/search/e/firstletter">e</a> <a
+                href="/search/f/firstletter">f</a> <a href="/search/g/firstletter">g</a> <a
+                href="/search/h/firstletter">h</a> <a href="/search/i/firstletter">i</a> <a
+                href="/search/j/firstletter">j</a> <a href="/search/k/firstletter">k</a> <a
+                href="/search/l/firstletter">l</a> <a href="/search/m/firstletter">m</a> <a
+                href="/search/n/firstletter">n</a> <a href="/search/o/firstletter">o</a> <a
+                href="/search/p/firstletter">p</a> <a href="/search/q/firstletter">q</a> <a
+                href="/search/r/firstletter">r</a> <a href="/search/s/firstletter">s</a> <a
+                href="/search/t/firstletter">t</a> <a href="/search/u/firstletter">u</a> <a
+                href="/search/v/firstletter">v</a> <a href="/search/w/firstletter">w</a> <a
+                href="/search/x/firstletter">x</a> <a href="/search/y/firstletter">y</a> <a
+                href="/search/z/firstletter">z</a> <a href="/search/b/firstletter">new</a></h2>
+        <table id="imageTableHome" class="table">
+            <colgroup>
+                <col span="1" style="width: 15%;">
+                <col span="1" style="width: 15%;">
+                <col span="1" style="width: 20%;">
+                <col span="1" style="width: 20%;">
+                <col span="1" style="width: 10%;">
+                <col span="1" style="width: 10%;">
+                <col span="1" style="width: 10%;">
+            </colgroup>
+            <tbody>
+                <tr class="tr">
+                    <th class="th">Title</th>
+                    <th class="th">Author</th>
+                    <th class="th">Description</th>
+                    <th class="th">Details</th>
+                    <th class="th">Type</th>
+                    <th class="th">Cover</th>
+                    <th class="th">Sample Image</th>
+                </tr>
+                {{#if post}}
+                {{#each post}}
+                <tr class="tr">
+                    <th class="th">{{this.title}}</th>
+                    <th class="th">{{this.author}}</th>
+                    <th class="th">{{this.description}}</th>
+                    <th class="th">{{this.details}}</th>
+                    <th class="th">{{this.type}}</th>
+                    <th class="th"><img src='/images/upload/{{this.cover}}' width="50" height="60" /></th>
+                    <th class="th"><img src='/images/upload/{{this.image}}' width="50" height="60" /></th>
+                </tr>
+                {{/each}}
+                {{else}}
+                <h2 style="text-align: center;">No Posts Could Be Found</h2>
+                {{/if}}
+            </tbody>
     </div>
 </div>
