@@ -3,48 +3,43 @@
 
 <head>
     <title>TSFC Media Library</title>
-    <meta content="text/html"; charset="utf-8">
+    <meta content="text/html" ; charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/images/main/favicon.ico" type="image/x-icon">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     <link rel="stylesheet" href="/stylesheets/style.css">
-    <link rel="stylesheet" href="/stylesheets/form.css">
-    <link rel="stylesheet" href="/stylesheets/table.css">
-    <link rel="stylesheet" href="/stylesheets/imageCard.css">
-    <link rel="stylesheet" href="/stylesheets/error.css">
-    <link rel="stylesheet" href="/stylesheets/userDash.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 
-<body class="d-flex flex-column h-100">
-    <header class="navbar">
+<body>
+    <header class="hed">
         <!-- Navbar-->
-        <nav class="frank">
-            <a href="/">Home</a>
-            <a href="/submit">Post</a>
-            {{#if count}}
-            {{#each count}}
-            <a href="#">{{this.total}}</a>
-            {{/each}}
-            {{/if}}
-            {{#if loggedIn}}
-            <div class="userOut">
-                <a href="/user/dashboard">Dashboard</a>
-                <a href="/post">Post</a>
-                <a href="/user/logout">Logout</a>
-            </div>
-            {{/if}}
-            <div class="search-container">
-                <form action="/search" method="POST">
-                        <input class="search-bar" autocomplete="off" spellcheck="false" 
-                        type="text" placeholder="What are you looking for ?" name="keyword" value="{{searchCriteria.keyword}}"
-                        id="searchKeyword" maxlength="40">
-                    
-                    <button class="btn search-button" type="submit" id="searchButon"><i
-                            class="fa fa-search"></i></button>
-                </form>
+        <nav class="navbar" style="width: 100%;">
+            <div class="container-fluid">
+                <ul class="nav">
+                    <li class="active"><a href="/">Home</a></li>
+                    <li><a href="/submit">Post</a></li>
+                    {{#if count}}
+                    {{#each count}}
+                    <li><a href="#">{{this.total}}</a></li>
+                    {{/each}}
+                    {{/if}}
+                    <li style="float: right;">
+                        <form action="/search" method="POST">
+                            <input class="search-bar" autocomplete="off" spellcheck="false" type="text"
+                                placeholder="What are you looking for ?" name="keyword"
+                                value="{{searchCriteria.keyword}}" id="searchKeyword" maxlength="40">
+
+                            <button class="btn search-button" type="submit" id="searchButon"><i
+                                    class="fa fa-search"></i></button>
+                        </form>
+                    </li>
+                </ul>
             </div>
         </nav>
         <br />

@@ -7,6 +7,12 @@
     border-style: solid;
 }
 
+#coverImage {
+    height: 420px;
+    width: auto;
+    border-style: solid;
+}
+
 .description {
     text-align: center;    
 }

@@ -14,7 +14,7 @@ $(document).ready(function () {
         reader.readAsDataURL(this.files[0]);
     };
 
-    document.getElementById("coverImage").onchange = function () {
+    document.getElementById("coverImageP").onchange = function () {
         var reader = new FileReader();
     
         reader.onload = function (e) {

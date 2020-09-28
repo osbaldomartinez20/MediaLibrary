@@ -60,7 +60,7 @@ exports.findByFirstLetter = (req, res, next) => {
 
 exports.findByType = (req, res, next) => {
     let type = req.params.type;
-    let typeCache = new cache.cache(post.getByType, type, 1440);
+    let typeCache = new cache.cache(post.getByType, type, 5);
     typeQueue.addCache(typeCache);
     numCache.getData()
         .then((count) => {
