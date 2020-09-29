@@ -1,9 +1,18 @@
 const passport = require('passport');
-const db = require('../config/db');
+const db = require('../config/db2');
+const cache = require('../helper/dataCache');
+const post = require('./getPostController');
+
+let numCache = new cache.cache(post.getNumberApproved, "2", 1);
 
 // Display administrator's login page on GET
 exports.login_get = (req, res, next) => {
-    res.render('adminLogin');
+    numCache.getData()
+        .then((count) => {
+    res.render('adminLogin', {count: count});
+        }).catch((error) => {
+            res.render('error');
+        });
 }
 
 // Handle administrator login authentication via Passport API on POST
@@ -45,9 +54,15 @@ exports.dashboard = (req, res, next) => {
             }
         }
 
-        res.render('adminDashboard', {
-            activeMods: activeMods,
-            unapprovedMods: unapprovedMods
+        numCache.getData()
+        .then((count) => {
+            res.render('adminDashboard', {
+                activeMods: activeMods,
+                unapprovedMods: unapprovedMods,
+                count: count
+            });
+        }).catch((error) => {
+            res.render('error');
         });
     });
 }
@@ -62,16 +77,16 @@ exports.approve = (req, res, next) => {
     db.query(sql, [modId], (err, result) => {
         if (err) {
             req.flash('error', 'Error approving mod');
-            res.redirect('/user/dashboard');
+            res.redirect('/masteradmin/dashboard');
         }
 
         if (result.changedRows > 0) {
             req.flash('success', 'Sucessfully approved mod');
-            res.redirect('/admin/dashboard');
+            res.redirect('/masteradmin/dashboard');
         }
         else {
             req.flash('error', 'Error approving mod');
-            res.redirect('/user/dashboard');
+            res.redirect('/masteradmin/dashboard');
         }
     });
 }
@@ -86,16 +101,16 @@ exports.disapprove = (req, res, next) => {
     db.query(sql, [modId], (err, result) => {
         if (err) {
             req.flash('error', 'Error disapproving mod');
-            res.redirect('/user/dashboard');
+            res.redirect('/masteradmin/dashboard');
         }
 
         if (result.changedRows > 0) {
             req.flash('success', 'Sucessfully disapproved mod');
-            res.redirect('/admin/dashboard');
+            res.redirect('/masteradmin/dashboard');
         }
         else {
             req.flash('error', 'Error disapproving mod');
-            res.redirect('/user/dashboard');
+            res.redirect('/masteradmin/dashboard');
         }
     });
 }
@@ -110,16 +125,16 @@ exports.remove = (req, res, next) => {
     db.query(sql, [modId], (err, result) => {
         if (err) {
             req.flash('error', 'Error removing mod');
-            res.redirect('/user/dashboard');
+            res.redirect('/masteradmin/dashboard');
         }
 
         if (result.changedRows > 0) {
             req.flash('success', 'Sucessfully removed mod');
-            res.redirect('/admin/dashboard');
+            res.redirect('/masteradmin/dashboard');
         }
         else {
             req.flash('error', 'Error removing mod');
-            res.redirect('/user/dashboard');
+            res.redirect('/masteradmin/dashboard');
         }
     });
 }

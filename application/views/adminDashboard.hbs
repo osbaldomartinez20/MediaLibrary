@@ -1,81 +1,77 @@
 {{!-- Container for account manipulations --}}
-<div class="account_container mt-4">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+<link rel="stylesheet" href="/stylesheets/bodyKeep.css">
+<div>
     <!-- Display approval or disapproval success message -->
-    <div class="col-5 mx-auto">
+    <div class="container-fluid">
         {{> message}}
     </div>
-    <h1>Welcome to your Dashboard!</h1>
+    <h1>Welcome to your Dashboard, {{loggedIn.username}}!</h1>
 </div>
 
-<div class="tab-content">
+<div class="container-fluid">
     {{!-- Container for the mod approval section --}}
     <div class="post_container">
         <h2 id="TableTitle">Moderators To Review</h2>
-        <table id="unapprovedTable" class="table">
+        <table id="unapprovedTable" class="table table-bordered">
             <colgroup>
                 <col span="1" style="width: 50%;">
                 <col span="1" style="width: 25%;">
                 <col span="1" style="width: 25%;">
             </colgroup>
             <tbody>
-                <tr class="tr">
-                    <th class="th_admin">Moderator Username</th>
-                    <th class="th_admin">Approve</th>
-                    <th class="th_admin">Remove</th>
-                </tr>
+                <thead>
+                    <tr class="tr">
+                        <th scope="col" style="text-align: center;">Moderator Username</th>
+                        <th scope="col" style="text-align: center;">Approve</th>
+                        <th scope="col" style="text-align: center;">Remove</th>
+                    </tr>
+                </thead>
                 {{#if unapprovedMods}}
                 {{#each unapprovedMods}}
                 <tr class="tr">
-                    <td class="th">{{this.username}}</td>
-                    <td class="th"><a href="/masteradmin/{{this.id}}/approve"
-                            id="approve_button"><button>Approve</button></a></td>
-                    <td class="th"><a href="/masteradmin/{{this.id}}/remove"
-                            id="remove_button"><button>Remove</button></a></td>
+                    <td scope="row" style="text-align: center;">{{this.username}}</td>
+                    <td style="text-align: center;"><a href="/masteradmin/{{this.id}}/approve"
+                            id="approve_button"><button
+                                style="background-color: rgb(19, 138, 19); color: black;">Approve</button></a></td>
+                    <td style="text-align: center;"><a href="/masteradmin/{{this.id}}/remove" id="remove_button"><button
+                                style="background-color: red; color: black;">Remove</button></a></td>
                 </tr>
                 {{/each}}
-                {{else}}
-                <tr class="tr">
-                    <th class="th_admin">No moderators</th>
-                    <th class="th_admin">To</th>
-                    <th class="th_admin">Review</th>
-                </tr>
                 {{/if}}
             </tbody>
         </table>
     </div>
 </div>
 
-<br/><br/>
+<br /><br />
 
-<div class="tab-content">
+<div class="container-fluid">
     {{!-- Container for the active mod section --}}
-    <div class="post_container">
-        <h2 id="TableTitle">Active Moderators</h2>
-        <table id="activeTable" class="table">
-            <colgroup>
-                <col span="1" style="width: 50%;">
-                <col span="1" style="width: 50%;">
-            </colgroup>
-            <tbody>
-                <tr class="tr">
-                    <th class="th_admin">Moderator Username</th>
-                    <th class="th_admin">Disapprove</th>
-                </tr>
-                {{#if activeMods}}
-                {{#each activeMods}}
-                <tr class="tr">
-                    <td class="th">{{this.username}}</td>
-                    <td class="th"><a href="/masteradmin/{{this.id}}/disapprove"
-                            id="approve_button"><button>Disapprove</button></a></td>
-                </tr>
-                {{/each}}
-                {{else}}
-                <tr class="tr">
-                    <th class="th_admin">No Active</th>
-                    <th class="th_admin">Moderators</th>
-                </tr>
-                {{/if}}
-            </tbody>
-        </table>
-    </div>
+
+    <h2 id="TableTitle">Active Moderators</h2>
+    <table id="activeTable" class="table table-bordered">
+        <colgroup>
+            <col span="1" style="width: 50%;">
+            <col span="1" style="width: 50%;">
+        </colgroup>
+        <tbody>
+            <tr class="tr">
+                <th scope="col" style="text-align: center;">Moderator Username</th>
+                <th scope="col" style="text-align: center;">Disapprove</th>
+            </tr>
+            {{#if activeMods}}
+            {{#each activeMods}}
+            <tr>
+                <td scope="row" style="text-align: center;">{{this.username}}</td>
+                <td style="text-align: center;"><a href="/masteradmin/{{this.id}}/disapprove"
+                        id="approve_button"><button style="background-color: red; color: black;">Disapprove</button></a>
+                </td>
+            </tr>
+            {{/each}}
+            {{/if}}
+        </tbody>
+    </table>
+
 </div>

@@ -1,4 +1,7 @@
-<div class="container home mt-4">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+<link rel="stylesheet" href="/stylesheets/bodyKeep.css">
+<div class="container-fluid">
     <!-- Display logout message -->
     <div>
         {{> message}}
@@ -7,7 +10,7 @@
         <h1>Welcome to the TSFC Library Directory</h1>
     </div>
     <div class="home" style="width: 100%;">
-        <h2 style="text-align: center; width:100%;"><a href="/search/no/firstletter">#</a> <a
+        <h2 style="text-align: center; width:100%;"><a href="/search/symbols/firstletter">#</a> <a
                 href="/search/a/firstletter">a</a>
             <a href="/search/b/firstletter">b</a> <a href="/search/c/firstletter">c</a> <a
                 href="/search/d/firstletter">d</a> <a href="/search/e/firstletter">e</a> <a
@@ -21,8 +24,10 @@
                 href="/search/t/firstletter">t</a> <a href="/search/u/firstletter">u</a> <a
                 href="/search/v/firstletter">v</a> <a href="/search/w/firstletter">w</a> <a
                 href="/search/x/firstletter">x</a> <a href="/search/y/firstletter">y</a> <a
-                href="/search/z/firstletter">z</a> <a href="/">new</a></h2>
-        <table class="table table-bordered table-dark">
+                href="/search/z/firstletter">z</a> <a href="/search/newest">new</a></h2>
+        <table class="table table-bordered">
+            <caption style="color: black;">{{#if resultNum}}There are <b>{{resultNum.count}}</b>
+                {{resultNum.term}}.{{/if}}{{newest.text}}</caption>
             <colgroup>
                 <col span="1" style="width: 10%;">
                 <col span="1" style="width: 10%;">
@@ -49,12 +54,11 @@
                 <tr>
                     <th scope="row"><img src='/images/upload/{{this.cover}}' width="100" height="120"
                             alt="Responsive image" /></th>
-                    <td><img src='/images/upload/{{this.image}}' width="100" height="120"
-                            alt="Responsive image" /></td>
+                    <td><img src='/images/upload/{{this.image}}' width="100" height="120" alt="Responsive image" /></td>
                     <td style="text-align: center;"><a href="/libraryitem/{{this.pid}}">{{this.title}}</a></td>
                     <td style="text-align: center;">{{this.author}}</td>
-                    <td style="text-align: center;">{{this.description}}</td>
-                    <td style="text-align: center;">{{this.details}}</td>
+                    <td style="text-align: center; white-space: pre-line;">{{this.description}}</td>
+                    <td style="text-align: center; white-space: pre-line;">{{this.details}}</td>
                     <td style="text-align: center;"><a href="/search/{{this.type}}/bytype">{{this.type}}</a></td>
                 </tr>
                 {{/each}}

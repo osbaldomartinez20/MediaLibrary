@@ -1,7 +1,7 @@
 body {
-  background-color: rgb(216, 215, 215);
+  background-color: #b1aeab;
   color: black;
-  padding: 50px;
+  padding: 20px;
   font: 14px;
   font-family: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif";
 }
@@ -16,12 +16,12 @@ a {
 
 .alert {
   text-align: center;
-  color: red;
+  color: rgb(255, 255, 255);
 }
 
 .navbar {
   overflow: hidden;
-  background-color: #ddcdcd;
+  background-color: #b1aeab;
 }
 
 .navbar a {
@@ -35,40 +35,13 @@ a {
 }
 
 .navbar a:hover {
-  background-color: #ddd;
+  background-color: rgb(221, 205, 205);
   color: black;
-}
-
-.navbar a.active {
-  background-color: #2196F3;
-  color: white;
-}
-
-.navbar input[type=text] {
-  padding: 6px;
-  margin-top: 8px;
-  font-size: 17px;
-  border: none;
-}
-
-.navbar .search-container button {
-  float: right;
-  padding: 6px 10px;
-  margin-top: 8px;
-  margin-right: 16px;
-  background: rgb(240, 215, 215);
-  font-size: 17px;
-  border: none;
-  cursor: pointer;
-}
-
-.navbar .search-container button:hover {
-  background: #ccc;
 }
 
 .errMsg {
   text-align: center;
-  color: red;
+  color: rgb(250, 250, 250);
 }
 
 ul#menu li {
@@ -84,7 +57,7 @@ ul {
 
 li {
   float: left;
-  border: 1px solid #bbb;
+  border: 1px solid rgb(0, 0, 0);
 }
 
 li a {
@@ -104,24 +77,23 @@ form {
 }
 
 #username {
-  width: 26%;
+  width: 50%;
   border-color: gray;
 }
 
 #password {
-  width: 26%;
+  width: 50%;
   border-color: grey;
 }
 
 #confirmPassword {
-  width: 26%;
+  width: 50%;
   border-color: grey;
 }
 
 #register {
   color: aliceblue;
   background-color: blue;
-  width: 10%;
 }
 
 #passwordMsg {
@@ -129,37 +101,37 @@ form {
 }
 
 #title {
-  width: 26%;
+  width: 50%;
   border-color: gray;
 }
 
 #japTitle {
-  width: 26%;
+  width: 50%;
   border-color: gray;
 }
 
 #author {
-  width: 26%;
+  width: 50%;
   border-color: gray;
 }
 
 #description {
-  width: 26%;
+  width: 50%;
   border-color: gray;
 }
 
 #publication {
-  width: 26%;
+  width: 50%;
   border-color: gray;
 }
 
 #tags {
-  width: 26%;
+  width: 50%;
   border-color: gray;
 }
 
 #links {
-  width: 26%;
+  width: 50%;
   border-color: gray;
 }
 
@@ -261,6 +233,3 @@ form {
 #no {
   background-color: green;
 }
-
-#no_button {
-  color:

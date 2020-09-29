@@ -7,8 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/images/main/favicon.ico" type="image/x-icon">
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     <link rel="stylesheet" href="/stylesheets/style.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -24,17 +22,17 @@
                 <ul class="nav">
                     <li class="active"><a href="/">Home</a></li>
                     <li><a href="/submit">Post</a></li>
-                    {{#if count}}
-                    {{#each count}}
-                    <li><a href="#">{{this.total}}</a></li>
-                    {{/each}}
+                    {{#if loggedIn.aid}}
+                    <li><a href="/masteradmin/logout">Logout</a></li>
                     {{/if}}
-                    <li style="float: right;">
+                    {{#if loggedIn.id}}
+                    <li><a href="/moderators/logout">Logout</a></li>
+                    {{/if}}
+                    <li style="float: right; border: none;">
                         <form action="/search" method="POST">
                             <input class="search-bar" autocomplete="off" spellcheck="false" type="text"
                                 placeholder="What are you looking for ?" name="keyword"
                                 value="{{searchCriteria.keyword}}" id="searchKeyword" maxlength="40">
-
                             <button class="btn search-button" type="submit" id="searchButon"><i
                                     class="fa fa-search"></i></button>
                         </form>

@@ -5,7 +5,7 @@ module.exports = {
             return next();
         }
         req.flash('error', 'Please log in');
-        res.redirect('/moderator/login?redirectUrl=' + req.originalUrl);
+        res.redirect('/moderators/login?redirectUrl=' + req.originalUrl);
     },
     // Check if user is logged as administrator
     ensureAdminAuthenticated: (req, res, next) => {
@@ -22,7 +22,7 @@ module.exports = {
         }
         else {
             if (req.user.id) {
-                res.redirect('/moderator/dashboard');
+                res.redirect('/moderators/dashboard');
             }
             else if (req.user.aid) {
                 res.redirect('/masteradmin/dashboard');

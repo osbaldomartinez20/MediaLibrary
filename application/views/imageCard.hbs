@@ -1,4 +1,14 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+<link rel="stylesheet" href="/stylesheets/bodyKeep.css">
 <div class="itemContainer">
+    {{#if loggedIn}}
+    <div>
+       {{#each postInfo}}{{#unless this.status}} <a href="/moderators/{{this.pid}}/approve"><button style="background-color: rgb(19, 138, 19); color: black">Approve</button></a> {{/unless}}{{/each}}
+        <a href="#"></a><button style="background-color: blue; color: black">Edit</button></a>
+        <a href="#"></a><button style="background-color: red; color: black">Remove</button></a>
+    </div>
+    {{/if}}
     <div class="container-fluid">
         {{#each postInfo}}
         <h1>{{this.title}}</h1>
@@ -7,8 +17,8 @@
             <img data-enlargable src="/images/upload/{{this.cover}}" id="coverImage" alt="Responsive image"> <img
                 data-enlargable src="/images/upload/{{this.image}}" id="postImage" alt="Responsive image">
         </div>
-        <br/>
-        <table id="imageCardTable" class="table" style="width: 100%;">
+        <br />
+        <table id="imageCardTable" class="table table-bordered">
             <colgroup>
                 <col span="1" style="width: 15%;">
                 <col span="1" style="width: 30%;">
@@ -18,22 +28,26 @@
                 <col span="1" style="width: 10%;">
             </colgroup>
             <tbody>
+                <thead>
+                    <tr class="trCard">
+                        <th scope="col" style="text-align: center;">Author:</th>
+                        <th scope="col" style="text-align: center;">Details:</th>
+                        <th scope="col" style="text-align: center;">Description:</th>
+                        <th scope="col" style="text-align: center;">Type:</th>
+                        <th scope="col" style="text-align: center;">Tags:</th>
+                        <th scope="col" style="text-align: center;">Links:</th>
+                    </tr>
+                </thead>
                 <tr class="trCard">
-                    <th class="th">Author:</th>
-                    <th class="th">Details:</th>
-                    <th class="th">Description:</th>
-                    <th class="th">Type:</th>
-                    <th class="th">Tags:</th>
-                    <th class="th">Links:</th>
-                </tr>
-                <tr class="trCard">
-                    <th class="th">{{this.author}}</th>
-                    <th class="th">{{this.details}}</th>
-                    <th class="th">{{this.description}}</th>
-                    <th class="th"><a href="/search/{{this.type}}/bytype">{{this.type}}</a></th>
-                    {{/each}}
-                    <th class="th">{{#each tags}} <a href="/search/{{this.tags}}/bytag">{{this.tags}}</a> <br/>{{/each}}</th>
-                    <th class="th">{{#each links}} <a href="{{this.links}}">{{this.links}}</a> <br/>{{/each}}</th>
+                    <td scope="row" style="text-align: center;">{{this.author}}</th>
+                    <td style="white-space: pre-line; text-align: center;">{{this.details}}</th>
+                    <td style="white-space: pre-line; text-align: center;">{{this.description}}</th>
+                    <td style="text-align: center;"><a href="/search/{{this.type}}/bytype">{{this.type}}</a></th>
+                        {{/each}}
+                    <td style="text-align: center;">{{#each tags}} <a
+                            href="/search/{{this.tags}}/bytag">{{this.tags}}</a> <br />{{/each}}</th>
+                    <td style="text-align: center;">{{#each links}} <a href="{{this.links}}">{{this.links}}</a>
+                        <br />{{/each}}</th>
                 </tr>
             </tbody>
         </table>
