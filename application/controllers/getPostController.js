@@ -12,7 +12,9 @@ async function getPostInfoById(id) {
     sql += "SELECT * FROM tags WHERE pid = ?";
 
     return new Promise(async function (resolve, reject) {
-        const result = await db.query(sql, placeholders);
+        const result = await db.query(sql, placeholders).catch((error) => {
+            res.render('error');
+        });
         if (result[0].length < 1) {
             console.log("There was an error getting the post info.");
         }
@@ -24,7 +26,9 @@ async function getPostInfoById(id) {
 async function getNumberOfApprovedPosts() {
     let sql = "SELECT COUNT(*) as \"total\" FROM posts WHERE status = 1";
     return new Promise(async function (resolve, reject) {
-        const result = await db.query(sql);
+        const result = await db.query(sql).catch((error) => {
+            res.render('error');
+        });
         if (result[0].length < 1) {
             console.log("There was an error getting the number of posts");
         }
@@ -36,7 +40,9 @@ async function getNumberOfApprovedPosts() {
 async function getTenPosts() {
     let sql = "SELECT * FROM posts WHERE status = 1 ORDER BY date DESC LIMIT 10";
     return new Promise(async function (resolve, reject) {
-        const result = await db.query(sql);
+        const result = await db.query(sql).catch((error) => {
+            res.render('error');
+        });
         if (result[0].length < 1) {
             console.log("There was an error getting the posts.");
         }
@@ -56,7 +62,9 @@ async function getPostsBasedOnFirstTitleCharacter(firstCharacter) {
         placeholders.push(firstCharacter + '%');
     }
     return new Promise(async function (resolve, reject) {
-        const result = await db.query(sql, placeholders);
+        const result = await db.query(sql, placeholders).catch((error) => {
+            res.render('error');
+        });
         if (result[0].length < 1) {
             console.log("There was an error getting the posts.");
         }
@@ -84,7 +92,9 @@ async function getByType(type) {
     let sql = "SELECT * FROM posts WHERE status = 1 AND type = ?";
     let placeholders = [type];
     return new Promise(async function (resolve, reject) {
-        const result = await db.query(sql, placeholders);
+        const result = await db.query(sql, placeholders).catch((error) => {
+            res.render('error');
+        });
         if (result[0].length < 1) {
             console.log("There was an error getting the posts.");
         }
@@ -97,7 +107,9 @@ async function getByTag(tag) {
     " FROM tags INNER JOIN posts USING (pid) WHERE tags = ? AND posts.status = 1";
     let placeholders = [tag];
     return new Promise(async function (resolve, reject) {
-        const result = await db.query(sql, placeholders);
+        const result = await db.query(sql, placeholders).catch((error) => {
+            res.render('error');
+        });
         if (result[0].length < 1) {
             console.log("There was an error getting the posts.");
         }

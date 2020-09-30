@@ -8,14 +8,9 @@ const imageCardController = require('../controllers/itemCardController');
 // GET image page
 router.get('/:pid', imageCardController.imageCard_get);
 
-// GET request to edit image info
-router.get('/:pid/edit', ensureUserAuthenticated, imageCardController.edit_get);
+// GET image page
+router.get('/:pid/moderator', imageCardController.imageCardMod_get);
 
-//POST request to update database
-router.post('/:pid/update', ensureUserAuthenticated, imageCardController.edit_post);
-
-//GET to obtain information of post being deleted.
-router.get('/:pid/confirmDelete', ensureUserAuthenticated, imageCardController.confirm_get);
 
 //GET to delete post
 router.get('/:pid/delete', ensureUserAuthenticated, imageCardController.delete_get);

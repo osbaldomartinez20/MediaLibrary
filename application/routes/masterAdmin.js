@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const administratorController = require('../controllers/administratorController');
+const modFunctions = require('../controllers/moderatorController');
 const { ensureAdminAuthenticated, forwardAuthenticated } = require('../controllers/userAuthenticated');
 
 // GET request to redirect to admin login page
@@ -30,5 +31,11 @@ router.get('/:mid/disapprove', ensureAdminAuthenticated, administratorController
 
 // GET request for removing sales item
 router.get('/:mid/remove', ensureAdminAuthenticated, administratorController.remove);
+
+router.get('/:pid/itemapprove', ensureAdminAuthenticated, modFunctions.itemApproval);
+
+router.get('/:pid/itemconfirmdel', ensureAdminAuthenticated, modFunctions.confrimDelete);
+
+router.get('/:pid/itemdelete', ensureAdminAuthenticated, modFunctions.itemDeletion);
 
 module.exports = router;

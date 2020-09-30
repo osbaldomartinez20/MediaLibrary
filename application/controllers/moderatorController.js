@@ -1,4 +1,5 @@
 const db = require('../config/db2');
+const fs = require('fs');
 const passport = require('passport');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
@@ -180,5 +181,55 @@ exports.itemApproval = (req, res, next) => {
             req.flash('error', 'Error approving item');
             res.redirect('/moderators/dashboard');
         }
+    });
+}
+
+exports.confrimDelete = (req, res, next) => {
+    let pid = req.params.pid;
+
+    let sql = "SELECT pid, title, cover, image FROM posts WHERE pid = ?";
+
+    db.query(sql, [pid], (err, result) => {
+        if (err) throw err;
+
+        numCache.getData()
+        .then((count) => {
+            res.render('confirmDeletion', {count: count, postInfo: result});
+        }).catch((error) => {
+            res.render('error');
+        });
+    });
+
+}
+
+
+exports.itemDeletion = (req, res, next) => {
+    let pid = req.params.pid;
+
+    let sql = "SELECT * FROM posts WHERE pid = ?";
+
+    db.query(sql, [pid], (error, result) => {
+        if (error) throw error;
+
+        sql = "DELETE FROM posts WHERE pid = ?;";
+        sql += "DELETE FROM links WHERE pid = ?;";
+        sql += "DELETE FROM tags WHERE pid = ?;"
+
+        let coverImage = result[0].cover;
+        let sampleImage = result[0].image;
+
+        db.query(sql, [pid, pid, pid], (error2, result2) => {
+            if (error2) throw error2;
+
+            fs.unlink('./public/images/upload/' + coverImage, (err) => {
+                if (err) throw err;
+                console.log('successfully deleted file.');
+
+                fs.unlink('./public/images/upload/' + sampleImage, (err) => {
+                    req.flash('success', 'Deleted Post Information.');
+                    res.redirect('/moderators/dashboard');
+                });
+            });
+        });
     });
 }

@@ -1,0 +1,18 @@
+<div class="itemContainer">
+    {{#if loggedIn.id}}
+    <div>
+        {{#each postInfo}}<a href="/moderators/{{this.pid}}/delete"><button
+                style="background-color: red; color: black">Delete</button></a>{{/each}}
+        <a href="/moderators/dashboard"></a><button style="background-color: rgb(19, 138, 19); color: black">Keep</button></a>
+    </div>
+    {{/if}}
+    <div class="container-fluid">
+        {{#each postInfo}}
+        <h1>{{this.title}}</h1>
+        <h2>{{this.jtitle}}</h2>
+        <div class="main_photo">
+            <img data-enlargable src="/images/upload/{{this.cover}}" id="coverImage" alt="Responsive image"> <img
+                data-enlargable src="/images/upload/{{this.image}}" id="postImage" alt="Responsive image">
+        </div>
+    </div>
+</div>

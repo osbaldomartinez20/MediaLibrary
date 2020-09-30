@@ -1,4 +1,4 @@
-const fs = require('fs');
+
 const cache = require('../helper/dataCache');
 const queue = require('../helper/cacheQueue');
 const post = require('./getPostController');
@@ -23,10 +23,6 @@ exports.imageCard_get = (req, res, next) => {
                 .then((result) => {
                     console.timeEnd("h");
                     postInfo = result[0];
-                    if(result[0].status == 1) {
-                        req.flash('error', 'Error Posting Not Approved');
-                        res.render('error');
-                    }
                     linkList = result[1];
                     tagList = result[2];
                     res.render('imageCard', { count: count, postInfo: postInfo, links: linkList, tags: tagList });
@@ -39,107 +35,28 @@ exports.imageCard_get = (req, res, next) => {
 
 }
 
-// Show image page for revising image on GET
-exports.edit_get = (req, res, next) => {
+exports.imageCardMod_get = (req, res, next) => {
     let pid = req.params.pid;
-    let user = req.user.id;
+    let itemCache = new cache.cache(post.getPostInfo, pid, 0.005);
+    let postInfo = [];
+    let linkList = [];
+    let tagList = [];
 
-    let dataPassed = [];
-
-    let sql = "SELECT * FROM posts WHERE pid = ?";
-
-    db.query(sql, [pid], (error, result) => {
-        if (error) throw error;
-
-        if (user != result[0].userid) {
-            req.flash('error', 'Not the owner of the post.');
-            res.redirect('/user/dashboard');
-        }
-        dataPassed = result[0];
-
-        res.render('editImage', {
-            values: dataPassed
-        });
-    });
-}
-
-//submits edits to the tilte and description
-exports.edit_post = (req, res, next) => {
-    let { title, description } = req.body;
-    let pid = req.params.pid;
-    let user = req.user.id;
-
-    let sql = "SELECT * FROM posts WHERE pid = ?";
-
-    db.query(sql, [pid], (error, result) => {
-        if (error) throw error;
-
-        if (user != result[0].userid) {
-            req.flash('error', 'Not the owner of the post.');
-            res.redirect('/user/dashboard');
-        }
-
-        sql = "UPDATE posts SET title = ?, description = ? WHERE pid = ?";
-        db.query(sql, [title, description, pid], (error2, result2) => {
-            if (error2) throw error2;
-
-            req.flash('success', 'Updated Post Information.');
-            res.redirect('/user/dashboard');
-        });
-    });
-}
-
-exports.confirm_get = (req, res, next) => {
-    let pid = req.params.pid;
-    let user = req.user.id;
-    let dataPassed = [];
-
-    let sql = "SELECT * FROM posts WHERE pid = ?";
-
-    db.query(sql, [pid], (error, result) => {
-        if (error) throw error;
-
-        if (user != result[0].userid) {
-            req.flash('error', 'Not the owner of the post.');
-            res.redirect('/user/dashboard');
-        }
-
-        dataPassed = result[0];
-        res.render('deleteConfirm', {
-            values: dataPassed
+    numCache.getData()
+        .then((count) => {
+            console.time("h");
+            itemCache.getData(pid)
+                .then((result) => {
+                    console.timeEnd("h");
+                    postInfo = result[0];
+                    linkList = result[1];
+                    tagList = result[2];
+                    res.render('imageCard', { count: count, postInfo: postInfo, links: linkList, tags: tagList });
+                }).catch((error) => {
+                    res.render('error');
+                });
+        }).catch((error) => {
+            res.render('error');
         });
 
-    });
-}
-
-exports.delete_get = (req, res, next) => {
-    let pid = req.params.pid;
-    let user = req.user.id;
-
-    let sql = "SELECT * FROM posts WHERE pid = ?";
-
-    db.query(sql, [pid], (error, result) => {
-        if (error) throw error;
-
-        if (user != result[0].userid) {
-            req.flash('error', 'Not the owner of the post.');
-            res.redirect('/user/dashboard');
-        }
-
-        sql = "DELETE FROM posts WHERE pid = ?";
-        let imageN = result[0].filename;
-
-        db.query(sql, [pid], (error2, result2) => {
-            if (error2) throw error2;
-
-            fs.unlink('./public/images/uploads/' + user + '/postImages/' + imageN, (err) => {
-                if (err) throw err;
-                console.log('successfully deleted file.');
-                
-                req.flash('success', 'Deleted Post Information.');
-                res.redirect('/user/dashboard');
-
-            });
-        });
-    });
 }
