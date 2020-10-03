@@ -1,7 +1,25 @@
 <div class="header">
     <h1>Edit Information</h1>
 </div>
-<br>
+<br />
+
+{{#if loggedIn.id}}
+<div style="text-align: center;">
+    {{#each postInfo}}
+    <a href="/moderators/{{this.pid}}/addimage"><button style="background-color: blue; color: black">Change
+            Images</button></a>
+    {{/each}}
+</div>
+{{/if}}
+{{#if loggedIn.aid}}
+<div style="text-align: center;">
+    {{#each postInfo}}
+    <a href="/masteradmin/{{this.pid}}/itemaddimage"><button style="background-color: blue; color: black">Change
+            Images</button></a>
+    {{/each}}
+</div>
+{{/if}}
+<br />
 
 <!-- Postimage form -->
 <div style="text-align: center;">
@@ -12,8 +30,9 @@
     <form action="/moderators/edit" method="POST">
         <div>
             <h5>Post ID:</h5>
-            <input type="text" id="pid" name="pid" value="{{this.pid}}" readonly/>
+            <input type="text" id="pid" name="pid" value="{{this.pid}}" readonly />
         </div>
+        <br />
         <div>
             <h5>Title</h5>
             <input type="text" id="title" name="title" placeholder="Enter a title" value="{{this.title}}" maxlength="40"
@@ -73,7 +92,7 @@
         </div>
         <br />
         <div>
-            <button type="submit" class="btn btn-success" id="submit">Submit</button>
+            <button type="submit" id="submit">Submit</button>
         </div>
 
     </form>

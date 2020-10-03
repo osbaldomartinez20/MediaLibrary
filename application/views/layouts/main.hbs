@@ -23,9 +23,12 @@
                     <li class="active"><a href="/">Home</a></li>
                     <li><a href="/submit">Post</a></li>
                     {{#if loggedIn.aid}}
+                    <li><a href="/masteradmin/dashboard">Mod Review</a></li>
+                    <li><a href="/masteradmin/imagereview">Image Review</a></li>
                     <li><a href="/masteradmin/logout">Logout</a></li>
                     {{/if}}
                     {{#if loggedIn.id}}
+                    <li><a href="/moderators/dashboard">Dashboard</a></li>
                     <li><a href="/moderators/logout">Logout</a></li>
                     {{/if}}
                     <li style="float: right; border: none;">

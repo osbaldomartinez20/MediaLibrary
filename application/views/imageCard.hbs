@@ -6,19 +6,21 @@
     <div>
         {{#each postInfo}}{{#unless this.status}} <a href="/moderators/{{this.pid}}/approve"><button
                 style="background-color: rgb(19, 138, 19); color: black">Approve</button></a> {{/unless}}
-        <a href="/moderators/{{this.pid}}/edit"><button
-            style="background-color: blue; color: black">Edit</button></a>
+        <a href="/moderators/{{this.pid}}/edit"><button style="background-color: blue; color: black">Edit</button></a>
         <a href="/moderators/{{this.pid}}/confirmdel"><button
-            style="background-color: red; color: black">Remove</button></a>
+                style="background-color: red; color: black">Remove</button></a>
         {{/each}}
     </div>
     {{/if}}
     {{#if loggedIn.aid}}
     <div>
         {{#each postInfo}}{{#unless this.status}} <a href="/masteradmin/{{this.pid}}/itemapprove"><button
-                style="background-color: rgb(19, 138, 19); color: black">Approve</button></a> {{/unless}}{{/each}}
-        <a href="#"></a><button style="background-color: blue; color: black">Edit</button></a>
-        <a href="#"></a><button style="background-color: red; color: black">Remove</button></a>
+                style="background-color: rgb(19, 138, 19); color: black">Approve</button></a> {{/unless}}
+        <a href="/masteradmin/{{this.pid}}/itemedit"><button
+            style="background-color: blue; color: black">Edit</button></a>
+        <a href="/masteradmin/{{this.pid}}/itemconfirmdel"><button
+            style="background-color: red; color: black">Remove</button></a>
+        {{/each}}
     </div>
     {{/if}}
     <div class="container-fluid">
@@ -58,7 +60,8 @@
                         {{/each}}
                     <td style="text-align: center;">{{#each tags}} <a
                             href="/search/{{this.tags}}/bytag">{{this.tags}}</a> <br />{{/each}}</th>
-                    <td style="text-align: center;">{{#each links}} <a href="{{this.links}}">{{this.links}}</a>
+                    <td style="text-align: center;">{{#each links}} <a href="{{this.links}}"
+                            target="_blank">{{this.links}}</a>
                         <br />{{/each}}</th>
                 </tr>
             </tbody>

@@ -1,12 +1,14 @@
-const db = require('../config/db2');
+const db = require('../config/db2');//non-promise database connection
 const fs = require('fs');
 const passport = require('passport');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
 const commas = require('../helper/addCommas');
+const separate = require('../helper/separeteByCommas');
 const cache = require('../helper/dataCache');
 const post = require('./getPostController');
 const types = require('./typeController');
+const { count } = require('console');
 
 let numCache = new cache.cache(post.getNumberApproved, "2", 1);
 let typesCache = new cache.cache(types.retrieve, "1", 1440);
@@ -214,9 +216,9 @@ exports.itemDeletion = (req, res, next) => {
     db.query(sql, [pid], (error, result) => {
         if (error) throw error;
 
-        sql = "DELETE FROM posts WHERE pid = ?;";
+        sql = "DELETE FROM tags WHERE pid = ?;";
         sql += "DELETE FROM links WHERE pid = ?;";
-        sql += "DELETE FROM tags WHERE pid = ?;"
+        sql += "DELETE FROM posts WHERE pid = ?;"
 
         let coverImage = result[0].cover;
         let sampleImage = result[0].image;
@@ -242,13 +244,13 @@ exports.editPost_get = (req, res, next) => {
     let pid = req.params.pid;
     let links = {};
     let tags = {};
-    let pChache = new cache.cache(post.getPostInfo, "pos", 0.005);
+    let pCache = new cache.cache(post.getPostInfo, "pos", 0.005);
 
     typesCache.getData()
         .then((types) => {
             numCache.getData()
                 .then((count) => {
-                    pChache.getData(pid)
+                    pCache.getData(pid)
                         .then((result) => {
                             links.links = commas.addCommasLinks(result[1]);
                             tags.tags = commas.addCommasTags(result[2]);
@@ -290,7 +292,7 @@ exports.editPost_post = (req, res, next) => {
             sql += "INSERT INTO links (lid, links, pid) VALUES (?,?,?);";
             placeholders.push(tempId);
             placeholders.push(linksList[i]);
-            placeholders.push(postId);
+            placeholders.push(pid);
         }
     
         //generate the SQL for the tags insertion.
@@ -299,7 +301,7 @@ exports.editPost_post = (req, res, next) => {
             sql += "INSERT INTO tags (tgid, tags, pid) VALUES (?,?,?);";
             placeholders.push(tempId);
             placeholders.push(tagsList[j]);
-            placeholders.push(postId);
+            placeholders.push(pid);
         }
 
         db.query(sql, placeholders, (err, result) => {
@@ -316,6 +318,19 @@ exports.editPost_post = (req, res, next) => {
                 req.flash('error', 'Error updating post info.');
                 res.redirect('/moderators/dashboard');
             }
+        });
+    });
+}
+
+exports.addImage_get = (req, res, next) => {
+    let pid = req.params.pid;
+    let pCache = new cache.cache(post.getPostImagesById, "pos", 0.005);
+
+    numCache.getData()
+    .then((count) => {
+        pCache.getData(pid)
+        .then((result) => {
+            res.render('editPostImage', {count: count, postInfo: result});
         });
     });
 }

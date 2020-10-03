@@ -22,6 +22,21 @@ async function getPostInfoById(id) {
     });
 }
 
+async function getPostImagesById(id) {
+    let placeholders = [id];
+    let sql = "SELECT pid, cover, image FROM posts WHERE pid = ?;";
+
+    return new Promise(async function (resolve, reject) {
+        const result = await db.query(sql, placeholders).catch((error) => {
+            res.render('error');
+        });
+        if (result[0].length < 1) {
+            console.log("There was an error getting the post info.");
+        }
+        resolve(result[0]);
+    });
+}
+
 //retrieves the number of posts that have been approved.
 async function getNumberOfApprovedPosts() {
     let sql = "SELECT COUNT(*) as \"total\" FROM posts WHERE status = 1";
@@ -118,6 +133,7 @@ async function getByTag(tag) {
 }
 
 exports.getPostInfo = getPostInfoById;
+exports.getPostImagesById = getPostImagesById;
 exports.getNumberApproved = getNumberOfApprovedPosts;
 exports.homePagePosts = getTenPosts;
 exports.getByLetter = getPostsBasedOnFirstTitleCharacter;

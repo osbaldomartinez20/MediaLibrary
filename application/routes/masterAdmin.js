@@ -23,6 +23,8 @@ router.get('/logout', ensureAdminAuthenticated, administratorController.logout);
 // GET administrator's dashboard page
 router.get('/dashboard', ensureAdminAuthenticated, administratorController.dashboard);
 
+router.get('/imagereview', ensureAdminAuthenticated, modFunctions.dashboard);
+
 // GET request for approving sales item
 router.get('/:mid/approve', ensureAdminAuthenticated, administratorController.approve);
 
@@ -37,5 +39,11 @@ router.get('/:pid/itemapprove', ensureAdminAuthenticated, modFunctions.itemAppro
 router.get('/:pid/itemconfirmdel', ensureAdminAuthenticated, modFunctions.confrimDelete);
 
 router.get('/:pid/itemdelete', ensureAdminAuthenticated, modFunctions.itemDeletion);
+
+router.get('/:pid/itemedit', ensureAdminAuthenticated, modFunctions.editPost_get);
+
+router.post('/itemedit', ensureAdminAuthenticated, modFunctions.editPost_post);
+
+router.get("/:pid/itemaddimage", ensureAdminAuthenticated, modFunctions.addImage_get);
 
 module.exports = router;

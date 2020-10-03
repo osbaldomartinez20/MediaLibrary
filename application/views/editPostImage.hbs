@@ -1,0 +1,67 @@
+<div class="header">
+    <h1>Edit Images</h1>
+</div>
+<br>
+
+<!-- Postimage form -->
+<script type="text/javascript" src="/js/imagePreview.js"></script>
+<div style="text-align: center;">
+    {{#each postInfo}}
+    <form action="/moderators/editimage" method="POST" enctype="multipart/form-data">
+        <div>
+            <h5>Post ID:</h5>
+            <input type="text" id="pid" name="pid" value="{{this.pid}}" readonly />
+        </div>
+        <br />
+        <div>
+            <h5>Cover Image:</h5>
+            <img src="/images/upload/{{this.cover}}" width="250" height="300" />
+            <br/>
+            <input type="text" id="cover" name="cover" value="{{this.cover}}" readonly />
+        </div>
+
+        <br />
+        <div>
+            <div>
+                <label for="coverImageP" id="imageLabel">Add Cover Image Here.<br />Choose up to 1 image to
+                    upload (PNG,
+                    JPG)<br></label>
+                <br>
+                <input type="file" name="coverImage" id="coverImageP" accept="image/png,image/jpg,image/jpeg"
+                    required />
+            </div>
+            <br />
+            <div class="preview">
+                <img id="img" width="100" height="120" />
+            </div>
+        </div>
+        <br>
+        <div>
+            <h5>Work Image:</h5>
+            <img src="/images/upload/{{this.image}}" width="250" height="300" />
+            <br/>
+            <input type="text" id="image" name="image" value="{{this.image}}" readonly />
+        </div>
+        <br />
+        <div>
+            <div>
+                <label for="mangaImage" id="imageLabel2">Add Manga Image Here (Optional).<br />Choose up to 1 image to
+                    upload (PNG,
+                    JPG)<br></label>
+                <br>
+                <input type="file" name="mangaImage" id="mangaImage" accept="image/png,image/jpg,image/jpeg" />
+            </div>
+            <br />
+            <div class="preview">
+                <img id="img2" width="100" height="120" />
+            </div>
+        </div>
+        <br>
+
+        <div>
+            <button type="submit" id="submit">Submit</button>
+        </div>
+
+    </form>
+    {{/each}}
+</div>
