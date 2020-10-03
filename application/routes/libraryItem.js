@@ -11,8 +11,4 @@ router.get('/:pid', imageCardController.imageCard_get);
 // GET image page
 router.get('/:pid/moderator', imageCardController.imageCardMod_get);
 
-
-//GET to delete post
-router.get('/:pid/delete', ensureUserAuthenticated, imageCardController.delete_get);
-
 module.exports = router;

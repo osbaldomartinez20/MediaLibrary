@@ -3,10 +3,13 @@ const fs = require('fs');
 const passport = require('passport');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
+const commas = require('../helper/addCommas');
 const cache = require('../helper/dataCache');
 const post = require('./getPostController');
+const types = require('./typeController');
 
 let numCache = new cache.cache(post.getNumberApproved, "2", 1);
+let typesCache = new cache.cache(types.retrieve, "1", 1440);
 
 // Handle showing student login page on GET
 exports.login_get = (req, res, next) => {
@@ -193,11 +196,11 @@ exports.confrimDelete = (req, res, next) => {
         if (err) throw err;
 
         numCache.getData()
-        .then((count) => {
-            res.render('confirmDeletion', {count: count, postInfo: result});
-        }).catch((error) => {
-            res.render('error');
-        });
+            .then((count) => {
+                res.render('confirmDeletion', { count: count, postInfo: result });
+            }).catch((error) => {
+                res.render('error');
+            });
     });
 
 }
@@ -230,6 +233,89 @@ exports.itemDeletion = (req, res, next) => {
                     res.redirect('/moderators/dashboard');
                 });
             });
+        });
+    });
+}
+
+
+exports.editPost_get = (req, res, next) => {
+    let pid = req.params.pid;
+    let links = {};
+    let tags = {};
+    let pChache = new cache.cache(post.getPostInfo, "pos", 0.005);
+
+    typesCache.getData()
+        .then((types) => {
+            numCache.getData()
+                .then((count) => {
+                    pChache.getData(pid)
+                        .then((result) => {
+                            links.links = commas.addCommasLinks(result[1]);
+                            tags.tags = commas.addCommasTags(result[2]);
+                            res.render('editPostInfo', { count: count, postInfo: result[0], links: links, tags: tags, type: types });
+                        });
+                });
+        });
+}
+
+
+exports.editPost_post = (req, res, next) => {
+    let { pid, title, jtitle, author, description, details, type, tags, links } = req.body;
+    let japTitle = "";
+    let placeholders = [];
+
+    if (jtitle) {
+        japTitle = jtitle;
+    }
+
+    let sqlDel = "DELETE FROM links WHERE pid = ?; DELETE FROM tags WHERE pid = ?";
+
+    let delPlaceholders = [pid, pid];
+
+    db.query(sqlDel, delPlaceholders, (error, result) => {
+        if (error) throw error;
+
+        let linksList = separate.separateLinks(links);
+        let tagsList = separate.separateTags(tags);
+
+        let sql = "UPDATE posts SET title = ?, jtitle = ?, author = ?, description = ?, details = ?, type = ? WHERE pid = ?;";
+        let postPlaceholders = [title, japTitle, author, description, details, type, pid];
+        placeholders.push(...postPlaceholders);
+
+        let tempId; //a tempId value to hold the newly generated id of links and tags.
+
+        //generate the SQL for the links insertion.
+        for(let i = 0; i < linksList.length; i++) {
+            tempId = uuidv4();
+            sql += "INSERT INTO links (lid, links, pid) VALUES (?,?,?);";
+            placeholders.push(tempId);
+            placeholders.push(linksList[i]);
+            placeholders.push(postId);
+        }
+    
+        //generate the SQL for the tags insertion.
+        for(let j = 0; j < tagsList.length; j++) {
+            tempId = uuidv4();
+            sql += "INSERT INTO tags (tgid, tags, pid) VALUES (?,?,?);";
+            placeholders.push(tempId);
+            placeholders.push(tagsList[j]);
+            placeholders.push(postId);
+        }
+
+        db.query(sql, placeholders, (err, result) => {
+            if (err) {
+                req.flash('error', 'Error updating post info.');
+                res.redirect('/moderators/dashboard');
+            }
+    
+            if ((typeof result !== 'undefined')) {
+                req.flash('success', 'Successfully updated post info.');
+                res.redirect('/moderators/dashboard');
+            }
+            else {
+                req.flash('error', 'Error updating post info.');
+                res.redirect('/moderators/dashboard');
+            }
         });
     });
 }

@@ -89,7 +89,7 @@ exports.imagePost_post = (req, res, next) => {
         placeholders.push(postId);
     }
 
-    //generate the SQL for the links insertion.
+    //generate the SQL for the tags insertion.
     for(let j = 0; j < tagsList.length; j++) {
         tempId = uuidv4();
         sql += "INSERT INTO tags (tgid, tags, pid) VALUES (?,?,?);";

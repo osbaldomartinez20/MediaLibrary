@@ -31,4 +31,12 @@ router.get('/dashboard', ensureUserAuthenticated, userController.dashboard);
 // GET request for item approval
 router.get('/:pid/approve', ensureUserAuthenticated, userController.itemApproval);
 
+router.get('/:pid/confirmdel', ensureUserAuthenticated, userController.confrimDelete);
+
+router.get('/:pid/delete', ensureUserAuthenticated, userController.itemDeletion);
+
+router.get('/:pid/edit', ensureUserAuthenticated, userController.editPost_get);
+
+router.post('/edit', ensureUserAuthenticated, userController.editPost_post);
+
 module.exports = router;

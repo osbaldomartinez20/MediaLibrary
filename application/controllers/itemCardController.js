@@ -10,9 +10,6 @@ let numCache = new cache.cache(post.getNumberApproved, "2", 1);
 exports.imageCard_get = (req, res, next) => {
     let pid = req.params.pid;
     let itemCache = new cache.cache(post.getPostInfo, pid, 1440);
-    let postInfo = [];
-    let linkList = [];
-    let tagList = [];
 
     itemQueue.addCache(itemCache);
 
@@ -22,10 +19,7 @@ exports.imageCard_get = (req, res, next) => {
             itemQueue.getCacheById(pid).getData(pid)
                 .then((result) => {
                     console.timeEnd("h");
-                    postInfo = result[0];
-                    linkList = result[1];
-                    tagList = result[2];
-                    res.render('imageCard', { count: count, postInfo: postInfo, links: linkList, tags: tagList });
+                    res.render('imageCard', { count: count, postInfo: result[0], links: result[1], tags: result[2] });
                 }).catch((error) => {
                     res.render('error');
                 });
@@ -38,9 +32,6 @@ exports.imageCard_get = (req, res, next) => {
 exports.imageCardMod_get = (req, res, next) => {
     let pid = req.params.pid;
     let itemCache = new cache.cache(post.getPostInfo, pid, 0.005);
-    let postInfo = [];
-    let linkList = [];
-    let tagList = [];
 
     numCache.getData()
         .then((count) => {
@@ -48,10 +39,7 @@ exports.imageCardMod_get = (req, res, next) => {
             itemCache.getData(pid)
                 .then((result) => {
                     console.timeEnd("h");
-                    postInfo = result[0];
-                    linkList = result[1];
-                    tagList = result[2];
-                    res.render('imageCard', { count: count, postInfo: postInfo, links: linkList, tags: tagList });
+                    res.render('imageCard', { count: count, postInfo: result[0], links: result[1], tags: result[2] });
                 }).catch((error) => {
                     res.render('error');
                 });

@@ -1,0 +1,80 @@
+<div class="header">
+    <h1>Edit Information</h1>
+</div>
+<br>
+
+<!-- Postimage form -->
+<div style="text-align: center;">
+    {{#each postInfo}}
+    <img src="/images/upload/{{this.cover}}" width="250" height="300" />
+    <img src="/images/upload/{{this.image}}" width="250" height="300" />
+    <br />
+    <form action="/moderators/edit" method="POST">
+        <div>
+            <h5>Post ID:</h5>
+            <input type="text" id="pid" name="pid" value="{{this.pid}}" readonly/>
+        </div>
+        <div>
+            <h5>Title</h5>
+            <input type="text" id="title" name="title" placeholder="Enter a title" value="{{this.title}}" maxlength="40"
+                required />
+        </div>
+        <br />
+        <div>
+            <h5>Japanese Title</h5>
+            <input type="text" id="jtitle" name="jtitle" placeholder="Enter the japanese title" value="{{this.jtitle}}"
+                maxlength="40" />
+        </div>
+        <br />
+        <div>
+            <h5>Author</h5>
+            <input type="text" id="author" name="author" placeholder="Enter the author's name" value="{{this.author}}"
+                maxlength="40" required />
+        </div>
+        <br />
+        <div>
+            <h5>Description</h5>
+            <textarea rows="5" id="description" name="description" placeholder="Please enter description here"
+                required>{{this.description}}</textarea>
+        </div>
+        <br />
+        <div>
+            <h5>Details</h5>
+            <textarea rows="5" id="details" name="details" placeholder="Please enter description here"
+                required>{{this.details}}</textarea>
+        </div>
+
+        <br />
+        <div>
+            <label for="type">Choose a TSF Type:</label>
+            <select name="type" id="type" required>
+                <option value="{{this.type}}">{{this.type}}</option>
+                {{/each}}
+                {{#each type}}
+                <option value="{{this.name}}">
+                    {{this.name}}
+                </option>
+                {{/each}}
+            </select>
+        </div>
+
+        <br />
+        <div>
+            <h5>Tags</h5>
+            <textarea rows="5" id="tags" name="tags" placeholder="Please enter tags here"
+                required>{{tags.tags}}</textarea>
+        </div>
+
+        <br />
+        <div>
+            <h5>Links</h5>
+            <textarea rows="5" id="links" name="links" placeholder="Please enter description here"
+                required>{{links.links}}</textarea>
+        </div>
+        <br />
+        <div>
+            <button type="submit" class="btn btn-success" id="submit">Submit</button>
+        </div>
+
+    </form>
+</div>

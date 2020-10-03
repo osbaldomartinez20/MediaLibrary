@@ -5,9 +5,12 @@
     {{#if loggedIn.id}}
     <div>
         {{#each postInfo}}{{#unless this.status}} <a href="/moderators/{{this.pid}}/approve"><button
-                style="background-color: rgb(19, 138, 19); color: black">Approve</button></a> {{/unless}}{{/each}}
-        <a href="#"></a><button style="background-color: blue; color: black">Edit</button></a>
-        <a href="#"></a><button style="background-color: red; color: black">Remove</button></a>
+                style="background-color: rgb(19, 138, 19); color: black">Approve</button></a> {{/unless}}
+        <a href="/moderators/{{this.pid}}/edit"><button
+            style="background-color: blue; color: black">Edit</button></a>
+        <a href="/moderators/{{this.pid}}/confirmdel"><button
+            style="background-color: red; color: black">Remove</button></a>
+        {{/each}}
     </div>
     {{/if}}
     {{#if loggedIn.aid}}
