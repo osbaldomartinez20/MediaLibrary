@@ -5,6 +5,7 @@ const router = express.Router();
 const administratorController = require('../controllers/administratorController');
 const modFunctions = require('../controllers/moderatorController');
 const { ensureAdminAuthenticated, forwardAuthenticated } = require('../controllers/userAuthenticated');
+const { route } = require('./moderator');
 
 // GET request to redirect to admin login page
 router.get('/', (req, res) => {
@@ -34,16 +35,18 @@ router.get('/:mid/disapprove', ensureAdminAuthenticated, administratorController
 // GET request for removing sales item
 router.get('/:mid/remove', ensureAdminAuthenticated, administratorController.remove);
 
-router.get('/:pid/itemapprove', ensureAdminAuthenticated, modFunctions.itemApproval);
+router.get('/:pid/itemapprove', ensureAdminAuthenticated, administratorController.itemApproval);
 
 router.get('/:pid/itemconfirmdel', ensureAdminAuthenticated, modFunctions.confrimDelete);
 
-router.get('/:pid/itemdelete', ensureAdminAuthenticated, modFunctions.itemDeletion);
+router.get('/:pid/itemdelete', ensureAdminAuthenticated, administratorController.itemDeletion);
 
 router.get('/:pid/itemedit', ensureAdminAuthenticated, modFunctions.editPost_get);
 
-router.post('/itemedit', ensureAdminAuthenticated, modFunctions.editPost_post);
+router.post('/itemedit', ensureAdminAuthenticated, administratorController.editPost_post);
 
 router.get("/:pid/itemaddimage", ensureAdminAuthenticated, modFunctions.addImage_get);
+
+router.post('/itemaddimage', ensureAdminAuthenticated, administratorController.addImage_post);
 
 module.exports = router;

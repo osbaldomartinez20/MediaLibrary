@@ -41,4 +41,6 @@ router.post('/edit', ensureUserAuthenticated, userController.editPost_post);
 
 router.get('/:pid/addimage', ensureUserAuthenticated, userController.addImage_get);
 
+router.post('/addimage', ensureUserAuthenticated, userController.addImage_post);
+
 module.exports = router;

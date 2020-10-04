@@ -9,6 +9,7 @@ const cache = require('../helper/dataCache');
 const post = require('./getPostController');
 const types = require('./typeController');
 const { count } = require('console');
+const e = require('express');
 
 let numCache = new cache.cache(post.getNumberApproved, "2", 1);
 let typesCache = new cache.cache(types.retrieve, "1", 1440);
@@ -287,16 +288,16 @@ exports.editPost_post = (req, res, next) => {
         let tempId; //a tempId value to hold the newly generated id of links and tags.
 
         //generate the SQL for the links insertion.
-        for(let i = 0; i < linksList.length; i++) {
+        for (let i = 0; i < linksList.length; i++) {
             tempId = uuidv4();
             sql += "INSERT INTO links (lid, links, pid) VALUES (?,?,?);";
             placeholders.push(tempId);
             placeholders.push(linksList[i]);
             placeholders.push(pid);
         }
-    
+
         //generate the SQL for the tags insertion.
-        for(let j = 0; j < tagsList.length; j++) {
+        for (let j = 0; j < tagsList.length; j++) {
             tempId = uuidv4();
             sql += "INSERT INTO tags (tgid, tags, pid) VALUES (?,?,?);";
             placeholders.push(tempId);
@@ -309,7 +310,7 @@ exports.editPost_post = (req, res, next) => {
                 req.flash('error', 'Error updating post info.');
                 res.redirect('/moderators/dashboard');
             }
-    
+
             if ((typeof result !== 'undefined')) {
                 req.flash('success', 'Successfully updated post info.');
                 res.redirect('/moderators/dashboard');
@@ -327,10 +328,76 @@ exports.addImage_get = (req, res, next) => {
     let pCache = new cache.cache(post.getPostImagesById, "pos", 0.005);
 
     numCache.getData()
-    .then((count) => {
-        pCache.getData(pid)
-        .then((result) => {
-            res.render('editPostImage', {count: count, postInfo: result});
+        .then((count) => {
+            pCache.getData(pid)
+                .then((result) => {
+                    res.render('editPostImage', { count: count, postInfo: result });
+                });
         });
+}
+
+exports.addImage_post = (req, res, next) => {
+    let { pid, cover, image } = req.body;
+    let newImages = req.files;
+    let workImage;
+    let coverImage = newImages.coverImage[0].filename;
+    let skipWork = true;
+    let skipCover = false;
+    let placeholders = [];
+
+    let sql = "UPDATE posts SET cover = ?";
+    placeholders.push(coverImage);
+
+    if (newImages.mangaImage != undefined) {
+        workImage = newImages.mangaImage[0].filename;
+        skipWork = false;
+        sql += ", image = ?";
+        placeholders.push(workImage);
+    }
+
+    if (cover == "noCover.png") {
+        skipCover = true;
+    }
+
+    sql += " WHERE pid = ?";
+    placeholders.push(pid);
+
+    db.query(sql, placeholders, (err, result) => {
+        if (err) {
+            req.flash('error', 'Error updating image.');
+            res.redirect('/moderators/dashboard');
+        }
+
+        if ((typeof result !== 'undefined')) {
+            if (skipCover) {
+                if (skipWork) {
+                    req.flash('success', 'Successfully updated image.');
+                    res.redirect('/moderators/dashboard');
+                } else {
+                    fs.unlink('./public/images/upload/' + image, (err) => {
+                        if (err) throw err;
+                        req.flash('success', 'Successfully updated image.');
+                        res.redirect('/moderators/dashboard');
+                    });
+                }
+            } else {
+                fs.unlink('./public/images/upload/' + cover, (err) => {
+                    if (err) throw err;
+                    if (skipWork) {
+                        req.flash('success', 'Successfully updated image.');
+                        res.redirect('/moderators/dashboard');
+                    } else {
+                        fs.unlink('./public/images/upload/' + image, (err2) => {
+                            if (err2) throw err2;
+                            req.flash('success', 'Successfully updated image.');
+                            res.redirect('/moderators/dashboard');
+                        });
+                    }
+                });
+            }
+        } else {
+            req.flash('error', 'Error updating image.');
+            res.redirect('/moderators/dashboard');
+        }
     });
 }
