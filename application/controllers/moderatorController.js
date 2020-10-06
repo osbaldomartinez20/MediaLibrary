@@ -8,11 +8,11 @@ const separate = require('../helper/separeteByCommas');
 const cache = require('../helper/dataCache');
 const post = require('./getPostController');
 const types = require('./typeController');
-const { count } = require('console');
-const e = require('express');
+
 
 let numCache = new cache.cache(post.getNumberApproved, "2", 1);
 let typesCache = new cache.cache(types.retrieve, "1", 1440);
+let originCache = new cache.cache(types.originGet, "5", 1440);
 
 // Handle showing student login page on GET
 exports.login_get = (req, res, next) => {
@@ -50,6 +50,47 @@ exports.login_post = (req, res, next) => {
         badRequestMessage: 'Please fill in all fields'
     })(req, res, next);
 
+}
+
+exports.settings = (req, res, next) => {
+    numCache.getData()
+        .then((count) => {
+            res.render('modAdminSettings', { count: count });
+        }).catch((error) => {
+            res.render('error');
+        });
+}
+
+exports.changePassword = (req, res, next) => {
+    let uid = req.user.id;
+    let { password, confirmPassword } = req.body;
+
+    if (password.length < 8 || password.length > 20) {
+        req.flash('error', 'Password must be between 8 and 20 characters.');
+    }
+    // Check if passwords match
+    if (password !== confirmPassword) {
+        req.flash('error', 'Passwords must match.');
+    }
+
+    bcrypt.genSalt(10, (err, salt) => {
+        if (err) throw err;
+
+        bcrypt.hash(password, salt, (err2, hash) => {
+            if (err2) throw err2;
+
+            password = hash;
+
+            let sql = "UPDATE mods SET password = ? WHERE id = ?"
+
+            db.query(sql, [hash, uid], (error, result) => {
+                if (error) throw error;
+
+                req.flash('success', 'Successfully changed password');
+                res.redirect('/moderators/dashboard');
+            });
+        });
+    });
 }
 
 // Handle showing registration page for user on GET
@@ -115,15 +156,14 @@ exports.register_post = (req, res, next) => {
                         bcrypt.genSalt(10, (err, salt) => {
                             if (err) throw err;
 
-                            bcrypt.hash(password, salt, (err, hash) => {
-                                if (err) throw err;
+                            bcrypt.hash(password, salt, (err2, hash) => {
+                                if (err2) throw err2;
 
                                 password = hash;
-                                console.log(hash);
 
                                 // Insert new user into database
                                 db.query("INSERT INTO mods (id, username, password, status) VALUES (?, ?, ?, ?)", [uid, username, password, 0], (error, result) => {
-                                    if (err) throw err;
+                                    if (error) throw error;
 
                                     req.flash('success', 'Successfully Submitted Your Mod Account For Review.');
                                     res.redirect('/moderators/login');
@@ -247,23 +287,26 @@ exports.editPost_get = (req, res, next) => {
     let tags = {};
     let pCache = new cache.cache(post.getPostInfo, "pos", 0.005);
 
-    typesCache.getData()
-        .then((types) => {
-            numCache.getData()
-                .then((count) => {
-                    pCache.getData(pid)
-                        .then((result) => {
-                            links.links = commas.addCommasLinks(result[1]);
-                            tags.tags = commas.addCommasTags(result[2]);
-                            res.render('editPostInfo', { count: count, postInfo: result[0], links: links, tags: tags, type: types });
+    originCache.getData()
+        .then((orig) => {
+            typesCache.getData()
+                .then((types) => {
+                    numCache.getData()
+                        .then((count) => {
+                            pCache.getData(pid)
+                                .then((result) => {
+                                    links.links = commas.addCommasLinks(result[1]);
+                                    tags.tags = commas.addCommasTags(result[2]);
+                                    res.render('editPostInfo', { count: count, postInfo: result[0], links: links, tags: tags, type: types, origin: orig });
+                                });
                         });
                 });
-        });
+        })
 }
 
 
 exports.editPost_post = (req, res, next) => {
-    let { pid, title, jtitle, author, description, details, type, tags, links } = req.body;
+    let { pid, title, jtitle, author, description, details, type, origin, tags, links } = req.body;
     let japTitle = "";
     let placeholders = [];
 
@@ -281,8 +324,8 @@ exports.editPost_post = (req, res, next) => {
         let linksList = separate.separateLinks(links);
         let tagsList = separate.separateTags(tags);
 
-        let sql = "UPDATE posts SET title = ?, jtitle = ?, author = ?, description = ?, details = ?, type = ? WHERE pid = ?;";
-        let postPlaceholders = [title, japTitle, author, description, details, type, pid];
+        let sql = "UPDATE posts SET title = ?, jtitle = ?, author = ?, description = ?, details = ?, type = ?, origin = ? WHERE pid = ?;";
+        let postPlaceholders = [title, japTitle, author, description, details, type, origin, pid];
         placeholders.push(...postPlaceholders);
 
         let tempId; //a tempId value to hold the newly generated id of links and tags.

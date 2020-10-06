@@ -4,8 +4,10 @@ const cache = require('../helper/dataCache');
 const separate = require('../helper/separeteByCommas');
 const getCount = require('../controllers/getPostController');
 const { v4: uuidv4 } = require('uuid');
+
 let typesCache = new cache.cache(types.retrieve, "1", 1440);
 let numCache = new cache.cache(getCount.getNumberApproved, "2", 1);
+let originCache = new cache.cache(types.originGet, "5", 1440);
 
 // Handle showing submit page on GET
 exports.imagePost_get = (req, res, next) => {
@@ -14,17 +16,24 @@ exports.imagePost_get = (req, res, next) => {
         .then((result) => {
             numCache.getData()
             .then((count) => {
-                res.render('imagePost', { type: result, count: count});
+                originCache.getData()
+                .then((orig) => {
+                    res.render('imagePost', { type: result, count: count, origin: orig});
+                }).catch((error) => {
+                    res.sendStatus(503);
+                });
             }).catch((error) => {
-                res.sendStatus(503);});
+                res.sendStatus(503);
+            });
         }).catch((error) => {
-            res.sendStatus(503);});
+            res.sendStatus(503);
+        });
 }
 
 // Handle submitting sales item for submit on POST
 exports.imagePost_post = (req, res, next) => {
     let postId = uuidv4();
-    let { title, japTitle, author, publication, description, tags, links, type } = req.body;
+    let { title, japTitle, author, publication, description, tags, links, type, origin } = req.body;
     let postImages = req.files;
     let postCover = "noCover.png";
     let postImage = postImages.mangaImage[0].filename;
@@ -39,7 +48,7 @@ exports.imagePost_post = (req, res, next) => {
 
 
     // Check if required fields are filled
-    if (!title || !description || !author || !tags || !type || !publication || !links) {
+    if (!title || !description || !author || !tags || !type || !publication || !links || !origin) {
         postError.push({ message: 'Please fill in all non-optional fields' });
     }
     //Check if there is image 
@@ -73,8 +82,8 @@ exports.imagePost_post = (req, res, next) => {
 
     let insertDate = yyyy + '/' + mm + '/' + dd + ' ' + hh + ':' + mi + ':' + ss;
 
-    let sql = "INSERT INTO posts (pid, title, author, jtitle, description, details, type, cover, image, status, date) VALUES (?,?,?,?,?,?,?,?,?,?,STR_TO_DATE(?,'%Y/%m/%d %H:%i:%s'));";
-    let postPlaceholder = [postId, title, author, japTitle, description, publication, type, postCover, postImage, status, insertDate];
+    let sql = "INSERT INTO posts (pid, title, author, jtitle, description, details, type, cover, image, status, date, origin) VALUES (?,?,?,?,?,?,?,?,?,?,STR_TO_DATE(?,'%Y/%m/%d %H:%i:%s'),?);";
+    let postPlaceholder = [postId, title, author, japTitle, description, publication, type, postCover, postImage, status, insertDate, origin];
 
     placeholders.push(...postPlaceholder);
 

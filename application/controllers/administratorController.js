@@ -2,6 +2,10 @@ const passport = require('passport');
 const db = require('../config/db2');
 const cache = require('../helper/dataCache');
 const post = require('./getPostController');
+const { v4: uuidv4 } = require('uuid');
+const bcrypt = require('bcryptjs');
+const fs = require('fs');
+const separate = require('../helper/separeteByCommas');
 
 let numCache = new cache.cache(post.getNumberApproved, "2", 1);
 
@@ -30,6 +34,39 @@ exports.logout = (req, res, next) => {
     req.logout();
     req.flash('success', 'You are logged out');
     res.redirect('/');
+}
+
+exports.changePassword = (req, res, next) => {
+    let uid = req.user.aid;
+    let { password, confirmPassword } = req.body;
+
+    if (password.length < 8 || password.length > 20) {
+        req.flash('error', 'Password must be between 8 and 20 characters.');
+    }
+    // Check if passwords match
+    if (password !== confirmPassword) {
+        req.flash('error', 'Passwords must match.');
+    }
+
+    bcrypt.genSalt(10, (err, salt) => {
+        if (err) throw err;
+
+        bcrypt.hash(password, salt, (err2, hash) => {
+            if (err2) throw err2;
+
+            password = hash;
+
+            let sql = "UPDATE admin SET password = ? WHERE aid = ?"
+
+            db.query(sql,[hash, uid], (error, result) => {
+                if(error) throw error;
+
+                req.flash('success', 'Successfully changed password');
+                res.redirect('/masteradmin/dashboard');
+            });
+        });
+    });
+
 }
 
 // Display administrator's dashboard page on GET
@@ -148,16 +185,16 @@ exports.itemApproval = (req, res, next) => {
     db.query(sql, [pid], (err, result) => {
         if (err) {
             req.flash('error', 'Error approving item');
-            res.redirect('/masteradmin/dashboard');
+            res.redirect('/masteradmin/imagereview');
         }
 
         if (result.changedRows > 0) {
             req.flash('success', 'Sucessfully approved item');
-            res.redirect('/masteradmin/dashboard');
+            res.redirect('/masteradmin/imagereview');
         }
         else {
             req.flash('error', 'Error approving item');
-            res.redirect('/masteradmin/dashboard');
+            res.redirect('/masteradmin/imagereview');
         }
     });
 }
@@ -189,7 +226,7 @@ exports.itemDeletion = (req, res, next) => {
                     if (err) throw err2;
 
                     req.flash('success', 'Deleted Post Information.');
-                    res.redirect('/masteradmin/dashboard');
+                    res.redirect('/masteradmin/imagereview');
                 });
             });
         });
@@ -243,16 +280,16 @@ exports.editPost_post = (req, res, next) => {
         db.query(sql, placeholders, (err, result) => {
             if (err) {
                 req.flash('error', 'Error updating post info.');
-                res.redirect('/masteradmin/dashboard');
+                res.redirect('/masteradmin/imagereview');
             }
 
             if ((typeof result !== 'undefined')) {
                 req.flash('success', 'Successfully updated post info.');
-                res.redirect('/masteradmin/dashboard');
+                res.redirect('/masteradmin/imagereview');
             }
             else {
                 req.flash('error', 'Error updating post info.');
-                res.redirect('/masteradmin/dashboard');
+                res.redirect('/masteradmin/imagereview');
             }
         });
     });
@@ -287,19 +324,19 @@ exports.addImage_post = (req, res, next) => {
     db.query(sql, placeholders, (err, result) => {
         if (err) {
             req.flash('error', 'Error updating image.');
-            res.redirect('/masteradmin/dashboard');
+            res.redirect('/masteradmin/imagereview');
         }
 
         if ((typeof result !== 'undefined')) {
             if (skipCover) {
                 if (skipWork) {
                     req.flash('success', 'Successfully updated image.');
-                    res.redirect('/masteradmin/dashboard');
+                    res.redirect('/masteradmin/imagereview');
                 } else {
                     fs.unlink('./public/images/upload/' + image, (err) => {
                         if (err) throw err;
                         req.flash('success', 'Successfully updated image.');
-                        res.redirect('/masteradmin/dashboard');
+                        res.redirect('/masteradmin/imagereview');
                     });
                 }
             } else {
@@ -307,19 +344,19 @@ exports.addImage_post = (req, res, next) => {
                     if (err) throw err;
                     if (skipWork) {
                         req.flash('success', 'Successfully updated image.');
-                        res.redirect('/masteradmin/dashboard');
+                        res.redirect('/masteradmin/imagereview');
                     } else {
                         fs.unlink('./public/images/upload/' + image, (err2) => {
                             if (err2) throw err2;
                             req.flash('success', 'Successfully updated image.');
-                            res.redirect('/masteradmin/dashboard');
+                            res.redirect('/masteradmin/imagereview');
                         });
                     }
                 });
             }
         } else {
             req.flash('error', 'Error updating image.');
-            res.redirect('/masteradmin/dashboard');
+            res.redirect('/masteradmin/imagereview');
         }
     });
 }

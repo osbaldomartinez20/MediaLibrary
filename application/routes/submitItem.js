@@ -2,7 +2,6 @@
 
 const express = require('express');
 const router = express.Router();
-//const { ensureUserAuthenticated } = require('../controllers/userAuthenticated');
 const itemPostController = require('../controllers/itemPostController');
 const postImageUpload = require('../middlewares/postImageUpload');
 

@@ -1,6 +1,8 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
     integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 <link rel="stylesheet" href="/stylesheets/bodyKeep.css">
+<script src="/js/showJapTitle.js"></script>
+<script src="/js/sortTable.js"></script>
 <div class="container-fluid">
     <!-- Display logout message -->
     <div>
@@ -25,7 +27,10 @@
                 href="/search/v/firstletter">v</a> <a href="/search/w/firstletter">w</a> <a
                 href="/search/x/firstletter">x</a> <a href="/search/y/firstletter">y</a> <a
                 href="/search/z/firstletter">z</a> <a href="/search/newest">new</a></h2>
-        <table class="table table-bordered">
+        <br/>
+        <label for="jtShow" id="jtShowLabel">Show Japanese Title</label>
+        <input type="checkbox" id="jtShow" name="jtShow" onclick="showHideJapTitle();" style="cursor: pointer;"/>
+        <table class="table table-bordered" id="resultTable">
             <caption style="color: black;">{{#if resultNum}}There are <b>{{resultNum.count}}</b>
                 {{resultNum.term}}.{{/if}}{{newest.text}}</caption>
             <colgroup>
@@ -42,8 +47,8 @@
                     <tr>
                         <th scope="col" style="text-align: center;">Cover</th>
                         <th scope="col" style="text-align: center;">Sample Image</th>
-                        <th scope="col" style="text-align: center;">Title</th>
-                        <th scope="col" style="text-align: center;">Author</th>
+                        <th scope="col" style="text-align: center; cursor: pointer;" onclick="sortTable(1);">Title</th>
+                        <th scope="col" style="text-align: center; cursor: pointer;" onclick="sortTable(2);">Author</th>
                         <th scope="col" style="text-align: center;">Description</th>
                         <th scope="col" style="text-align: center;">Details</th>
                         <th scope="col" style="text-align: center;">Type</th>
@@ -55,10 +60,12 @@
                     <th scope="row"><img src='/images/upload/{{this.cover}}' width="100" height="120"
                             alt="Responsive image" /></th>
                     <td><img src='/images/upload/{{this.image}}' width="100" height="120" alt="Responsive image" /></td>
-                    <td style="text-align: center;"><a href="/libraryitem/{{this.pid}}">{{this.title}}</a></td>
+                    <td style="text-align: center;"><a href="/libraryitem/{{this.pid}}">{{this.title}}</a><br />
+                        <div class="jt jsel">{{this.jtitle}}</div>
+                    </td>
                     <td style="text-align: center;">{{this.author}}</td>
                     <td style="text-align: center; white-space: pre-line;">{{this.description}}</td>
-                    <td style="text-align: center; white-space: pre-line;">{{this.details}}</td>
+                    <td style="text-align: center; white-space: pre-line;">{{this.details}}<br/>Origin: {{this.origin}}</td>
                     <td style="text-align: center;"><a href="/search/{{this.type}}/bytype">{{this.type}}</a></td>
                 </tr>
                 {{/each}}

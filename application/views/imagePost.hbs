@@ -66,6 +66,17 @@
         </div>
         <br />
         <div>
+            <label for="origin">Choose an Origin For the Work:</label>
+            <select name="origin" id="origin" required>
+                {{#each origin}}
+                <option value="{{this.name}}">
+                    {{this.name}}
+                </option>
+                {{/each}}
+            </select>
+        </div>
+        <br />
+        <div>
             <div>
                 <label for="coverImageP" id="imageLabel">Add Cover Image Here (Optional).<br />Choose up to 1 image to
                     upload (PNG,

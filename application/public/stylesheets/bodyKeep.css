@@ -9,3 +9,7 @@ body {
   a {
     color: #0b4bd6;
   }
+
+  .jt {
+    display: none;
+  }

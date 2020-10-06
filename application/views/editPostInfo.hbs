@@ -23,11 +23,13 @@
 
 <!-- Postimage form -->
 <div style="text-align: center;">
-    {{#each postInfo}}
-    <img src="/images/upload/{{this.cover}}" width="250" height="300" />
-    <img src="/images/upload/{{this.image}}" width="250" height="300" />
-    <br />
-    <form action="/moderators/edit" method="POST">
+    <form {{#if loggedIn.id}}action="/moderators/edit" {{/if}} {{#if loggedIn.aid}}action="/masteradmin/itemedit"
+        {{/if}}method="POST">
+        {{#each postInfo}}
+        <img src="/images/upload/{{this.cover}}" width="250" height="300" />
+        <img src="/images/upload/{{this.image}}" width="250" height="300" />
+        <br />
+
         <div>
             <h5>Post ID:</h5>
             <input type="text" id="pid" name="pid" value="{{this.pid}}" readonly />
@@ -77,6 +79,17 @@
             </select>
         </div>
 
+        <br />
+        <div>
+            <label for="origin">Choose an Origin For the Work:</label>
+            <select name="origin" id="origin" required>
+                {{#each origin}}
+                <option value="{{this.name}}">
+                    {{this.name}}
+                </option>
+                {{/each}}
+            </select>
+        </div>
         <br />
         <div>
             <h5>Tags</h5>

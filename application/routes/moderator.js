@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/moderatorController');
 const { ensureUserAuthenticated, forwardAuthenticated } = require('../controllers/userAuthenticated');
+const postImageUpload = require('../middlewares/postImageUpload');
 
 // GET request to redirect to student login page
 router.get('/', (req, res) => {
@@ -41,6 +42,6 @@ router.post('/edit', ensureUserAuthenticated, userController.editPost_post);
 
 router.get('/:pid/addimage', ensureUserAuthenticated, userController.addImage_get);
 
-router.post('/addimage', ensureUserAuthenticated, userController.addImage_post);
+router.post('/addimage', ensureUserAuthenticated, postImageUpload.fields([{name:'coverImage', maxCount: 1}, {name:'mangaImage', maxCount: 1}]), userController.addImage_post);
 
 module.exports = router;

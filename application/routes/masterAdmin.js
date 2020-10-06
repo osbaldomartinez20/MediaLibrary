@@ -5,7 +5,7 @@ const router = express.Router();
 const administratorController = require('../controllers/administratorController');
 const modFunctions = require('../controllers/moderatorController');
 const { ensureAdminAuthenticated, forwardAuthenticated } = require('../controllers/userAuthenticated');
-const { route } = require('./moderator');
+const postImageUpload = require('../middlewares/postImageUpload');
 
 // GET request to redirect to admin login page
 router.get('/', (req, res) => {
@@ -20,6 +20,10 @@ router.post('/login', administratorController.login_post);
 
 // GET request for administrator logout
 router.get('/logout', ensureAdminAuthenticated, administratorController.logout);
+
+router.get('/settings', ensureAdminAuthenticated, modFunctions.settings);
+
+router.post('/changepass', ensureAdminAuthenticated, administratorController.changePassword);
 
 // GET administrator's dashboard page
 router.get('/dashboard', ensureAdminAuthenticated, administratorController.dashboard);
@@ -47,6 +51,6 @@ router.post('/itemedit', ensureAdminAuthenticated, administratorController.editP
 
 router.get("/:pid/itemaddimage", ensureAdminAuthenticated, modFunctions.addImage_get);
 
-router.post('/itemaddimage', ensureAdminAuthenticated, administratorController.addImage_post);
+router.post('/itemaddimage', ensureAdminAuthenticated, postImageUpload.fields([{name:'coverImage', maxCount: 1}, {name:'mangaImage', maxCount: 1}]), administratorController.addImage_post);
 
 module.exports = router;
