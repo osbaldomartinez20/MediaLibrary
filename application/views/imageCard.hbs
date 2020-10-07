@@ -1,17 +1,76 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+<link rel="stylesheet" href="/stylesheets/bodyKeep.css">
 <div class="itemContainer">
-    {{#each data}}
-    <div class="container-fluid">
-            <h1>{{this.title}}</h1>
-            <div class="main_photo">
-                <img data-enlargable 
-                    src="/images/uploads/{{this.userid}}/postImages/{{this.filename}}" id="postImage"
-                    alt="Responsive image">
-            </div>
-            <div class="featured_text">
-                <p class="user">posted by: <b>{{this.user}}</b></p>
-                <p class="date"><b>Date:</b> {{this.date}}</p>
-                <p class="description" id="cDes"><b>Description:</b><br/>{{this.description}}</p>
-            </div>
+    {{#if loggedIn.id}}
+    <div>
+        {{#each postInfo}}{{#unless this.status}} <a href="/moderators/{{this.pid}}/approve"><button
+                style="background-color: rgb(19, 138, 19); color: black">Approve</button></a> {{/unless}}
+        <a href="/moderators/{{this.pid}}/edit"><button style="background-color: blue; color: black">Edit</button></a>
+        <a href="/moderators/{{this.pid}}/confirmdel"><button
+                style="background-color: red; color: black">Remove</button></a>
+        {{/each}}
     </div>
-    {{/each}}
+    {{/if}}
+    {{#if loggedIn.aid}}
+    <div>
+        {{#each postInfo}}{{#unless this.status}} <a href="/masteradmin/{{this.pid}}/itemapprove"><button
+                style="background-color: rgb(19, 138, 19); color: black">Approve</button></a> {{/unless}}
+        <a href="/masteradmin/{{this.pid}}/itemedit"><button
+                style="background-color: blue; color: black">Edit</button></a>
+        <a href="/masteradmin/{{this.pid}}/itemconfirmdel"><button
+                style="background-color: red; color: black">Remove</button></a>
+        {{/each}}
+    </div>
+    {{/if}}
+    <div class="container-fluid">
+        {{#each postInfo}}
+        <h1>{{this.title}}</h1>
+        <h2>{{this.jtitle}}</h2>
+        <div class="main_photo">
+            <img data-enlargable src="/images/upload/{{this.cover}}" id="coverImage" alt="Responsive image"> <img
+                data-enlargable src="/images/upload/{{this.image}}" id="postImage" alt="Responsive image">
+        </div>
+        <br />
+        <table id="imageCardTable" class="table table-bordered">
+            <colgroup>
+                <col span="1" style="width: 15%;">
+                <col span="1" style="width: 30%;">
+                <col span="1" style="width: 30%;">
+                <col span="1" style="width: 5%;">
+                <col span="1" style="width: 10%;">
+                <col span="1" style="width: 10%;">
+            </colgroup>
+            <tbody>
+                <thead>
+                    <tr class="trCard">
+                        <th scope="col" style="text-align: center;">Author:</th>
+                        <th scope="col" style="text-align: center;">Details:</th>
+                        <th scope="col" style="text-align: center;">Description:</th>
+                        <th scope="col" style="text-align: center;">Type:</th>
+                        <th scope="col" style="text-align: center;">Tags:</th>
+                        <th scope="col" style="text-align: center;">Links:</th>
+                    </tr>
+                </thead>
+                <tr class="trCard">
+                    <td scope="row" style="text-align: center;">{{this.author}}</th>
+                    <td style="white-space: pre-line; text-align: center;">{{this.details}}<br />Origin: <a
+                            href="/search/{{this.origin}}/byorigin">{{this.origin}}</a></th>
+                    <td style="white-space: pre-line; text-align: center;">{{this.description}}</th>
+                    <td style="text-align: center;"><a href="/search/{{this.type}}/bytype">{{this.type}}</a></th>
+                        {{/each}}
+                    <td style="text-align: center;">{{#each tags}} <a
+                            href="/search/{{this.tags}}/bytag">{{this.tags}}</a> <br />{{/each}}</th>
+                    <td style="text-align: center;">{{#each links}} <a href="{{this.links}}"
+                            target="_blank">{{this.links}}</a>
+                        <br />{{/each}}</th>
+                </tr>
+            </tbody>
+        </table>
+        <br /><br />
+        <h3>If you are the owner of this work and want us to remove please contact us at:
+            <a
+                href="mailto:tsfcontactus@gmail.com?subject=Please%20remove%20my%20work%20from%20your%20site&body=The%20work%20is%20{{#each postInfo}}{{this.title}}%20with%20postId:%20{{this.pid}}{{/each}}">tsfcontactus@gmail.com</a>
+        </h3>
+    </div>
 </div>

@@ -1,11 +1,11 @@
 const multer = require('multer');
 const path = require('path');
-const mkdirp = require('mkdirp');
+const mkdirp = require('mkdirp'); //this module has to be in version 0.5.1 or the code won't work.
 
 // Multer storage settings
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const dir = "./public/images/uploads/"; 
+        const dir = "./public/images/upload/"; 
         mkdirp(dir, err => cb(err, dir));
     },
     filename: (req, file, cb) => {

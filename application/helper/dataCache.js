@@ -6,8 +6,9 @@ class DataCache {
 
     //contructor that only requires a function passed for where the cached data comes from.
     //an optional paramater of how many minutes the cache should live for.
-    constructor(fetchFunction, minutesToLive = 10) {
+    constructor(fetchFunction, cacheId, minutesToLive = 10) {
       this.millisecondsToLive = minutesToLive * 60 * 1000;
+      this.id = cacheId;
       this.fetchFunction = fetchFunction;
       this.cache = null;
       this.getData = this.getData.bind(this);
@@ -23,17 +24,15 @@ class DataCache {
     }
 
     //it gets the cached data or it caches new data if it does not exist
-    getData() {
+    getData(id) {
       if (!this.cache || this.isCacheExpired()) {
-        console.log('expired - fetching new data');
-        return this.fetchFunction()
+        return this.fetchFunction(id)
           .then((data) => {
           this.cache = data;
           this.fetchDate = new Date();
           return data;
         });
       } else {
-        console.log('cache hit');
         return Promise.resolve(this.cache);
       }
     }

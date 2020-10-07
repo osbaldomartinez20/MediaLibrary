@@ -1,7 +1,9 @@
 {{!-- Container for account manipulations --}}
-<div class="account_container mt-4">
-    <!-- Display successfully listing item message -->
-    <div class="col-5 mx-auto">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+<link rel="stylesheet" href="/stylesheets/bodyKeep.css">
+<div>
+    <div>
         {{> message}}
     </div>
     <h1>Welcome to your Dashboard, {{loggedIn.username}}!</h1>
@@ -9,49 +11,38 @@
 
 <script type="text/javascript" src="/js/sortTable.js"></script>
 
-<div class="tab-content">
-        {{!-- Container for the post approval section --}}
-        <div class="post_container">
-            <h2 id="TableTitle">Your Image Posts</h2>
+<div class="container-fluid">
+    <table class="table table-bordered">
+        <caption style="color: black; text-align: center">
+            <h3><b>Items to review:</b></h3>
+        </caption>
+        <colgroup>
+            <col span="1" style="width: 30%;">
+            <col span="1" style="width: 35%;">
+            <col span="1" style="width: 35%;">
+        </colgroup>
+        <tbody>
+            <thead>
+                <tr>
+                    <th scope="col" style="text-align: center;">Title</th>
+                    <th scope="col" style="text-align: center;">Sample Image</th>
+                    <th scope="col" style="text-align: center;">Cover</th>
+                </tr>
+            </thead>
             {{#if post}}
-            <table id="imageTable" class="table">
-                <colgroup>
-                    <col span="1" style="width: 10%;">
-                    <col span="1" style="width: 20%;">
-                    <col span="1" style="width: 35%;">
-                    <col span="1" style="width: 25%;">
-                    <col span="1" style="width: 10%;">
-                </colgroup>
-                <tbody>
-                    <tr class="tr">
-                        <th class="th">Image</th>
-                        <th class="th pointer" onclick="sortTable(1)">Title</th>
-                        <th class="th pointer" onclick="sortTable(2)">Description</th>
-                        <th class="th pointer" onclick="sortTable(3)">Date Posted</th>
-                        <th class="th">Actions</th>
-                    </tr>
-                    {{#each post}}
-                    <tr class="tr">
-                        <td class="th"><a href="/imageCard/{{this.pid}}"><img
-                                    src="/images/uploads/{{this.userid}}/postImages/{{this.filename}}"
-                                    width="50" height="60" />
-                            </a></td>
-                        <td class="th"><span class="post_info"><a href="/imageCard/{{this.pid}}">{{this.title}}</a></td>
-                        <td class="th" id="dDes">{{this.description}}</td>
-                        <td class="th"><span class="post_info">{{this.date}}</td>
-                        <td class="th"><a href="/imageCard/{{this.pid}}/edit" id="edit_button"><button>Edit</button></a>
-                            &nbsp;&nbsp;<a href="/imageCard/{{this.pid}}/confirmDelete"
-                                    id="delete_button"><button id="del_b">Delete</button></a></td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
+            {{#each post}}
+            <tr>
+                <td scope="row" style="text-align: center;"><a
+                        href="/libraryitem/{{this.pid}}/moderator">{{this.title}}</a></td>
+                <td style="text-align: center;"><img src='/images/upload/{{this.cover}}' width="100" height="120"
+                        alt="Responsive image" /></td>
+                <td style="text-align: center;"><img src='/images/upload/{{this.image}}' width="100" height="120"
+                        alt="Responsive image" /></td>
+            </tr>
+            {{/each}}
             {{else}}
-            <ul id="postImages" class="postImages px-0"></ul>
-            <li class="table-row">
-                No posts.
-            </li>
-            <ul></ul>
+            <h2 style="text-align: center;">No Posts Could Be Found</h2>
             {{/if}}
-        </div>
+        </tbody>
+    </table>
 </div>

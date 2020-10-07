@@ -1,3 +1,4 @@
+
 <div class="header">
     <h1>Posting Information</h1>
 </div>
@@ -6,82 +7,98 @@
     {{> message}}
 </div>
 
-<!-- Postimage form -->
+<!-- Post Submission form -->
 <script type="text/javascript" src="/js/imagePreview.js"></script>
 <div>
-    <form action="/post" method="POST" enctype="multipart/form-data">
-        <div class="form-group">
+    <form action="/submit" method="POST" enctype="multipart/form-data">
+        <div>
             <h5>English/Romanji Title</h5>
-            <input type="text" id="title" name="title" class="form-control" placeholder="Enter a title" maxlength="40"
+            <input type="text" id="title" name="title" placeholder="Enter a title" maxlength="40" required />
+        </div>
+        <br />
+        <div>
+            <h5>Japanese Title (optional)</h5>
+            <input type="text" id="japTitle" name="japTitle" placeholder="Enter the title in japanese" maxlength="40" />
+        </div>
+        <br />
+        <div>
+            <h5>Author <br />(Preferably in the format Romanji/Japanese)</h5>
+            <input type="text" id="author" name="author" placeholder="Enter the author's name." maxlength="40"
                 required />
         </div>
-
-        <div class="form-group">
-            <h5>Japanese Title (optional)</h5>
-            <input type="text" id="japTitle" name="japTitle" class="form-control"
-                placeholder="Enter the title in japanese" maxlength="40" />
-        </div>
-
-        <div class="form-group">
-            <h5>Author (Preferably in the format Romanji/Japanese)</h5>
-            <input type="text" id="author" name="author" class="form-control" placeholder="Enter the author's name."
-                maxlength="40" required />
-        </div>
-
-        <div class="form-group">
+        <br />
+        <div>
             <h5>Description</h5>
-            <textarea class="form-control" rows="5" id="description" name="description"
-                placeholder="Please enter a description here." maxlength="250" required></textarea>
+            <textarea rows="5" id="description" name="description"
+                placeholder="Please enter a description for the work here." maxlength="250" required></textarea>
         </div>
-
-        <div class="form-group">
-            <h5>Details of Publication</h5>
-            <textarea class="form-control" rows="5" id="publication" name="publication"
+        <br />
+        <div>
+            <h5>Details of Publication <br />(Like year of release and publisher)</h5>
+            <textarea rows="5" id="publication" name="publication"
                 placeholder="Please enter the details of publication of the work such as publisher, year of plubication, magazine, etc."
                 maxlength="250" required></textarea>
         </div>
-
-        <div class="form-group">
-            <h5>Tags</h5>
-            <textarea type="text" id="tags" name="tags" class="form-control"
+        <br />
+        <div>
+            <h5>Tags <br />(Separate them by commas)</h5>
+            <textarea id="tags" name="tags" rows="5"
                 placeholder="Enter the tags that describe the work. Separate each tag with commas, ex: MILF,Yuri,etc"
+                maxlength="1000" required></textarea>
+        </div>
+        <br />
+        <div>
+            <h5>Links <br />(Include the https:// or http:// for links to work, Separate them with commas.)</h5>
+            <textarea id="links" name="links" rows="5"
+                placeholder="Official links of the work. More than one link seperate them with commas." maxlength="1000"
                 required></textarea>
         </div>
-
-        <div class="form-group">
-            <h5>Category</h5>
+        <br />
+        <div>
             <label for="type">Choose a TSF Type:</label>
             <select name="type" id="type" required>
                 {{#each type}}
-                <option value="{{this.tid}}">
+                <option value="{{this.name}}">
                     {{this.name}}
                 </option>
                 {{/each}}
             </select>
         </div>
-
-        <div class="form-group">
-            <h5>Add Cover Image Here (Optional)</h5>
+        <br />
+        <div>
+            <label for="origin">Choose an Origin For the Work:</label>
+            <select name="origin" id="origin" required>
+                {{#each origin}}
+                <option value="{{this.name}}">
+                    {{this.name}}
+                </option>
+                {{/each}}
+            </select>
+        </div>
+        <br />
+        <div>
             <div>
-                <label for="coverImage" id="imageLabel">Choose up to 1 image to upload (PNG,
+                <label for="coverImageP" id="imageLabel">Add Cover Image Here (Optional).<br />Choose up to 1 image to
+                    upload (PNG,
                     JPG)<br></label>
                 <br>
-                <input type="file" name="coverImage" id="coverImage" accept="image/png,image/jpg,image/jpeg" />
+                <input type="file" name="coverImage" id="coverImageP" accept="image/png,image/jpg,image/jpeg" />
             </div>
+            <br/>
             <div class="preview">
                 <img id="img" width="100" height="120" />
             </div>
         </div>
         <br>
 
-        <div class="form-group">
-            <h5>Add Manga Image Here</h5>
+        <div>
             <div>
-                <label for="mangaImage" id="imageLabel2">Choose up to 1 image to upload (PNG,
+                <label for="mangaImage" id="imageLabel2">Add Manga Image Here.<br />Choose up to 1 image to upload (PNG,
                     JPG)<br></label>
                 <br>
                 <input type="file" name="mangaImage" id="mangaImage" accept="image/png,image/jpg,image/jpeg" required />
             </div>
+            <br/>
             <div class="preview">
                 <img id="img2" width="100" height="120" />
             </div>

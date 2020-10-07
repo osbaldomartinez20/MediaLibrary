@@ -1,7 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
-const db = require('./db');
+const db = require('./db2');
 
 module.exports = () => {
     passport.use('administrator-login', new LocalStrategy(
@@ -12,6 +12,7 @@ module.exports = () => {
                     return done(null, false, { message: 'Username and/or password is incorrect' });
                 }
                 // Match password
+                
                 bcrypt.compare(password, result[0].password, (error, isMatch) => {
                     if (error) throw error;
                     if (isMatch) {

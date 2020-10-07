@@ -1,12 +1,13 @@
 body {
-  background-color: rgb(216, 215, 215);
-  padding: 50px;
-  font: 14px;
+  background-color: #b1aeab;
+  color: black;
+  padding: 20px;
+  font: 12px;
   font-family: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif";
 }
 
 a {
-  color: #00B7FF;
+  color: #0b4bd6;
 }
 
 #text {
@@ -15,12 +16,12 @@ a {
 
 .alert {
   text-align: center;
-  color: red;
+  color: rgb(255, 255, 255);
 }
 
 .navbar {
   overflow: hidden;
-  background-color: #e9e9e9;
+  background-color: #b1aeab;
 }
 
 .navbar a {
@@ -34,44 +35,13 @@ a {
 }
 
 .navbar a:hover {
-  background-color: #ddd;
+  background-color: rgb(221, 205, 205);
   color: black;
-}
-
-.navbar a.active {
-  background-color: #2196F3;
-  color: white;
-}
-
-.search-container {
-  float: right;
-}
-
-.navbar input[type=text] {
-  padding: 6px;
-  margin-top: 8px;
-  font-size: 17px;
-  border: none;
-}
-
-.navbar .search-container button {
-  float: right;
-  padding: 6px 10px;
-  margin-top: 8px;
-  margin-right: 16px;
-  background: rgb(240, 215, 215);
-  font-size: 17px;
-  border: none;
-  cursor: pointer;
-}
-
-.navbar .search-container button:hover {
-  background: #ccc;
 }
 
 .errMsg {
   text-align: center;
-  color: red;
+  color: rgb(250, 250, 250);
 }
 
 ul#menu li {
@@ -87,7 +57,7 @@ ul {
 
 li {
   float: left;
-  border: 1px solid #bbb;
+  border: 1px solid rgb(0, 0, 0);
 }
 
 li a {
@@ -96,4 +66,170 @@ li a {
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+}
+
+h1 {
+  text-align: center;
+}
+
+form {
+  text-align: center;
+}
+
+#username {
+  width: 50%;
+  border-color: gray;
+}
+
+#password {
+  width: 50%;
+  border-color: grey;
+}
+
+#confirmPassword {
+  width: 50%;
+  border-color: grey;
+}
+
+#register {
+  color: aliceblue;
+  background-color: blue;
+}
+
+#passwordMsg {
+  padding-bottom: 10px;
+}
+
+#title {
+  width: 50%;
+  border-color: gray;
+}
+
+#japTitle {
+  width: 50%;
+  border-color: gray;
+}
+
+#author {
+  width: 50%;
+  border-color: gray;
+}
+
+#description {
+  width: 50%;
+  border-color: gray;
+}
+
+#publication {
+  width: 50%;
+  border-color: gray;
+}
+
+#tags {
+  width: 50%;
+  border-color: gray;
+}
+
+#links {
+  width: 50%;
+  border-color: gray;
+}
+
+#submit {
+  color: aliceblue;
+  background-color: limegreen;
+  
+}
+
+#resetForm {
+  color: aliceblue;
+  background-color: red;
+  
+}
+
+.itemContainer {
+  text-align: center;
+}
+#postImage {
+  height: 420px;
+  width: auto;
+  border-style: solid;
+}
+
+#coverImage {
+  height: 420px;
+  width: auto;
+  border-style: solid;
+}
+
+.description {
+  text-align: center;    
+}
+
+#cDes {
+  white-space: pre-wrap;
+}
+
+.error-template {
+  text-align: center;
+}
+
+#imageTable {
+  width: 100%;
+  text-align: center;
+}
+
+#searchTable {
+  width: 100%;
+  text-align: center;
+}
+
+#TableTitle {
+  text-align: center;
+}
+
+.table, .th, .td {
+  border: 1px solid black;
+}
+
+.imagePrev {
+  border-bottom: 1px solid black;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.sortButton {
+  background-color: green;
+  float: right;
+  cursor: pointer;
+}
+
+#dDes {
+  white-space: pre-wrap;
+}
+
+
+#edit_button {
+  color: black;
+}
+
+#del_b {
+  background-color: red;
+}
+
+#delete_button {
+  color: black;
+}
+
+#yes {
+  background-color: red;
+}
+
+#yes_button {
+  color: black;
+}
+#no {
+  background-color: green;
 }

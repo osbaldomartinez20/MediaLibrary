@@ -1,4 +1,10 @@
-<div class="container home mt-4">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+<link rel="stylesheet" href="/stylesheets/bodyKeep.css">
+<script src="/js/showJapTitle.js"></script>
+<script src="/js/sortTable.js"></script>
+<script src="/js/filterByTypes.js"></script>
+<div class="container-fluid">
     <!-- Display logout message -->
     <div>
         {{> message}}
@@ -6,25 +12,87 @@
     <div class="header">
         <h1>Welcome to the TSFC Library Directory</h1>
     </div>
-    <div class="row home-page-icons justify-content-center">
-        <h2 style="text-align: center;">Newest Posts:</h2>
+    <div class="home" style="width: 100%;">
+        <h2 style="text-align: center; width:100%;"><a href="/search/symbols/firstletter">#</a> <a
+                href="/search/a/firstletter">a</a>
+            <a href="/search/b/firstletter">b</a> <a href="/search/c/firstletter">c</a> <a
+                href="/search/d/firstletter">d</a> <a href="/search/e/firstletter">e</a> <a
+                href="/search/f/firstletter">f</a> <a href="/search/g/firstletter">g</a> <a
+                href="/search/h/firstletter">h</a> <a href="/search/i/firstletter">i</a> <a
+                href="/search/j/firstletter">j</a> <a href="/search/k/firstletter">k</a> <a
+                href="/search/l/firstletter">l</a> <a href="/search/m/firstletter">m</a> <a
+                href="/search/n/firstletter">n</a> <a href="/search/o/firstletter">o</a> <a
+                href="/search/p/firstletter">p</a> <a href="/search/q/firstletter">q</a> <a
+                href="/search/r/firstletter">r</a> <a href="/search/s/firstletter">s</a> <a
+                href="/search/t/firstletter">t</a> <a href="/search/u/firstletter">u</a> <a
+                href="/search/v/firstletter">v</a> <a href="/search/w/firstletter">w</a> <a
+                href="/search/x/firstletter">x</a> <a href="/search/y/firstletter">y</a> <a
+                href="/search/z/firstletter">z</a> <a href="/search/newest">new</a></h2>
+        <br />
+        <label for="jtShow" id="jtShowLabel">Show Japanese Title</label>
+        <input type="checkbox" id="jtShow" name="jtShow" onclick="showHideJapTitle();" style="cursor: pointer;" />
         <br/>
-        <ul>
-        {{#each newPost}}
-        <li>
-        <div class="col-7 col-sm-5 col-md-4 col-lg-3">
-            <div class="card home-card img-fluid" style="text-align: center;">
-                <a href="/imageCard/{{this.pid}}" class="stretched-link">
-                <img class="card-img home-image" src="/images/uploads/{{this.userid}}/postImages/{{this.filename}}" 
-                alt="Card image"  width="150" height="180" href="">
-                </a>
-                <div class="card-img-overlay">
-                    <a href="/imageCard/{{this.pid}}" class="stretched-link"><h4 class="card-title home-page text-center">{{this.title}}</h4></a>
-                </div>
-            </div>
-        </div>
-        </li>
-        {{/each}}
-        </ul>
+
+        <label for="Other" id="OtherLabel">Other</label>
+        <input type="checkbox" id="Other" name="Other" onclick="showHideOther();"
+            style="cursor: pointer;" />
+
+        <label for="Transformation" id="TransformationLabel">Transformation</label>
+        <input type="checkbox" id="Transformation" name="Transformation" onclick="showHideTransformation();"
+            style="cursor: pointer;" />
+
+        <label for="Possession" id="PossessionLabel">Possession</label>
+        <input type="checkbox" id="Possession" name="Possession" onclick="showHidePossession();"
+            style="cursor: pointer;" />
+
+        <label for="Bodyswap" id="BodyswapLabel">Bodyswap</label>
+        <input type="checkbox" id="Bodyswap" name="Bodyswap" onclick="showHideBodyswap();"
+            style="cursor: pointer;" />
+
+        <table class="table table-bordered" id="resultTable">
+            <caption style="color: black;">{{#if resultNum}}There are <b>{{resultNum.count}}</b>
+                {{resultNum.term}}.{{/if}}{{newest.text}}</caption>
+            <colgroup>
+                <col span="1" style="width: 10%;">
+                <col span="1" style="width: 10%;">
+                <col span="1" style="width: 15%;">
+                <col span="1" style="width: 15%;">
+                <col span="1" style="width: 20%;">
+                <col span="1" style="width: 20%;">
+                <col span="1" style="width: 10%;">
+            </colgroup>
+            <tbody>
+                <thead>
+                    <tr>
+                        <th scope="col" style="text-align: center;">Cover</th>
+                        <th scope="col" style="text-align: center;">Sample Image</th>
+                        <th scope="col" style="text-align: center; cursor: pointer;" onclick="sortTable(1);">Title</th>
+                        <th scope="col" style="text-align: center; cursor: pointer;" onclick="sortTable(2);">Author</th>
+                        <th scope="col" style="text-align: center;">Description</th>
+                        <th scope="col" style="text-align: center;">Details</th>
+                        <th scope="col" style="text-align: center;">Type</th>
+                    </tr>
+                </thead>
+                {{#if post}}
+                {{#each post}}
+                <tr class="resultRow">
+                    <th scope="row"><img src='/images/upload/{{this.cover}}' width="100" height="120"
+                            alt="Responsive image" /></th>
+                    <td><img src='/images/upload/{{this.image}}' width="100" height="120" alt="Responsive image" /></td>
+                    <td style="text-align: center;"><a href="/libraryitem/{{this.pid}}">{{this.title}}</a><br />
+                        <div class="hidden jsel">{{this.jtitle}}</div>
+                    </td>
+                    <td style="text-align: center;">{{this.author}}</td>
+                    <td style="text-align: center; white-space: pre-line;">{{this.description}}</td>
+                    <td style="text-align: center; white-space: pre-line;">{{this.details}}<br />Origin: <a
+                            href="/search/{{this.origin}}/byorigin">{{this.origin}}</a></td>
+                    <td style="text-align: center;"><a href="/search/{{this.type}}/bytype">{{this.type}}</a></td>
+                </tr>
+                {{/each}}
+                {{else}}
+                <h2 style="text-align: center;">No Posts Could Be Found</h2>
+                {{/if}}
+            </tbody>
+        </table>
     </div>
 </div>

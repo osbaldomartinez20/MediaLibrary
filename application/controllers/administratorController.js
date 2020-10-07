@@ -1,9 +1,24 @@
 const passport = require('passport');
-const db = require('../config/db');
+const db = require('../config/db2');
+const dbBackup = require('../config/dbbackup');
+const cache = require('../helper/dataCache');
+const post = require('./getPostController');
+const { v4: uuidv4 } = require('uuid');
+const bcrypt = require('bcryptjs');
+const fs = require('fs');
+const separate = require('../helper/separeteByCommas');
+
+let numCache = new cache.cache(post.getNumberApproved, "2", 1);
 
 // Display administrator's login page on GET
 exports.login_get = (req, res, next) => {
-    res.render('adminLogin');
+    numCache.getData()
+        .then((count) => {
+            res.render('adminLogin', { count: count });
+        }).catch((error) => {
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
+        });
 }
 
 // Handle administrator login authentication via Passport API on POST
@@ -23,6 +38,48 @@ exports.logout = (req, res, next) => {
     res.redirect('/');
 }
 
+exports.changePassword = (req, res, next) => {
+    let uid = req.user.aid;
+    let { password, confirmPassword } = req.body;
+
+    if (password.length < 8 || password.length > 20) {
+        req.flash('error', 'Password must be between 8 and 20 characters.');
+    }
+    // Check if passwords match
+    if (password !== confirmPassword) {
+        req.flash('error', 'Passwords must match.');
+    }
+
+    bcrypt.genSalt(10, (err, salt) => {
+        if (err) {
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
+        }
+
+        bcrypt.hash(password, salt, (err2, hash) => {
+            if (err2) {
+                req.flash('error', 'There was an internal error.');
+                res.redirect('/error');
+            }
+
+            password = hash;
+
+            let sql = "UPDATE admin SET password = ? WHERE aid = ?";
+
+            db.query(sql, [hash, uid], (error, result) => {
+                if (error) {
+                    req.flash('error', 'There was an internal error.');
+                    res.redirect('/error');
+                }
+
+                req.flash('success', 'Successfully changed password');
+                res.redirect('/masteradmin/dashboard');
+            });
+        });
+    });
+
+}
+
 // Display administrator's dashboard page on GET
 // Contains list of active and unapproved mods
 exports.dashboard = (req, res, next) => {
@@ -33,7 +90,10 @@ exports.dashboard = (req, res, next) => {
     let sql = "SELECT id,username,status FROM mods";
 
     db.query(sql, (err, result) => {
-        if (err) throw err;
+        if (err) {
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
+        }
 
         for (let i = 0; i < result.length; i++) {
             //status of 1 in a mod means that it is an active mod and 0 means a mod awaiting approval.
@@ -45,10 +105,17 @@ exports.dashboard = (req, res, next) => {
             }
         }
 
-        res.render('adminDashboard', {
-            activeMods: activeMods,
-            unapprovedMods: unapprovedMods
-        });
+        numCache.getData()
+            .then((count) => {
+                res.render('adminDashboard', {
+                    activeMods: activeMods,
+                    unapprovedMods: unapprovedMods,
+                    count: count
+                });
+            }).catch((error) => {
+                req.flash('error', 'There was an internal error.');
+                res.redirect('/error');
+            });
     });
 }
 
@@ -62,16 +129,16 @@ exports.approve = (req, res, next) => {
     db.query(sql, [modId], (err, result) => {
         if (err) {
             req.flash('error', 'Error approving mod');
-            res.redirect('/user/dashboard');
+            res.redirect('/masteradmin/dashboard');
         }
 
         if (result.changedRows > 0) {
             req.flash('success', 'Sucessfully approved mod');
-            res.redirect('/admin/dashboard');
+            res.redirect('/masteradmin/dashboard');
         }
         else {
             req.flash('error', 'Error approving mod');
-            res.redirect('/user/dashboard');
+            res.redirect('/masteradmin/dashboard');
         }
     });
 }
@@ -86,16 +153,16 @@ exports.disapprove = (req, res, next) => {
     db.query(sql, [modId], (err, result) => {
         if (err) {
             req.flash('error', 'Error disapproving mod');
-            res.redirect('/user/dashboard');
+            res.redirect('/masteradmin/dashboard');
         }
 
         if (result.changedRows > 0) {
             req.flash('success', 'Sucessfully disapproved mod');
-            res.redirect('/admin/dashboard');
+            res.redirect('/masteradmin/dashboard');
         }
         else {
             req.flash('error', 'Error disapproving mod');
-            res.redirect('/user/dashboard');
+            res.redirect('/masteradmin/dashboard');
         }
     });
 }
@@ -110,16 +177,271 @@ exports.remove = (req, res, next) => {
     db.query(sql, [modId], (err, result) => {
         if (err) {
             req.flash('error', 'Error removing mod');
-            res.redirect('/user/dashboard');
+            res.redirect('/masteradmin/dashboard');
         }
 
         if (result.changedRows > 0) {
             req.flash('success', 'Sucessfully removed mod');
-            res.redirect('/admin/dashboard');
+            res.redirect('/masteradmin/dashboard');
         }
         else {
             req.flash('error', 'Error removing mod');
-            res.redirect('/user/dashboard');
+            res.redirect('/masteradmin/dashboard');
         }
     });
+}
+
+//Handles approval of item with the given pid
+exports.itemApproval = (req, res, next) => {
+    let pid = req.params.pid;
+
+    let sql = "UPDATE posts SET status = 1 WHERE pid = ?";
+
+    db.query(sql, [pid], (err, result) => {
+        if (err) {
+            req.flash('error', 'Error approving item');
+            res.redirect('/masteradmin/imagereview');
+        }
+
+        if (result.changedRows > 0) {
+            req.flash('success', 'Sucessfully approved item');
+            res.redirect('/masteradmin/imagereview');
+        }
+        else {
+            req.flash('error', 'Error approving item');
+            res.redirect('/masteradmin/imagereview');
+        }
+    });
+}
+
+
+exports.itemDeletion = (req, res, next) => {
+    let pid = req.params.pid;
+
+    let sql = "SELECT * FROM posts WHERE pid = ?";
+
+    db.query(sql, [pid], (error, result) => {
+        if (error) {
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
+        }
+
+        sql = "DELETE FROM tags WHERE pid = ?;";
+        sql += "DELETE FROM links WHERE pid = ?;";
+        sql += "DELETE FROM posts WHERE pid = ?;"
+
+        let coverImage = result[0].cover;
+        let sampleImage = result[0].image;
+
+        db.query(sql, [pid, pid, pid], (error2, result2) => {
+            if (error2) {
+                req.flash('error', 'There was an internal error.');
+                res.redirect('/error');
+            }
+
+            fs.unlink('./public/images/upload/' + coverImage, (err) => {
+                if (err) {
+                    req.flash('error', 'There was an internal error.');
+                    res.redirect('/error');
+                }
+
+                fs.unlink('./public/images/upload/' + sampleImage, (err2) => {
+                    if (err) {
+                        req.flash('error', 'There was an internal error.');
+                        res.redirect('/error');
+                    }
+
+                    req.flash('success', 'Deleted Post Information.');
+                    res.redirect('/masteradmin/imagereview');
+                });
+            });
+        });
+    });
+}
+
+
+exports.editPost_post = (req, res, next) => {
+    let { pid, title, jtitle, author, description, details, type, tags, links } = req.body;
+    let japTitle = "";
+    let placeholders = [];
+
+    if (jtitle) {
+        japTitle = jtitle;
+    }
+
+    let sqlDel = "DELETE FROM links WHERE pid = ?; DELETE FROM tags WHERE pid = ?";
+
+    let delPlaceholders = [pid, pid];
+
+    db.query(sqlDel, delPlaceholders, (error, result) => {
+        if (error) {
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
+        }
+
+        let linksList = separate.separateLinks(links);
+        let tagsList = separate.separateTags(tags);
+
+        let sql = "UPDATE posts SET title = ?, jtitle = ?, author = ?, description = ?, details = ?, type = ? WHERE pid = ?;";
+        let postPlaceholders = [title, japTitle, author, description, details, type, pid];
+        placeholders.push(...postPlaceholders);
+
+        let tempId; //a tempId value to hold the newly generated id of links and tags.
+
+        //generate the SQL for the links insertion.
+        for (let i = 0; i < linksList.length; i++) {
+            tempId = uuidv4();
+            sql += "INSERT INTO links (lid, links, pid) VALUES (?,?,?);";
+            placeholders.push(tempId);
+            placeholders.push(linksList[i]);
+            placeholders.push(pid);
+        }
+
+        //generate the SQL for the tags insertion.
+        for (let j = 0; j < tagsList.length; j++) {
+            tempId = uuidv4();
+            sql += "INSERT INTO tags (tgid, tags, pid) VALUES (?,?,?);";
+            placeholders.push(tempId);
+            placeholders.push(tagsList[j]);
+            placeholders.push(pid);
+        }
+
+        db.query(sql, placeholders, (err, result) => {
+            if (err) {
+                req.flash('error', 'Error updating post info.');
+                res.redirect('/masteradmin/imagereview');
+            }
+
+            if ((typeof result !== 'undefined')) {
+                req.flash('success', 'Successfully updated post info.');
+                res.redirect('/masteradmin/imagereview');
+            }
+            else {
+                req.flash('error', 'Error updating post info.');
+                res.redirect('/masteradmin/imagereview');
+            }
+        });
+    });
+}
+
+exports.addImage_post = (req, res, next) => {
+    let { pid, cover, image } = req.body;
+    let newImages = req.files;
+    let workImage;
+    let coverImage = newImages.coverImage[0].filename;
+    let skipWork = true;
+    let skipCover = false;
+    let placeholders = [];
+
+    let sql = "UPDATE posts SET cover = ?";
+    placeholders.push(coverImage);
+
+    if (newImages.mangaImage != undefined) {
+        workImage = newImages.mangaImage[0].filename;
+        skipWork = false;
+        sql += ", image = ?";
+        placeholders.push(workImage);
+    }
+
+    if (cover == "noCover.png") {
+        skipCover = true;
+    }
+
+    sql += " WHERE pid = ?";
+    placeholders.push(pid);
+
+    db.query(sql, placeholders, (err, result) => {
+        if (err) {
+            req.flash('error', 'Error updating image.');
+            res.redirect('/masteradmin/imagereview');
+        }
+
+        if ((typeof result !== 'undefined')) {
+            if (skipCover) {
+                if (skipWork) {
+                    req.flash('success', 'Successfully updated image.');
+                    res.redirect('/masteradmin/imagereview');
+                } else {
+                    fs.unlink('./public/images/upload/' + image, (err) => {
+                        if (err) {
+                            req.flash('error', 'There was an internal error.');
+                            res.redirect('/error');
+                        }
+                        req.flash('success', 'Successfully updated image.');
+                        res.redirect('/masteradmin/imagereview');
+                    });
+                }
+            } else {
+                fs.unlink('./public/images/upload/' + cover, (err) => {
+                    if (err) {
+                        req.flash('error', 'There was an internal error.');
+                        res.redirect('/error');
+                    }
+                    if (skipWork) {
+                        req.flash('success', 'Successfully updated image.');
+                        res.redirect('/masteradmin/imagereview');
+                    } else {
+                        fs.unlink('./public/images/upload/' + image, (err2) => {
+                            if (err2) {
+                                req.flash('error', 'There was an internal error.');
+                                res.redirect('/error');
+                            }
+                            req.flash('success', 'Successfully updated image.');
+                            res.redirect('/masteradmin/imagereview');
+                        });
+                    }
+                });
+            }
+        } else {
+            req.flash('error', 'Error updating image.');
+            res.redirect('/masteradmin/imagereview');
+        }
+    });
+}
+
+exports.addNewType = (req, res, next) => {
+    let { newType } = req.body;
+    let sql = "DELETE FROM tsftypes WHERE name = ?;";
+    sql += "INSERT INTO tsftypes (name) VALUES (?);"
+    sql += "INSERT INTO tsftypes (name) VALUES (?);"
+    let placeholders = ["Other", newType, "Other"];
+
+    db.query(sql, placeholders, (err, result) => {
+        if (err) {
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
+        }
+
+        req.flash("success", "Successfully added a new type.");
+        res.redirect('/masteradmin/settings');
+    });
+}
+
+exports.addNewOrigin = (req, res, next) => {
+    let { newOrigin } = req.body;
+    let sql = "DELETE FROM origin WHERE name = ?;";
+    sql += "INSERT INTO origin (name) VALUES (?);"
+    sql += "INSERT INTO origin (name) VALUES (?);"
+    let placeholders = ["Other", newOrigin, "Other"];
+
+    db.query(sql, placeholders, (err, result) => {
+        if (err) {
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
+        }
+
+        req.flash("success", "Successfully added a new origin.");
+        res.redirect('/masteradmin/settings');
+    });
+}
+
+exports.findPostById = (req, res, next) => {
+    let { pid } = req.body;
+    res.redirect('/libraryitem/' + pid + '/moderator');
+}
+
+exports.backupDB = (req, res, next) => {
+    dbBackup.createNewDBBackup();
+    req.flash('success', 'Successfully backed up the database');
+    res.redirect('/masteradmin/settings');
 }

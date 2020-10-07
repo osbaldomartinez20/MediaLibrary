@@ -1,5 +1,6 @@
 const express = require('express');
 const http = require('http');
+const https = require('https');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const passport = require('passport');
@@ -52,11 +53,12 @@ app.use('/masteradmin', require('./routes/masterAdmin'));
 app.use('/search', require('./routes/search'));
 app.use('/libraryitem', require('./routes/libraryItem'));
 app.use('/submit', require('./routes/submitItem'));
+app.use('/error', require('./routes/error'));
 
 // Error-handling middleware
 app.use(function(req, res, next) {
     res.status(404);
-    res.render('error');    
+    res.redirect('/error');    
 });
 
 // Set port number
