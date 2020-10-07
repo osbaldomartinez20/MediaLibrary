@@ -15,6 +15,7 @@ async function getTypes() {
 async function getOrigins() {
     let sql = "SELECT name FROM origin";
     return new Promise(async function (resolve, reject) {
+        
         const result = await db.query(sql);
         if (result[0].length < 1) {
             console.log("There was an error getting the types");

@@ -5,6 +5,7 @@ const post = require('./getPostController');
 let characterQueue = new queue.cacheQueue(27);
 let keywordQueue = new queue.cacheQueue(250);
 let typeQueue = new queue.cacheQueue(4);
+let originQueue = new queue.cacheQueue(4);
 let tagQueue = new queue.cacheQueue(150);
 let newestCache = new cache.cache(post.homePagePosts, "3", 1);
 let numCache = new cache.cache(post.getNumberApproved, "2", 1);
@@ -30,17 +31,17 @@ exports.post = (req, res, next) => {
 
     numCache.getData()
         .then((count) => {
-            console.time("h");
             keywordQueue.getCacheById(id).getData(keyword)
                 .then((result) => {
-                    console.timeEnd("h");
                     resultNum.count = result.length;
                     res.render('home', { count: count, post: result, searchCriteria: criteria, resultNum: resultNum });
                 }).catch((error) => {
-                    res.render('error');
+                    req.flash('error', 'There was an internal error.');
+                    res.redirect('/error');
                 });
         }).catch((error) => {
-            res.render('error');
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
         });
 }
 
@@ -52,17 +53,17 @@ exports.findByFirstLetter = (req, res, next) => {
     characterQueue.addCache(letterCache);
     numCache.getData()
         .then((count) => {
-            console.time("h");
             characterQueue.getCacheById(firstChar).getData(firstChar)
                 .then((result) => {
-                    console.timeEnd("h");
                     resultNum.count = result.length;
                     res.render('home', { count: count, post: result, resultNum: resultNum });
                 }).catch((error) => {
-                    res.render('error');
+                    req.flash('error', 'There was an internal error.');
+                    res.redirect('/error');
                 });
         }).catch((error) => {
-            res.render('error');
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
         });
 }
 
@@ -74,17 +75,39 @@ exports.findByType = (req, res, next) => {
     typeQueue.addCache(typeCache);
     numCache.getData()
         .then((count) => {
-            console.time("h");
             typeQueue.getCacheById(type).getData(type)
                 .then((result) => {
-                    console.timeEnd("h");
                     resultNum.count = result.length;
                     res.render('home', { count: count, post: result, resultNum: resultNum });
                 }).catch((error) => {
-                    res.render('error');
+                    req.flash('error', 'There was an internal error.');
+                    res.redirect('/error');
                 });
         }).catch((error) => {
-            res.render('error');
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
+        });
+}
+
+exports.findByOrigin = (req, res, next) => {
+    let origin = req.params.origin;
+    let originCache = new cache.cache(post.getByOrigin, origin, 5);
+    let resultNum = {};
+    resultNum.term = "titles that have the origin: " + origin;
+    originQueue.addCache(originCache);
+    numCache.getData()
+        .then((count) => {
+            originQueue.getCacheById(origin).getData(origin)
+                .then((result) => {
+                    resultNum.count = result.length;
+                    res.render('home', { count: count, post: result, resultNum: resultNum });
+                }).catch((error) => {
+                    req.flash('error', 'There was an internal error.');
+                    res.redirect('/error');
+                });
+        }).catch((error) => {
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
         });
 }
 
@@ -96,17 +119,17 @@ exports.findByTag = (req, res, next) => {
     tagQueue.addCache(tagCache);
     numCache.getData()
         .then((count) => {
-            console.time("h");
             tagQueue.getCacheById(tag).getData(tag)
                 .then((result) => {
-                    console.timeEnd("h");
                     resultNum.count = result.length;
                     res.render('home', { count: count, post: result, resultNum: resultNum });
                 }).catch((error) => {
-                    res.render('error');
+                    req.flash('error', 'There was an internal error.');
+                    res.redirect('/error');
                 });
         }).catch((error) => {
-            res.render('error');
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
         });
 }
 
@@ -115,15 +138,15 @@ exports.getNewest = (req, res, next) => {
     newest.text = "You are seeing the 10 newest posts."
     numCache.getData()
         .then((count) => {
-            console.time("h");
             newestCache.getData()
                 .then((result) => {
-                    console.timeEnd("h");
                     res.render('home', { count: count, post: result, newest: newest });
                 }).catch((error) => {
-                    res.render('error');
+                    req.flash('error', 'There was an internal error.');
+                    res.redirect('/error');
                 });
         }).catch((error) => {
-            res.render('error');
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
         });
 }

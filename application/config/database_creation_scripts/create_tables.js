@@ -25,4 +25,5 @@ connnection.connect(function (err) {
     if (err) throw err;
     console.log("Tables created");
   });
+  connnection.end();
 });

@@ -5,11 +5,11 @@ function showHideJapTitle() {
 
     if (document.getElementById('jtShow').checked) {
         for (let i = 0; i < docSelection.length; i++) {
-            docSelection[i].classList.remove("jt");
+            docSelection[i].classList.remove("hidden");
         }
     } else {
         for (let i = 0; i < docSelection.length; i++) {
-            docSelection[i].classList.add("jt");
+            docSelection[i].classList.add("hidden");
         }
     }
 }

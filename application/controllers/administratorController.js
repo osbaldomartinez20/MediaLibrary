@@ -1,5 +1,6 @@
 const passport = require('passport');
 const db = require('../config/db2');
+const dbBackup = require('../config/dbbackup');
 const cache = require('../helper/dataCache');
 const post = require('./getPostController');
 const { v4: uuidv4 } = require('uuid');
@@ -15,7 +16,8 @@ exports.login_get = (req, res, next) => {
         .then((count) => {
             res.render('adminLogin', { count: count });
         }).catch((error) => {
-            res.render('error');
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
         });
 }
 
@@ -49,17 +51,26 @@ exports.changePassword = (req, res, next) => {
     }
 
     bcrypt.genSalt(10, (err, salt) => {
-        if (err) throw err;
+        if (err) {
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
+        }
 
         bcrypt.hash(password, salt, (err2, hash) => {
-            if (err2) throw err2;
+            if (err2) {
+                req.flash('error', 'There was an internal error.');
+                res.redirect('/error');
+            }
 
             password = hash;
 
-            let sql = "UPDATE admin SET password = ? WHERE aid = ?"
+            let sql = "UPDATE admin SET password = ? WHERE aid = ?";
 
-            db.query(sql,[hash, uid], (error, result) => {
-                if(error) throw error;
+            db.query(sql, [hash, uid], (error, result) => {
+                if (error) {
+                    req.flash('error', 'There was an internal error.');
+                    res.redirect('/error');
+                }
 
                 req.flash('success', 'Successfully changed password');
                 res.redirect('/masteradmin/dashboard');
@@ -79,7 +90,10 @@ exports.dashboard = (req, res, next) => {
     let sql = "SELECT id,username,status FROM mods";
 
     db.query(sql, (err, result) => {
-        if (err) throw err;
+        if (err) {
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
+        }
 
         for (let i = 0; i < result.length; i++) {
             //status of 1 in a mod means that it is an active mod and 0 means a mod awaiting approval.
@@ -99,7 +113,8 @@ exports.dashboard = (req, res, next) => {
                     count: count
                 });
             }).catch((error) => {
-                res.render('error');
+                req.flash('error', 'There was an internal error.');
+                res.redirect('/error');
             });
     });
 }
@@ -206,7 +221,10 @@ exports.itemDeletion = (req, res, next) => {
     let sql = "SELECT * FROM posts WHERE pid = ?";
 
     db.query(sql, [pid], (error, result) => {
-        if (error) throw error;
+        if (error) {
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
+        }
 
         sql = "DELETE FROM tags WHERE pid = ?;";
         sql += "DELETE FROM links WHERE pid = ?;";
@@ -216,14 +234,22 @@ exports.itemDeletion = (req, res, next) => {
         let sampleImage = result[0].image;
 
         db.query(sql, [pid, pid, pid], (error2, result2) => {
-            if (error2) throw error2;
+            if (error2) {
+                req.flash('error', 'There was an internal error.');
+                res.redirect('/error');
+            }
 
             fs.unlink('./public/images/upload/' + coverImage, (err) => {
-                if (err) throw err;
-                console.log('successfully deleted file.');
+                if (err) {
+                    req.flash('error', 'There was an internal error.');
+                    res.redirect('/error');
+                }
 
                 fs.unlink('./public/images/upload/' + sampleImage, (err2) => {
-                    if (err) throw err2;
+                    if (err) {
+                        req.flash('error', 'There was an internal error.');
+                        res.redirect('/error');
+                    }
 
                     req.flash('success', 'Deleted Post Information.');
                     res.redirect('/masteradmin/imagereview');
@@ -248,7 +274,10 @@ exports.editPost_post = (req, res, next) => {
     let delPlaceholders = [pid, pid];
 
     db.query(sqlDel, delPlaceholders, (error, result) => {
-        if (error) throw error;
+        if (error) {
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
+        }
 
         let linksList = separate.separateLinks(links);
         let tagsList = separate.separateTags(tags);
@@ -334,20 +363,29 @@ exports.addImage_post = (req, res, next) => {
                     res.redirect('/masteradmin/imagereview');
                 } else {
                     fs.unlink('./public/images/upload/' + image, (err) => {
-                        if (err) throw err;
+                        if (err) {
+                            req.flash('error', 'There was an internal error.');
+                            res.redirect('/error');
+                        }
                         req.flash('success', 'Successfully updated image.');
                         res.redirect('/masteradmin/imagereview');
                     });
                 }
             } else {
                 fs.unlink('./public/images/upload/' + cover, (err) => {
-                    if (err) throw err;
+                    if (err) {
+                        req.flash('error', 'There was an internal error.');
+                        res.redirect('/error');
+                    }
                     if (skipWork) {
                         req.flash('success', 'Successfully updated image.');
                         res.redirect('/masteradmin/imagereview');
                     } else {
                         fs.unlink('./public/images/upload/' + image, (err2) => {
-                            if (err2) throw err2;
+                            if (err2) {
+                                req.flash('error', 'There was an internal error.');
+                                res.redirect('/error');
+                            }
                             req.flash('success', 'Successfully updated image.');
                             res.redirect('/masteradmin/imagereview');
                         });
@@ -359,4 +397,51 @@ exports.addImage_post = (req, res, next) => {
             res.redirect('/masteradmin/imagereview');
         }
     });
+}
+
+exports.addNewType = (req, res, next) => {
+    let { newType } = req.body;
+    let sql = "DELETE FROM tsftypes WHERE name = ?;";
+    sql += "INSERT INTO tsftypes (name) VALUES (?);"
+    sql += "INSERT INTO tsftypes (name) VALUES (?);"
+    let placeholders = ["Other", newType, "Other"];
+
+    db.query(sql, placeholders, (err, result) => {
+        if (err) {
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
+        }
+
+        req.flash("success", "Successfully added a new type.");
+        res.redirect('/masteradmin/settings');
+    });
+}
+
+exports.addNewOrigin = (req, res, next) => {
+    let { newOrigin } = req.body;
+    let sql = "DELETE FROM origin WHERE name = ?;";
+    sql += "INSERT INTO origin (name) VALUES (?);"
+    sql += "INSERT INTO origin (name) VALUES (?);"
+    let placeholders = ["Other", newOrigin, "Other"];
+
+    db.query(sql, placeholders, (err, result) => {
+        if (err) {
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
+        }
+
+        req.flash("success", "Successfully added a new origin.");
+        res.redirect('/masteradmin/settings');
+    });
+}
+
+exports.findPostById = (req, res, next) => {
+    let { pid } = req.body;
+    res.redirect('/libraryitem/' + pid + '/moderator');
+}
+
+exports.backupDB = (req, res, next) => {
+    dbBackup.createNewDBBackup();
+    req.flash('success', 'Successfully backed up the database');
+    res.redirect('/masteradmin/settings');
 }

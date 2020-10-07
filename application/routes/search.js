@@ -13,6 +13,7 @@ router.post('/', searchController.post);
 router.get('/:character/firstletter', searchController.findByFirstLetter);
 router.get('/:type/bytype', searchController.findByType);
 router.get('/:tag/bytag', searchController.findByTag);
+router.get('/:origin/byorigin', searchController.findByOrigin);
 router.get('/newest', searchController.getNewest);
 
 module.exports = router;

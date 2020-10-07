@@ -53,11 +53,12 @@ app.use('/masteradmin', require('./routes/masterAdmin'));
 app.use('/search', require('./routes/search'));
 app.use('/libraryitem', require('./routes/libraryItem'));
 app.use('/submit', require('./routes/submitItem'));
+app.use('/error', require('./routes/error'));
 
 // Error-handling middleware
 app.use(function(req, res, next) {
-    res.status(404 || 503);
-    res.render('error');    
+    res.status(404);
+    res.redirect('/error');    
 });
 
 // Set port number

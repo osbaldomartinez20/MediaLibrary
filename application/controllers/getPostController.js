@@ -13,7 +13,8 @@ async function getPostInfoById(id) {
 
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
-            res.render('error');
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
         });
         if (result[0].length < 1) {
             console.log("There was an error getting the post info.");
@@ -28,7 +29,8 @@ async function getPostImagesById(id) {
 
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
-            res.render('error');
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
         });
         if (result[0].length < 1) {
             console.log("There was an error getting the post info.");
@@ -42,7 +44,8 @@ async function getNumberOfApprovedPosts() {
     let sql = "SELECT COUNT(*) as \"total\" FROM posts WHERE status = 1";
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql).catch((error) => {
-            res.render('error');
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
         });
         if (result[0].length < 1) {
             console.log("There was an error getting the number of posts");
@@ -56,7 +59,8 @@ async function getTenPosts() {
     let sql = "SELECT * FROM posts WHERE status = 1 ORDER BY date DESC LIMIT 10";
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql).catch((error) => {
-            res.render('error');
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
         });
         if (result[0].length < 1) {
             console.log("There was an error getting the posts.");
@@ -78,7 +82,8 @@ async function getPostsBasedOnFirstTitleCharacter(firstCharacter) {
     }
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
-            res.render('error');
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
         });
         if (result[0].length < 1) {
             console.log("There was an error getting the posts.");
@@ -95,7 +100,10 @@ async function getByKeyWord(keyword) {
         placeholders = ['%' + keyword + '%', '%' + keyword + '%'];
     }
     return new Promise(async function (resolve, reject) {
-        const result = await db.query(sql, placeholders);
+        const result = await db.query(sql, placeholders).catch((error) => {
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
+        });
         if (result[0].length < 1) {
             console.log("There was an error getting the posts.");
         }
@@ -108,7 +116,23 @@ async function getByType(type) {
     let placeholders = [type];
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
-            res.render('error');
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
+        });
+        if (result[0].length < 1) {
+            console.log("There was an error getting the posts.");
+        }
+        resolve(result[0]);
+    });
+}
+
+async function getByOrigin(origin) {
+    let sql = "SELECT * FROM posts WHERE status = 1 AND origin = ?";
+    let placeholders = [origin];
+    return new Promise(async function (resolve, reject) {
+        const result = await db.query(sql, placeholders).catch((error) => {
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
         });
         if (result[0].length < 1) {
             console.log("There was an error getting the posts.");
@@ -118,12 +142,13 @@ async function getByType(type) {
 }
 
 async function getByTag(tag) {
-    let sql = "SELECT tags.pid, posts.title, posts.jtitle, posts.author, posts.description, posts.details, posts.type, posts.cover, posts.image" + 
-    " FROM tags INNER JOIN posts USING (pid) WHERE tags = ? AND posts.status = 1";
+    let sql = "SELECT tags.pid, posts.title, posts.jtitle, posts.author, posts.description, posts.details, posts.type, posts.cover, posts.image" +
+        " FROM tags INNER JOIN posts USING (pid) WHERE tags = ? AND posts.status = 1";
     let placeholders = [tag];
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
-            res.render('error');
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
         });
         if (result[0].length < 1) {
             console.log("There was an error getting the posts.");
@@ -139,4 +164,5 @@ exports.homePagePosts = getTenPosts;
 exports.getByLetter = getPostsBasedOnFirstTitleCharacter;
 exports.getByKeyWord = getByKeyWord;
 exports.getByType = getByType;
+exports.getByOrigin = getByOrigin;
 exports.getByTag = getByTag;

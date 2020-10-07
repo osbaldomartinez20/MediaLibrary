@@ -17,9 +17,9 @@
         {{#each postInfo}}{{#unless this.status}} <a href="/masteradmin/{{this.pid}}/itemapprove"><button
                 style="background-color: rgb(19, 138, 19); color: black">Approve</button></a> {{/unless}}
         <a href="/masteradmin/{{this.pid}}/itemedit"><button
-            style="background-color: blue; color: black">Edit</button></a>
+                style="background-color: blue; color: black">Edit</button></a>
         <a href="/masteradmin/{{this.pid}}/itemconfirmdel"><button
-            style="background-color: red; color: black">Remove</button></a>
+                style="background-color: red; color: black">Remove</button></a>
         {{/each}}
     </div>
     {{/if}}
@@ -54,7 +54,8 @@
                 </thead>
                 <tr class="trCard">
                     <td scope="row" style="text-align: center;">{{this.author}}</th>
-                    <td style="white-space: pre-line; text-align: center;">{{this.details}}</th>
+                    <td style="white-space: pre-line; text-align: center;">{{this.details}}<br />Origin: <a
+                            href="/search/{{this.origin}}/byorigin">{{this.origin}}</a></th>
                     <td style="white-space: pre-line; text-align: center;">{{this.description}}</th>
                     <td style="text-align: center;"><a href="/search/{{this.type}}/bytype">{{this.type}}</a></th>
                         {{/each}}

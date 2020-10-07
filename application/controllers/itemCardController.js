@@ -15,16 +15,16 @@ exports.imageCard_get = (req, res, next) => {
 
     numCache.getData()
         .then((count) => {
-            console.time("h");
             itemQueue.getCacheById(pid).getData(pid)
                 .then((result) => {
-                    console.timeEnd("h");
                     res.render('imageCard', { count: count, postInfo: result[0], links: result[1], tags: result[2] });
                 }).catch((error) => {
-                    res.render('error');
+                    req.flash('error', 'There was an internal error.');
+                    res.redirect('/error');
                 });
         }).catch((error) => {
-            res.render('error');
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
         });
 
 }
@@ -35,16 +35,16 @@ exports.imageCardMod_get = (req, res, next) => {
 
     numCache.getData()
         .then((count) => {
-            console.time("h");
             itemCache.getData(pid)
                 .then((result) => {
-                    console.timeEnd("h");
                     res.render('imageCard', { count: count, postInfo: result[0], links: result[1], tags: result[2] });
                 }).catch((error) => {
-                    res.render('error');
+                    req.flash('error', 'There was an internal error.');
+                    res.redirect('/error');
                 });
         }).catch((error) => {
-            res.render('error');
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
         });
 
 }

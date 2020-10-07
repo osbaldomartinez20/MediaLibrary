@@ -11,19 +11,21 @@ let postCache = new cache.cache(getPostInfo.homePagePosts, "2", 1440);
 // GET home page
 router.get('/', (req, res) => {
     numCache.getData()
-    .then((count) => {
-        console.time("h");
-        postCache.getData()
-        .then((posts) => {
-            if(posts.length < 10) {
-                postCache.destroyCache();
-            }
-            console.timeEnd("h");
-            res.render('home', {count: count, post: posts});
+        .then((count) => {
+            postCache.getData()
+                .then((posts) => {
+                    if (posts.length < 10) {
+                        postCache.destroyCache();
+                    }
+                    res.render('home', { count: count, post: posts });
+                }).catch((error) => {
+                    req.flash('error', 'There was an internal error.');
+                    res.redirect('/error');
+                });
         }).catch((error) => {
-            res.sendStatus(503);});
-    }).catch((error) => {
-        res.sendStatus(503);});
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
+        });
 });
 
 

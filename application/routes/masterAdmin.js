@@ -30,13 +30,13 @@ router.get('/dashboard', ensureAdminAuthenticated, administratorController.dashb
 
 router.get('/imagereview', ensureAdminAuthenticated, modFunctions.dashboard);
 
-// GET request for approving sales item
+// GET request for approving moderator
 router.get('/:mid/approve', ensureAdminAuthenticated, administratorController.approve);
 
-// GET request for disapproving sales item
+// GET request for disapproving moderator
 router.get('/:mid/disapprove', ensureAdminAuthenticated, administratorController.disapprove);
 
-// GET request for removing sales item
+// GET request for removing moderator
 router.get('/:mid/remove', ensureAdminAuthenticated, administratorController.remove);
 
 router.get('/:pid/itemapprove', ensureAdminAuthenticated, administratorController.itemApproval);
@@ -52,5 +52,14 @@ router.post('/itemedit', ensureAdminAuthenticated, administratorController.editP
 router.get("/:pid/itemaddimage", ensureAdminAuthenticated, modFunctions.addImage_get);
 
 router.post('/itemaddimage', ensureAdminAuthenticated, postImageUpload.fields([{name:'coverImage', maxCount: 1}, {name:'mangaImage', maxCount: 1}]), administratorController.addImage_post);
+
+router.post('/newtype', ensureAdminAuthenticated, administratorController.addNewType);
+
+router.post('/neworigin', ensureAdminAuthenticated, administratorController.addNewOrigin);
+
+router.post('/findbyid', ensureAdminAuthenticated, administratorController.findPostById);
+
+router.get('/dbbackup', ensureAdminAuthenticated, administratorController.backupDB);
+
 
 module.exports = router;

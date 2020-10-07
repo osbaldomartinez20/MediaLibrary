@@ -11,22 +11,24 @@ let originCache = new cache.cache(types.originGet, "5", 1440);
 
 // Handle showing submit page on GET
 exports.imagePost_get = (req, res, next) => {
-    console.time("time");
     typesCache.getData()
         .then((result) => {
             numCache.getData()
-            .then((count) => {
-                originCache.getData()
-                .then((orig) => {
-                    res.render('imagePost', { type: result, count: count, origin: orig});
+                .then((count) => {
+                    originCache.getData()
+                        .then((orig) => {
+                            res.render('imagePost', { type: result, count: count, origin: orig });
+                        }).catch((error) => {
+                            req.flash('error', 'There was an internal error.');
+                            res.redirect('/error');
+                        });
                 }).catch((error) => {
-                    res.sendStatus(503);
+                    req.flash('error', 'There was an internal error.');
+                    res.redirect('/error');
                 });
-            }).catch((error) => {
-                res.sendStatus(503);
-            });
         }).catch((error) => {
-            res.sendStatus(503);
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
         });
 }
 
@@ -90,7 +92,7 @@ exports.imagePost_post = (req, res, next) => {
     let tempId;//a tempId value to hold the newly generated id of links and tags.
 
     //generate the SQL for the links insertion.
-    for(let i = 0; i < linksList.length; i++) {
+    for (let i = 0; i < linksList.length; i++) {
         tempId = uuidv4();
         sql += "INSERT INTO links (lid, links, pid) VALUES (?,?,?);";
         placeholders.push(tempId);
@@ -99,7 +101,7 @@ exports.imagePost_post = (req, res, next) => {
     }
 
     //generate the SQL for the tags insertion.
-    for(let j = 0; j < tagsList.length; j++) {
+    for (let j = 0; j < tagsList.length; j++) {
         tempId = uuidv4();
         sql += "INSERT INTO tags (tgid, tags, pid) VALUES (?,?,?);";
         placeholders.push(tempId);
