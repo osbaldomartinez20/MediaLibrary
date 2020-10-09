@@ -1,3 +1,4 @@
+// Show image page on GET for the post of the given post id in the parameters
 const db = require('../config/db2');
 const types = require('./typeController');
 const cache = require('../helper/dataCache');
@@ -5,6 +6,7 @@ const separate = require('../helper/separeteByCommas');
 const getCount = require('../controllers/getPostController');
 const { v4: uuidv4 } = require('uuid');
 
+//caches for information that is used in the rendered pages.
 let typesCache = new cache.cache(types.retrieve, "1", 1440);
 let numCache = new cache.cache(getCount.getNumberApproved, "2", 1);
 let originCache = new cache.cache(types.originGet, "5", 1440);

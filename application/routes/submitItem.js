@@ -1,5 +1,6 @@
-/* This file handles "/post" route */
-
+//Contributors: Osbaldo Martinez
+/* This file handles "/submit" route */
+//libraries used for this file
 const express = require('express');
 const router = express.Router();
 const itemPostController = require('../controllers/itemPostController');

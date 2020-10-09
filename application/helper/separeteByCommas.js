@@ -1,6 +1,8 @@
+//Contributors: Osbaldo Martinez
 //This file helps with separating the tags/links of the provided string.
 //The separation is done by looking at the commas
 
+//accepts a string and returns a list with elemnts that were  separated by commas
 exports.separateLinks = function (nonSeparate) {
     let separate = [];
     let startIndex = 0;
@@ -17,6 +19,7 @@ exports.separateLinks = function (nonSeparate) {
     return separate;
 }
 
+//accepts a string and returns a list with elemnts that were  separated by commas
 exports.separateTags = function (nonSeparate) {
     let separate = [];
     let startIndex = 0;

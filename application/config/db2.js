@@ -1,4 +1,6 @@
-//this file used the non-promise version of the mysql2 module
+//Contributors: Osbaldo Martinez
+//this file uses the non-promise version of the mysql2 module
+
 const mysql = require('mysql2');
 
 const pool = mysql.createPool({

@@ -1,3 +1,5 @@
+//Contributors: Osbaldo Martinez
+
 module.exports = {
     // Check if user is logged as user
     ensureUserAuthenticated: (req, res, next) => {

@@ -1,3 +1,4 @@
+//Contributors: Osbaldo Martinez
 const multer = require('multer');
 const path = require('path');
 const mkdirp = require('mkdirp'); //this module has to be in version 0.5.1 or the code won't work.
@@ -5,6 +6,7 @@ const mkdirp = require('mkdirp'); //this module has to be in version 0.5.1 or th
 // Multer storage settings
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
+        //folder where the images are uploaded
         const dir = "./public/images/upload/"; 
         mkdirp(dir, err => cb(err, dir));
     },
@@ -19,7 +21,8 @@ const upload = multer({
     storage: storage,
     fileFilter: (req, file, cb) => {
         var imageExt = path.extname(file.originalname);
-        if (imageExt !== '.png' && imageExt !== '.jpg' && imageExt !== '.jpeg' && imageExt !== '.JPEG' && imageExt !== '.JPG' && imageExt !== '.svg') {
+        //only accepting jpg and png
+        if (imageExt !== '.png' && imageExt !== '.jpg' && imageExt !== '.jpeg' && imageExt !== '.JPEG' && imageExt !== '.JPG') {
             return cb(new Error('Only images are allowed'));
         }
         cb(null, true);

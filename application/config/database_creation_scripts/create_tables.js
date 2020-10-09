@@ -1,3 +1,4 @@
+//Contributors: Osbaldo Martinez
 const mysql = require('mysql2');
 
 //fillout the information for your mysql server and database

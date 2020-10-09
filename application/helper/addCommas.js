@@ -1,5 +1,6 @@
-//this file has a function to add commas to the tags and links
-//for the edit page, so that they can be properly rsubmitted.
+//Contributors: Osbaldo Martinez
+//this file has functions to add commas to the tags and links
+//for the edit page, so that they can be properly resubmitted.
 
 //this function takes a list of links and returns a string that separates each
 //element with a comma.
