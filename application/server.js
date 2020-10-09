@@ -88,6 +88,7 @@ httpsServer.listen(8080, function () {
 });
 //*/
 // Limit max concurrent connections to n (non-functional requirement)
-//server.maxConnections = 1000;
+//let n = 1000;
+//server.maxConnections = n;
 
 module.exports = app;

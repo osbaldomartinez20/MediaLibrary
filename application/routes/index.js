@@ -34,5 +34,17 @@ router.get('/', (req, res) => {
         });
 });
 
+// GET about page
+//this renders the about page and passes the count data to be handled
+//by the frontend.
+router.get('/about', (req, res) => {
+    numCache.getData()
+    .then((count) => {
+        res.render('about', {count: count});
+    }).catch((error) => {
+        req.flash('error', 'There was an internal error.');
+        res.redirect('/error');
+    });
+});
 
 module.exports = router;

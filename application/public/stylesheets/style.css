@@ -40,6 +40,12 @@ a {
   color: black;
 }
 
+.footer {
+   left: 0;
+   bottom: 0;
+   width: 100%;
+}
+
 .errMsg {
   text-align: center;
   color: rgb(250, 250, 250);
