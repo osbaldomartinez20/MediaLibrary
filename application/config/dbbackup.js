@@ -41,5 +41,5 @@ exports.createNewDBBackup = async function() {
         }
     }
     //write the dump into an sql file
-    fs.writeFileSync('./public/database_backup/' + backupDate + '_dump.sql', schema);
+    fs.writeFileSync(__dirname + '/database_backup/' + backupDate + '_dump.sql', schema);
 }

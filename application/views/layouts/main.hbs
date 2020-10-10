@@ -15,47 +15,49 @@
 </head>
 
 <body>
-    <header class="hed">
-        <!-- Navbar-->
-        <nav class="navbar" style="width: 100%;">
-            <div class="container-fluid">
-                <ul class="nav">
-                    <li class="active"><a href="/">Home</a></li>
-                    <li><a href="/submit">Post</a></li>
-                    {{#if loggedIn.aid}}
-                    <li><a href="/masteradmin/dashboard">Mod Review</a></li>
-                    <li><a href="/masteradmin/imagereview">Image Review</a></li>
-                    <li><a href="/masteradmin/settings">Settings</a></li>
-                    <li><a href="/masteradmin/logout">Logout</a></li>
-                    {{/if}}
-                    {{#if loggedIn.id}}
-                    <li><a href="/moderators/dashboard">Dashboard</a></li>
-                    <li><a href="/moderators/settings">Settings</a></li>
-                    <li><a href="/moderators/logout">Logout</a></li>
-                    {{/if}}
-                    <li style="float: right; border: none;">
-                        <form action="/search" method="POST">
-                            <input class="search-bar" autocomplete="off" spellcheck="false" type="text"
-                                placeholder="What are you looking for ?" name="keyword"
-                                value="{{searchCriteria.keyword}}" id="searchKeyword" maxlength="40">
-                            <button class="btn search-button" type="submit" id="searchButon"><i
-                                    class="fa fa-search"></i></button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <br />
-    </header>
+    <div class="site-container">
+        <header class="hed">
+            <!-- Navbar-->
+            <nav class="navbar" style="width: 100%;">
+                <div class="container-fluid">
+                    <ul class="nav">
+                        <li class="active"><a href="/">Home</a></li>
+                        <li><a href="/submit">Post</a></li>
+                        {{#if loggedIn.aid}}
+                        <li><a href="/masteradmin/dashboard">Mod Review</a></li>
+                        <li><a href="/masteradmin/imagereview">Image Review</a></li>
+                        <li><a href="/masteradmin/settings">Settings</a></li>
+                        <li><a href="/masteradmin/logout">Logout</a></li>
+                        {{/if}}
+                        {{#if loggedIn.id}}
+                        <li><a href="/moderators/dashboard">Dashboard</a></li>
+                        <li><a href="/moderators/settings">Settings</a></li>
+                        <li><a href="/moderators/logout">Logout</a></li>
+                        {{/if}}
+                        <li style="float: right; border: none;">
+                            <form action="/search" method="POST">
+                                <input class="search-bar" autocomplete="off" spellcheck="false" type="text"
+                                    placeholder="What are you looking for ?" name="keyword"
+                                    value="{{searchCriteria.keyword}}" id="searchKeyword" maxlength="40">
+                                <button class="btn search-button" type="submit" id="searchButon"><i
+                                        class="fa fa-search"></i></button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <br />
+        </header>
 
-    <!-- Content Body -->
-    <main role="main" class="load">
-        {{{body}}}
-    </main>
+        <!-- Content Body -->
+        <main role="main" class="load">
+            {{{body}}}
+        </main>
 
-    <footer class="footer">
-        <a href="/about">About</a>
-    </footer>
+        <footer class="footer">
+            <a href="/about">About</a>
+        </footer>
+    </div>
 </body>
 
 </html>

@@ -29,27 +29,26 @@
                 href="/search/x/firstletter">x</a> <a href="/search/y/firstletter">y</a> <a
                 href="/search/z/firstletter">z</a> <a href="/search/newest">new</a></h2>
         <br />
-        <label for="jtShow" id="jtShowLabel">Show Japanese Title</label>
-        <input type="checkbox" id="jtShow" name="jtShow" onclick="showHideJapTitle();" style="cursor: pointer;" />
-        <br/>
+        <div class="checkbox-options" style="font-size: smaller;">
+            <label for="jtShow" id="jtShowLabel">Show Japanese Title</label>
+            <input type="checkbox" id="jtShow" name="jtShow" onclick="showHideJapTitle();" style="cursor: pointer;" />
+            <br />
 
-        <label for="Other" id="OtherLabel">Other</label>
-        <input type="checkbox" id="Other" name="Other" onclick="showHide(0);"
-            style="cursor: pointer;" />
+            <label for="Other" id="OtherLabel">Other</label>
+            <input type="checkbox" id="Other" name="Other" onclick="showHide(0);" style="cursor: pointer;" />
 
-        <label for="Transformation" id="TransformationLabel">Transformation</label>
-        <input type="checkbox" id="Transformation" name="Transformation" onclick="showHide(1);"
-            style="cursor: pointer;" />
+            <label for="Transformation" id="TransformationLabel">Transformation</label>
+            <input type="checkbox" id="Transformation" name="Transformation" onclick="showHide(1);"
+                style="cursor: pointer;" />
 
-        <label for="Possession" id="PossessionLabel">Possession</label>
-        <input type="checkbox" id="Possession" name="Possession" onclick="showHide(2);"
-            style="cursor: pointer;" />
+            <label for="Possession" id="PossessionLabel">Possession</label>
+            <input type="checkbox" id="Possession" name="Possession" onclick="showHide(2);" style="cursor: pointer;" />
 
-        <label for="Bodyswap" id="BodyswapLabel">Bodyswap</label>
-        <input type="checkbox" id="Bodyswap" name="Bodyswap" onclick="showHide(3);"
-            style="cursor: pointer;" />
+            <label for="Bodyswap" id="BodyswapLabel">Bodyswap</label>
+            <input type="checkbox" id="Bodyswap" name="Bodyswap" onclick="showHide(3);" style="cursor: pointer;" />
+        </div>
 
-        <table class="table table-bordered" id="resultTable">
+        <table class="table table-bordered" id="resultTable" style="font-size: larger;">
             <caption style="color: black;">{{#if resultNum}}There are <b>{{resultNum.count}}</b>
                 {{resultNum.term}}.{{/if}}{{newest.text}}</caption>
             <colgroup>

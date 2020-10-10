@@ -40,10 +40,19 @@ a {
   color: black;
 }
 
+.site-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.load {
+  flex: 1;
+}
+
 .footer {
-   left: 0;
-   bottom: 0;
-   width: 100%;
+  width: 100%;
+
 }
 
 .errMsg {
