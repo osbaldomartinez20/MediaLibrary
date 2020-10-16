@@ -2,7 +2,7 @@
 <html lang="en" class="h-100">
 
 <head>
-    <title>TSFC Media Library</title>
+    <title>TSF Records</title>
     <meta content="text/html" ; charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/images/main/favicon.ico" type="image/x-icon">
@@ -16,6 +16,12 @@
 
 <body>
     <div class="site-container">
+        <div class="banner-image-container">
+            <img src="/images/main/banner_site.png" alt="Banner" class="bannerimg">
+            <div class="text-block">
+                {{#each count}}{{this.total}}{{/each}}
+            </div>
+        </div>
         <header class="hed">
             <!-- Navbar-->
             <nav class="navbar" style="width: 100%;">

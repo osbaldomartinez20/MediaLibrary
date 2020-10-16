@@ -327,7 +327,7 @@ exports.itemDeletion = (req, res, next) => {
                     }
 
                     fs.unlink('./public/images/upload/' + sampleImage, (err2) => {
-                        if (err) {
+                        if (err2) {
                             req.flash('error', 'There was an internal error.');
                             res.redirect('/error');
                         }
@@ -339,7 +339,7 @@ exports.itemDeletion = (req, res, next) => {
             } else {
                 //only work image is deleted
                 fs.unlink('./public/images/upload/' + sampleImage, (err2) => {
-                    if (err) {
+                    if (err2) {
                         req.flash('error', 'There was an internal error.');
                         res.redirect('/error');
                     }
@@ -358,7 +358,6 @@ exports.editPost_get = (req, res, next) => {
     let pid = req.params.pid;
     let links = {};
     let tags = {};
-    let pCache = new cache.cache(post.getPostInfo, "pos", 0.005);
 
     //get origin table data
     originCache.getData()
@@ -370,7 +369,7 @@ exports.editPost_get = (req, res, next) => {
                     numCache.getData()
                         .then((count) => {
                             //get post info
-                            pCache.getData(pid)
+                            post.getPostInfo(pid)
                                 .then((result) => {
                                     links.links = commas.addCommasLinks(result[1]);
                                     tags.tags = commas.addCommasTags(result[2]);
@@ -461,11 +460,10 @@ exports.editPost_post = (req, res, next) => {
 //gets post pid, image, and cover and renders the page to change the images.
 exports.addImage_get = (req, res, next) => {
     let pid = req.params.pid;
-    let pCache = new cache.cache(post.getPostImagesById, "pos", 0.005);
 
     numCache.getData()
         .then((count) => {
-            pCache.getData(pid)
+            post.getPostImagesById(pid)
                 .then((result) => {
                     res.render('editPostImage', { count: count, postInfo: result });
                 }).catch((err) => {

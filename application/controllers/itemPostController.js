@@ -1,3 +1,4 @@
+//Contributors: Osbaldo Martinez
 // Show image page on GET for the post of the given post id in the parameters
 const db = require('../config/db2');
 const types = require('./typeController');

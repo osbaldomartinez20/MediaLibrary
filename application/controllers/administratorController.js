@@ -1,5 +1,4 @@
 //Contributors: Osbaldo Martinez
-
 //modules used
 const passport = require('passport');
 const db = require('../config/db2');
@@ -267,7 +266,7 @@ exports.itemDeletion = (req, res, next) => {
                     }
 
                     fs.unlink('./public/images/upload/' + sampleImage, (err2) => {
-                        if (err) {
+                        if (err2) {
                             req.flash('error', 'There was an internal error.');
                             res.redirect('/error');
                         }
@@ -279,7 +278,7 @@ exports.itemDeletion = (req, res, next) => {
             } else {
                 //only work image is deleted
                 fs.unlink('./public/images/upload/' + sampleImage, (err2) => {
-                    if (err) {
+                    if (err2) {
                         req.flash('error', 'There was an internal error.');
                         res.redirect('/error');
                     }
