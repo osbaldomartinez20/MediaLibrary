@@ -1,5 +1,11 @@
+//Contributors: Osbaldo Martinez
 //Got help from stackoverflow
 //https://stackoverflow.com/questions/14069421/show-an-image-preview-before-upload
+
+//this jquery function helps with showing the image preview for uploaded images.
+//make sure that the field to upload the cover image has the id: coverImage
+//and the work image upload field has the id: mangaImage
+//This is used in editPostImage.hbs and imagePost.hbs
 $(document).ready(function () {
 
     document.getElementById("mangaImage").onchange = function () {

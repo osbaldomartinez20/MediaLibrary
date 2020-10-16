@@ -1,3 +1,6 @@
+//Contributors: Osbaldo Martinez
+//This files contains the server's configurations
+//The libraries used for the server set up
 const express = require('express');
 const http = require('http');
 const https = require('https');
@@ -6,9 +9,16 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const session = require("express-session");
 const flash = require('connect-flash');
+const fs = require('fs');
+
+/*
+//get the key and certificate information for the https server to use.
+const privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
+const certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
+const credentials = {key: privateKey, cert: certificate};
+//*/
 
 const app = express();
-const server = http.Server(app);
 
 app.use(express.static("public"));
 
@@ -64,12 +74,21 @@ app.use(function(req, res, next) {
 // Set port number
 app.set('port', 3000);
 
+const server = http.Server(app);
+//const httpsServer = https.createServer(credentials, app);
+
 // Start server
 server.listen(app.get('port'), function () {
     console.log('Starting server on port ' + app.get('port'));
 });
-
+/*
+//use port 8080 for the https server
+httpsServer.listen(8080, function () {
+    console.log('Starting server on port 8080');
+});
+//*/
 // Limit max concurrent connections to n (non-functional requirement)
-//server.maxConnections = 1000;
+//let n = 1000;
+//server.maxConnections = n;
 
 module.exports = app;

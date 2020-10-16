@@ -1,5 +1,8 @@
 //I used code from w3schools to sort the tables, any modifications were made by Osbaldo Martinez.
 //https://www.w3schools.com/howto/howto_js_sort_table.asp
+
+//parameter is an int that helps identify what you are sorting
+//n = 1, sort by titles. n = 2, sort by author. Default might do nothing.
 function sortTable(n) {
   var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
   table = document.getElementById("resultTable");

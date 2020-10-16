@@ -1,3 +1,4 @@
+//Contributors: Osbaldo Martinez
 //this file used the promise version of the mysql2 module
 const mysql = require('mysql2/promise');
 

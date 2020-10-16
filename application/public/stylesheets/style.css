@@ -1,3 +1,4 @@
+/*if you change the body here please also change the bodyKeep.css file*/
 body {
   background-color: #b1aeab;
   color: black;
@@ -37,6 +38,54 @@ a {
 .navbar a:hover {
   background-color: rgb(221, 205, 205);
   color: black;
+}
+
+.site-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.load {
+  flex: 1;
+}
+
+.footer {
+  width: 100%;
+
+}
+
+@media (min-width:1000px){
+    .bannerimg {
+        display: block; 
+        width: 100%;
+        height: 324px;
+    }
+}
+
+@media (max-width:999px){
+    .bannerimg {
+        display: block; 
+        width: 100%;
+        height: 216px;
+    }
+}
+
+.banner-image-container {
+  position: relative;
+    display: inline-block;
+    ;
+}
+
+.text-block {
+  position: absolute;
+    top: 87%;
+    left: 43%;
+    transform: translate( -50%, -50% );
+    text-align: center;
+    color: black;
+    font-weight: bold;
+    font-size: 200%;
 }
 
 .errMsg {
@@ -150,6 +199,7 @@ form {
 .itemContainer {
   text-align: center;
 }
+
 #postImage {
   height: 420px;
   width: auto;
@@ -175,11 +225,6 @@ form {
 }
 
 #imageTable {
-  width: 100%;
-  text-align: center;
-}
-
-#searchTable {
   width: 100%;
   text-align: center;
 }

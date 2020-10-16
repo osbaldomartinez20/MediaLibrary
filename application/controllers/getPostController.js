@@ -1,7 +1,6 @@
+//Contributors: Osbaldo Martinez
 //This file retrieves the values in the posts table.
 const db = require("../config/db");
-const { resolve } = require("path");
-const e = require("express");
 
 //retrieves all the information in the tables that have the given post id.
 async function getPostInfoById(id) {
@@ -23,6 +22,7 @@ async function getPostInfoById(id) {
     });
 }
 
+//gets the pid, cover, image of the post with the given id.
 async function getPostImagesById(id) {
     let placeholders = [id];
     let sql = "SELECT pid, cover, image FROM posts WHERE pid = ?;";
@@ -54,7 +54,7 @@ async function getNumberOfApprovedPosts() {
     });
 }
 
-
+//retrieves the 10 newest approved posts
 async function getTenPosts() {
     let sql = "SELECT * FROM posts WHERE status = 1 ORDER BY date DESC LIMIT 10";
     return new Promise(async function (resolve, reject) {
@@ -92,9 +92,11 @@ async function getPostsBasedOnFirstTitleCharacter(firstCharacter) {
     });
 }
 
+//retrieves the posts that match the given keyword in their titles or description
 async function getByKeyWord(keyword) {
     let sql = "SELECT * FROM posts WHERE status = 1";
     let placeholders = [];
+    //check to see if keyword is not empty to add conditions to the query.
     if (keyword != "") {
         sql += " AND (title LIKE ? OR description LIKE ?)";
         placeholders = ['%' + keyword + '%', '%' + keyword + '%'];
@@ -111,6 +113,7 @@ async function getByKeyWord(keyword) {
     });
 }
 
+//retrieves the posts that have the given type.
 async function getByType(type) {
     let sql = "SELECT * FROM posts WHERE status = 1 AND type = ?";
     let placeholders = [type];
@@ -126,6 +129,7 @@ async function getByType(type) {
     });
 }
 
+//retrieves the posts that have the given origin.
 async function getByOrigin(origin) {
     let sql = "SELECT * FROM posts WHERE status = 1 AND origin = ?";
     let placeholders = [origin];
@@ -141,6 +145,7 @@ async function getByOrigin(origin) {
     });
 }
 
+//retrieves the posts that have the given tag.
 async function getByTag(tag) {
     let sql = "SELECT tags.pid, posts.title, posts.jtitle, posts.author, posts.description, posts.details, posts.type, posts.cover, posts.image" +
         " FROM tags INNER JOIN posts USING (pid) WHERE tags = ? AND posts.status = 1";
@@ -157,6 +162,7 @@ async function getByTag(tag) {
     });
 }
 
+//exports of the functions
 exports.getPostInfo = getPostInfoById;
 exports.getPostImagesById = getPostImagesById;
 exports.getNumberApproved = getNumberOfApprovedPosts;

@@ -1,3 +1,5 @@
+//Contributors: Osbaldo Martinez
+//modules used
 const passport = require('passport');
 const db = require('../config/db2');
 const dbBackup = require('../config/dbbackup');
@@ -8,6 +10,7 @@ const bcrypt = require('bcryptjs');
 const fs = require('fs');
 const separate = require('../helper/separeteByCommas');
 
+//cache to get the number of approved posts
 let numCache = new cache.cache(post.getNumberApproved, "2", 1);
 
 // Display administrator's login page on GET
@@ -38,10 +41,12 @@ exports.logout = (req, res, next) => {
     res.redirect('/');
 }
 
+//changes the admin's password
 exports.changePassword = (req, res, next) => {
     let uid = req.user.aid;
     let { password, confirmPassword } = req.body;
 
+    //make sure password is btwn 8 and 20 characters
     if (password.length < 8 || password.length > 20) {
         req.flash('error', 'Password must be between 8 and 20 characters.');
     }
@@ -64,6 +69,7 @@ exports.changePassword = (req, res, next) => {
 
             password = hash;
 
+            //update password in db
             let sql = "UPDATE admin SET password = ? WHERE aid = ?";
 
             db.query(sql, [hash, uid], (error, result) => {
@@ -195,6 +201,7 @@ exports.remove = (req, res, next) => {
 exports.itemApproval = (req, res, next) => {
     let pid = req.params.pid;
 
+    //1 is approved
     let sql = "UPDATE posts SET status = 1 WHERE pid = ?";
 
     db.query(sql, [pid], (err, result) => {
@@ -214,10 +221,12 @@ exports.itemApproval = (req, res, next) => {
     });
 }
 
-
+//deletes a post with the pid given in the request parameters
 exports.itemDeletion = (req, res, next) => {
     let pid = req.params.pid;
+    let skipCover = false;
 
+    //get the post info
     let sql = "SELECT * FROM posts WHERE pid = ?";
 
     db.query(sql, [pid], (error, result) => {
@@ -226,6 +235,9 @@ exports.itemDeletion = (req, res, next) => {
             res.redirect('/error');
         }
 
+        //prepare sql to delete post info from tables.
+        //posts table info has to be deleted last because
+        //pid is a foreign key in the other tables.
         sql = "DELETE FROM tags WHERE pid = ?;";
         sql += "DELETE FROM links WHERE pid = ?;";
         sql += "DELETE FROM posts WHERE pid = ?;"
@@ -233,20 +245,40 @@ exports.itemDeletion = (req, res, next) => {
         let coverImage = result[0].cover;
         let sampleImage = result[0].image;
 
+        //check if the cover image is the default one
+        //if it is the default one, skipCover = true, so that we do not delete noCover.png 
+        if (coverImage == "noCover.png") {
+            skipCover = true;
+        }
+
         db.query(sql, [pid, pid, pid], (error2, result2) => {
             if (error2) {
                 req.flash('error', 'There was an internal error.');
                 res.redirect('/error');
             }
 
-            fs.unlink('./public/images/upload/' + coverImage, (err) => {
-                if (err) {
-                    req.flash('error', 'There was an internal error.');
-                    res.redirect('/error');
-                }
-
-                fs.unlink('./public/images/upload/' + sampleImage, (err2) => {
+            if (!skipCover) {
+                //cover is also deleted
+                fs.unlink('./public/images/upload/' + coverImage, (err) => {
                     if (err) {
+                        req.flash('error', 'There was an internal error.');
+                        res.redirect('/error');
+                    }
+
+                    fs.unlink('./public/images/upload/' + sampleImage, (err2) => {
+                        if (err2) {
+                            req.flash('error', 'There was an internal error.');
+                            res.redirect('/error');
+                        }
+
+                        req.flash('success', 'Deleted Post Information.');
+                        res.redirect('/masteradmin/imagereview');
+                    });
+                });
+            } else {
+                //only work image is deleted
+                fs.unlink('./public/images/upload/' + sampleImage, (err2) => {
+                    if (err2) {
                         req.flash('error', 'There was an internal error.');
                         res.redirect('/error');
                     }
@@ -254,12 +286,12 @@ exports.itemDeletion = (req, res, next) => {
                     req.flash('success', 'Deleted Post Information.');
                     res.redirect('/masteradmin/imagereview');
                 });
-            });
+            }
         });
     });
 }
 
-
+//edits the information of the post with the pid given in the request body.
 exports.editPost_post = (req, res, next) => {
     let { pid, title, jtitle, author, description, details, type, tags, links } = req.body;
     let japTitle = "";
@@ -269,6 +301,7 @@ exports.editPost_post = (req, res, next) => {
         japTitle = jtitle;
     }
 
+    //Delete tags and links with the pid, because we will be re entering them into database
     let sqlDel = "DELETE FROM links WHERE pid = ?; DELETE FROM tags WHERE pid = ?";
 
     let delPlaceholders = [pid, pid];
@@ -282,6 +315,7 @@ exports.editPost_post = (req, res, next) => {
         let linksList = separate.separateLinks(links);
         let tagsList = separate.separateTags(tags);
 
+        //update the post info in the posts table.
         let sql = "UPDATE posts SET title = ?, jtitle = ?, author = ?, description = ?, details = ?, type = ? WHERE pid = ?;";
         let postPlaceholders = [title, japTitle, author, description, details, type, pid];
         placeholders.push(...postPlaceholders);
@@ -324,6 +358,7 @@ exports.editPost_post = (req, res, next) => {
     });
 }
 
+//changes the images of the posts for the given pid found in the request body.
 exports.addImage_post = (req, res, next) => {
     let { pid, cover, image } = req.body;
     let newImages = req.files;
@@ -336,6 +371,7 @@ exports.addImage_post = (req, res, next) => {
     let sql = "UPDATE posts SET cover = ?";
     placeholders.push(coverImage);
 
+    //check the work image info to see if we are replacing it.
     if (newImages.mangaImage != undefined) {
         workImage = newImages.mangaImage[0].filename;
         skipWork = false;
@@ -343,6 +379,7 @@ exports.addImage_post = (req, res, next) => {
         placeholders.push(workImage);
     }
 
+    //check to see if we skip current cover image deletion
     if (cover == "noCover.png") {
         skipCover = true;
     }
@@ -359,9 +396,11 @@ exports.addImage_post = (req, res, next) => {
         if ((typeof result !== 'undefined')) {
             if (skipCover) {
                 if (skipWork) {
+                    //we delete nothing
                     req.flash('success', 'Successfully updated image.');
                     res.redirect('/masteradmin/imagereview');
                 } else {
+                    //we delete only the work image
                     fs.unlink('./public/images/upload/' + image, (err) => {
                         if (err) {
                             req.flash('error', 'There was an internal error.');
@@ -378,9 +417,11 @@ exports.addImage_post = (req, res, next) => {
                         res.redirect('/error');
                     }
                     if (skipWork) {
+                        //we only delete the cover image
                         req.flash('success', 'Successfully updated image.');
                         res.redirect('/masteradmin/imagereview');
                     } else {
+                        //we delete both images
                         fs.unlink('./public/images/upload/' + image, (err2) => {
                             if (err2) {
                                 req.flash('error', 'There was an internal error.');
@@ -399,8 +440,10 @@ exports.addImage_post = (req, res, next) => {
     });
 }
 
+//add a new TSF type to the tsftypes table
 exports.addNewType = (req, res, next) => {
     let { newType } = req.body;
+    //we make sure other is the last item in the table.
     let sql = "DELETE FROM tsftypes WHERE name = ?;";
     sql += "INSERT INTO tsftypes (name) VALUES (?);"
     sql += "INSERT INTO tsftypes (name) VALUES (?);"
@@ -417,8 +460,10 @@ exports.addNewType = (req, res, next) => {
     });
 }
 
+//add a new origin to the origin table
 exports.addNewOrigin = (req, res, next) => {
     let { newOrigin } = req.body;
+    //make sure that other is the last item in the table
     let sql = "DELETE FROM origin WHERE name = ?;";
     sql += "INSERT INTO origin (name) VALUES (?);"
     sql += "INSERT INTO origin (name) VALUES (?);"
@@ -435,11 +480,13 @@ exports.addNewOrigin = (req, res, next) => {
     });
 }
 
+//finds the post with the given pid in the request body
 exports.findPostById = (req, res, next) => {
     let { pid } = req.body;
     res.redirect('/libraryitem/' + pid + '/moderator');
 }
 
+//makes a back up of the database tables, except the admin and mod tables.
 exports.backupDB = (req, res, next) => {
     dbBackup.createNewDBBackup();
     req.flash('success', 'Successfully backed up the database');

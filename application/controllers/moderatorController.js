@@ -1,3 +1,4 @@
+//Contributors: Osbaldo Martinez
 const db = require('../config/db2');//non-promise database connection
 const fs = require('fs');
 const passport = require('passport');
@@ -9,7 +10,7 @@ const cache = require('../helper/dataCache');
 const post = require('./getPostController');
 const types = require('./typeController');
 
-
+//caches for information that is used in the rendered pages.
 let numCache = new cache.cache(post.getNumberApproved, "2", 1);
 let typesCache = new cache.cache(types.retrieve, "1", 1440);
 let originCache = new cache.cache(types.originGet, "5", 1440);
@@ -53,6 +54,7 @@ exports.login_post = (req, res, next) => {
 
 }
 
+//renders the settings page
 exports.settings = (req, res, next) => {
     numCache.getData()
         .then((count) => {
@@ -63,10 +65,12 @@ exports.settings = (req, res, next) => {
         });
 }
 
+//changes the mod password with the given id in the user
 exports.changePassword = (req, res, next) => {
     let uid = req.user.id;
     let { password, confirmPassword } = req.body;
 
+    //check if password is btwn 8 and 20 characters
     if (password.length < 8 || password.length > 20) {
         req.flash('error', 'Password must be between 8 and 20 characters.');
     }
@@ -104,7 +108,7 @@ exports.changePassword = (req, res, next) => {
     });
 }
 
-// Handle showing registration page for user on GET
+// Handle showing registration page for mod on GET
 exports.register_get = (req, res, next) => {
     numCache.getData()
         .then((count) => {
@@ -115,7 +119,7 @@ exports.register_get = (req, res, next) => {
         });
 }
 
-// Handle registration for student on POST
+// Handle registration for mod on POST
 exports.register_post = (req, res, next) => {
     let { username, password, confirmPassword } = req.body;
     let uid = uuidv4();
@@ -211,8 +215,8 @@ exports.logout = (req, res, next) => {
     res.redirect('/');
 }
 
-// Display user's dashboard page on GET
-// Retrieve list of posts listed by the user that is logged in
+// Display mod's dashboard page on GET
+// Retrieve list of posts that have not been approved
 exports.dashboard = (req, res, next) => {
 
     let sql = "SELECT pid, title, cover, image FROM posts WHERE status = 0";
@@ -236,7 +240,7 @@ exports.dashboard = (req, res, next) => {
     });
 }
 
-//Handles approval of item with the given pid
+//Handles approval of post with the given pid
 exports.itemApproval = (req, res, next) => {
     let pid = req.params.pid;
 
@@ -244,21 +248,22 @@ exports.itemApproval = (req, res, next) => {
 
     db.query(sql, [pid], (err, result) => {
         if (err) {
-            req.flash('error', 'Error approving item');
+            req.flash('error', 'Error approving post');
             res.redirect('/moderators/dashboard');
         }
 
         if (result.changedRows > 0) {
-            req.flash('success', 'Sucessfully approved item');
+            req.flash('success', 'Sucessfully approved post');
             res.redirect('/moderators/dashboard');
         }
         else {
-            req.flash('error', 'Error approving item');
+            req.flash('error', 'Error approving post');
             res.redirect('/moderators/dashboard');
         }
     });
 }
 
+//renders the confirmDeletion page of the post with the given pid
 exports.confrimDelete = (req, res, next) => {
     let pid = req.params.pid;
 
@@ -281,9 +286,10 @@ exports.confrimDelete = (req, res, next) => {
 
 }
 
-
+//Handles deletion of post with the given pid
 exports.itemDeletion = (req, res, next) => {
     let pid = req.params.pid;
+    let skipCover = false;
 
     let sql = "SELECT * FROM posts WHERE pid = ?";
 
@@ -300,45 +306,70 @@ exports.itemDeletion = (req, res, next) => {
         let coverImage = result[0].cover;
         let sampleImage = result[0].image;
 
+        //check if the cover image is the default one
+        //if it is the default one, skipCover = true, so that we do not delete noCover.png
+        if (coverImage == "noCover.png") {
+            skipCover = true;
+        }
+
         db.query(sql, [pid, pid, pid], (error2, result2) => {
             if (error2) {
                 req.flash('error', 'There was an internal error.');
                 res.redirect('/error');
             }
 
-            fs.unlink('./public/images/upload/' + coverImage, (err) => {
-                if (err) {
-                    req.flash('error', 'There was an internal error.');
-                    res.redirect('/error');
-                }
-
-                fs.unlink('./public/images/upload/' + sampleImage, (err) => {
+            if (!skipCover) {
+                //cover is also deleted
+                fs.unlink('./public/images/upload/' + coverImage, (err) => {
                     if (err) {
                         req.flash('error', 'There was an internal error.');
                         res.redirect('/error');
                     }
-                    req.flash('success', 'Deleted Post Information.');
-                    res.redirect('/moderators/dashboard');
+
+                    fs.unlink('./public/images/upload/' + sampleImage, (err2) => {
+                        if (err2) {
+                            req.flash('error', 'There was an internal error.');
+                            res.redirect('/error');
+                        }
+
+                        req.flash('success', 'Deleted Post Information.');
+                        res.redirect('/masteradmin/imagereview');
+                    });
                 });
-            });
+            } else {
+                //only work image is deleted
+                fs.unlink('./public/images/upload/' + sampleImage, (err2) => {
+                    if (err2) {
+                        req.flash('error', 'There was an internal error.');
+                        res.redirect('/error');
+                    }
+
+                    req.flash('success', 'Deleted Post Information.');
+                    res.redirect('/masteradmin/imagereview');
+                });
+            }
         });
     });
 }
 
-
+//renders page to edit post info of the post with the given pid.
+//returns the links and tags with a single strings for each with proper commas.
 exports.editPost_get = (req, res, next) => {
     let pid = req.params.pid;
     let links = {};
     let tags = {};
-    let pCache = new cache.cache(post.getPostInfo, "pos", 0.005);
 
+    //get origin table data
     originCache.getData()
         .then((orig) => {
+            //get types from tsftypes tables
             typesCache.getData()
                 .then((types) => {
+                    //get number of approved posts
                     numCache.getData()
                         .then((count) => {
-                            pCache.getData(pid)
+                            //get post info
+                            post.getPostInfo(pid)
                                 .then((result) => {
                                     links.links = commas.addCommasLinks(result[1]);
                                     tags.tags = commas.addCommasTags(result[2]);
@@ -361,7 +392,7 @@ exports.editPost_get = (req, res, next) => {
         });
 }
 
-
+//updates the post with the given pid with the given information in the form.
 exports.editPost_post = (req, res, next) => {
     let { pid, title, jtitle, author, description, details, type, origin, tags, links } = req.body;
     let japTitle = "";
@@ -426,13 +457,13 @@ exports.editPost_post = (req, res, next) => {
     });
 }
 
+//gets post pid, image, and cover and renders the page to change the images.
 exports.addImage_get = (req, res, next) => {
     let pid = req.params.pid;
-    let pCache = new cache.cache(post.getPostImagesById, "pos", 0.005);
 
     numCache.getData()
         .then((count) => {
-            pCache.getData(pid)
+            post.getPostImagesById(pid)
                 .then((result) => {
                     res.render('editPostImage', { count: count, postInfo: result });
                 }).catch((err) => {
@@ -445,6 +476,8 @@ exports.addImage_get = (req, res, next) => {
         });
 }
 
+//changes the images of the post with the given image/s
+//for more documentation look at the similar function in administratorController.js
 exports.addImage_post = (req, res, next) => {
     let { pid, cover, image } = req.body;
     let newImages = req.files;

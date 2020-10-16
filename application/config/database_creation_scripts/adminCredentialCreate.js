@@ -1,3 +1,5 @@
+//Contributors: Osbaldo Martinez
+//This file adds the admin to the admin table
 const db = require('../db');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
@@ -20,7 +22,7 @@ let adminCreate = function() {
             db.query(sql, [uid, adminName, password], (error, result) => {
                 if (err) throw err;
 
-                console.log("Admin credentials created")
+                console.log("Admin credentials created");
             });
         });
     });

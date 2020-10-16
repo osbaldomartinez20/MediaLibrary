@@ -1,3 +1,4 @@
+//Contributors: Osbaldo Martinez
 //This class is wrappes around array methods.
 //This Queue is used to hold caches for the resulting data from the SQL queries.
 //You can declare a limit otherwise default limit is 10.

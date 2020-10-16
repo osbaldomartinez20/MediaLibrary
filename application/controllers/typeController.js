@@ -1,8 +1,11 @@
-//This file retrieves the values in the types table.
+//Contributors: Osbaldo Martinez
+//This file retrieves the values in the tsftypes and origin table.
 const db = require("../config/db");
 
+//get all the types from the tsftypes
 async function getTypes() {
     let sql = "SELECT name FROM tsftypes";
+
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql);
         if (result[0].length < 1) {
@@ -12,10 +15,11 @@ async function getTypes() {
     });
 }
 
+//get all the origins from the origin
 async function getOrigins() {
     let sql = "SELECT name FROM origin";
+
     return new Promise(async function (resolve, reject) {
-        
         const result = await db.query(sql);
         if (result[0].length < 1) {
             console.log("There was an error getting the types");
@@ -24,5 +28,6 @@ async function getOrigins() {
     });
 }
 
+//exports the functions
 exports.retrieve = getTypes;
 exports.originGet = getOrigins;

@@ -1,6 +1,6 @@
 {
   "name": "tsf_manga_library",
-  "version": "0.9.0",
+  "version": "0.9.9",
   "description": "A library that points to where one could find a specifuc tsf work",
   "main": "server.js",
   "scripts": {
@@ -20,13 +20,12 @@
     "https": "^1.0.0",
     "mkdirp": "^0.5.1",
     "multer": "^1.4.2",
-    "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
     "mysqldump": "^3.2.0",
     "nodemon": "^2.0.4",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.1"
   }
 }
