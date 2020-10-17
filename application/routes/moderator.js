@@ -51,4 +51,10 @@ router.get('/:pid/addimage', ensureUserAuthenticated, userController.addImage_ge
 // POST request to change post images 
 router.post('/addimage', ensureUserAuthenticated, postImageUpload.fields([{name:'coverImage', maxCount: 1}, {name:'mangaImage', maxCount: 1}]), userController.addImage_post);
 
+//GET settings page
+router.get('/settings', ensureUserAuthenticated, userController.settings);
+
+////POST for change password
+router.post('/changepass', ensureUserAuthenticated, userController.changePassword);
+
 module.exports = router;

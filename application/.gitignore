@@ -11,7 +11,7 @@
 *.sln.docstates
 
 #folders
-config/
+config/db.js
 public/images/
 sslcert/
 

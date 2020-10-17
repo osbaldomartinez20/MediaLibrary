@@ -5,7 +5,7 @@ const mysql = require('mysql2');
 const connnection = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "root",
+  password: "TSFCWebApp",
   database: "tsfc",
   multipleStatements: true
 });
