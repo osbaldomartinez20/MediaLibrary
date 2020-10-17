@@ -12,10 +12,9 @@ async function getPostInfoById(id) {
 
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
-            req.flash('error', 'There was an internal error.');
-            res.redirect('/error');
+        
         });
-        if (result[0].length < 1) {
+        if (result == undefined) {
             console.log("There was an error getting the post info.");
         }
         resolve(result[0]);
@@ -29,10 +28,9 @@ async function getPostImagesById(id) {
 
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
-            req.flash('error', 'There was an internal error.');
-            res.redirect('/error');
+            
         });
-        if (result[0].length < 1) {
+        if (result == undefined) {
             console.log("There was an error getting the post info.");
         }
         resolve(result[0]);
@@ -44,10 +42,9 @@ async function getNumberOfApprovedPosts() {
     let sql = "SELECT COUNT(*) as \"total\" FROM posts WHERE status = 1";
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql).catch((error) => {
-            req.flash('error', 'There was an internal error.');
-            res.redirect('/error');
+            
         });
-        if (result[0].length < 1) {
+        if (result == undefined) {
             console.log("There was an error getting the number of posts");
         }
         resolve(result[0]);
@@ -59,10 +56,9 @@ async function getTenPosts() {
     let sql = "SELECT * FROM posts WHERE status = 1 ORDER BY date DESC LIMIT 10";
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql).catch((error) => {
-            req.flash('error', 'There was an internal error.');
-            res.redirect('/error');
+            
         });
-        if (result[0].length < 1) {
+        if (result == undefined) {
             console.log("There was an error getting the posts.");
         }
         resolve(result[0]);
@@ -85,7 +81,7 @@ async function getPostsBasedOnFirstTitleCharacter(firstCharacter) {
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         });
-        if (result[0].length < 1) {
+        if (result == undefined) {
             console.log("There was an error getting the posts.");
         }
         resolve(result[0]);
@@ -103,10 +99,9 @@ async function getByKeyWord(keyword) {
     }
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
-            req.flash('error', 'There was an internal error.');
-            res.redirect('/error');
+            
         });
-        if (result[0].length < 1) {
+        if (result == undefined) {
             console.log("There was an error getting the posts.");
         }
         resolve(result[0]);
@@ -119,10 +114,9 @@ async function getByType(type) {
     let placeholders = [type];
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
-            req.flash('error', 'There was an internal error.');
-            res.redirect('/error');
+            
         });
-        if (result[0].length < 1) {
+        if (result == undefined) {
             console.log("There was an error getting the posts.");
         }
         resolve(result[0]);
@@ -135,10 +129,9 @@ async function getByOrigin(origin) {
     let placeholders = [origin];
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
-            req.flash('error', 'There was an internal error.');
-            res.redirect('/error');
+            
         });
-        if (result[0].length < 1) {
+        if (result == undefined) {
             console.log("There was an error getting the posts.");
         }
         resolve(result[0]);
@@ -152,10 +145,8 @@ async function getByTag(tag) {
     let placeholders = [tag];
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
-            req.flash('error', 'There was an internal error.');
-            res.redirect('/error');
         });
-        if (result[0].length < 1) {
+        if (result == undefined) {
             console.log("There was an error getting the posts.");
         }
         resolve(result[0]);
