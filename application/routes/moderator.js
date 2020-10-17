@@ -54,7 +54,7 @@ router.post('/addimage', ensureUserAuthenticated, postImageUpload.fields([{name:
 //GET settings page
 router.get('/settings', ensureUserAuthenticated, userController.settings);
 
-////POST for change password
+//POST for change password
 router.post('/changepass', ensureUserAuthenticated, userController.changePassword);
 
 module.exports = router;

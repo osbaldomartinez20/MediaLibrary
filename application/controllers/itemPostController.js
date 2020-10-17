@@ -42,7 +42,7 @@ exports.imagePost_post = (req, res, next) => {
     let postImages = req.files;
     let postCover = "noCover.png";
     let postImage = "noCover.png";
-    if(postImages.mangaImage != undefined) {
+    if (postImages.mangaImage != undefined) {
         postImage = postImages.mangaImage[0].filename;
     }
     let postError = [];

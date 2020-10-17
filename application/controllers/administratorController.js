@@ -49,12 +49,12 @@ exports.changePassword = (req, res, next) => {
     //make sure password is btwn 8 and 20 characters
     if (password.length < 8 || password.length > 20) {
         req.flash('error', 'Password must be between 8 and 20 characters.');
-	    res.redirect('/masteradmin/settings');
+        res.redirect('/masteradmin/settings');
     }
     // Check if passwords match
     if (password !== confirmPassword) {
         req.flash('error', 'Passwords must match.');
-	    res.redirect('/masteradmin/settings');
+        res.redirect('/masteradmin/settings');
     }
 
     bcrypt.genSalt(10, (err, salt) => {
