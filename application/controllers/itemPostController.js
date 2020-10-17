@@ -41,7 +41,10 @@ exports.imagePost_post = (req, res, next) => {
     let { title, japTitle, author, publication, description, tags, links, type, origin } = req.body;
     let postImages = req.files;
     let postCover = "noCover.png";
-    let postImage = postImages.mangaImage[0].filename;
+    let postImage = "noCover.png";
+    if (postImages.mangaImage != undefined) {
+        postImage = postImages.mangaImage[0].filename;
+    }
     let postError = [];
     let status = 0;
     let placeholders = [];

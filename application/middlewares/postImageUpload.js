@@ -23,7 +23,7 @@ const upload = multer({
         var imageExt = path.extname(file.originalname);
         //only accepting jpg and png
         if (imageExt !== '.png' && imageExt !== '.jpg' && imageExt !== '.jpeg' && imageExt !== '.JPEG' && imageExt !== '.JPG') {
-            return cb(new Error('Only images are allowed'));
+            return cb(null, false);
         }
         cb(null, true);
     }
