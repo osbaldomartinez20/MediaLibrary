@@ -1,6 +1,6 @@
 //Contributors: Osbaldo Martinez
 //This file adds the admin to the admin table
-const db = require('../db');
+const db = require('../db2');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
 

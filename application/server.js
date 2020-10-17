@@ -13,8 +13,8 @@ const fs = require('fs');
 
 /*
 //get the key and certificate information for the https server to use.
-const privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
-const certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
+const privateKey  = fs.readFileSync('sslcert/osbaldoiniguez.key', 'utf8');
+const certificate = fs.readFileSync('sslcert/osbaldoiniguez.crt', 'utf8');
 const credentials = {key: privateKey, cert: certificate};
 //*/
 
@@ -77,10 +77,11 @@ app.set('port', 3000);
 const server = http.Server(app);
 //const httpsServer = https.createServer(credentials, app);
 
-// Start server
+///* Start server
 server.listen(app.get('port'), function () {
     console.log('Starting server on port ' + app.get('port'));
 });
+//*/
 /*
 //use port 8080 for the https server
 httpsServer.listen(8080, function () {
