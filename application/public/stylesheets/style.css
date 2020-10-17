@@ -55,19 +55,39 @@ a {
 
 }
 
-@media (min-width:1000px){
+@media (min-width:751px){
     .bannerimg {
         display: block; 
         width: 100%;
-        height: 324px;
+        height: auto;
+    }
+    .text-block {
+      position: absolute;
+        top: 89%;
+        left: 26%;
+        transform: translate( -50%, -50% );
+        text-align: center;
+        color: black;
+        font-weight: bold;
+        font-size: 200%;
     }
 }
 
-@media (max-width:999px){
+@media (max-width:750px){
     .bannerimg {
         display: block; 
         width: 100%;
-        height: 216px;
+        height: auto;
+    }
+    .text-block {
+      position: absolute;
+        top: 89%;
+        left: 26%;
+        transform: translate( -50%, -50% );
+        text-align: center;
+        color: black;
+        font-weight: bold;
+        font-size: 120%;
     }
 }
 
@@ -77,16 +97,6 @@ a {
     ;
 }
 
-.text-block {
-  position: absolute;
-    top: 87%;
-    left: 43%;
-    transform: translate( -50%, -50% );
-    text-align: center;
-    color: black;
-    font-weight: bold;
-    font-size: 200%;
-}
 
 .errMsg {
   text-align: center;
