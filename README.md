@@ -5,7 +5,7 @@ This web application was written to serve as a library directory system, where u
 
 # Build/Run Instructions
 
-1. Get a server to host the application. (I am assuming a lunix server is being used)
+1. Get a server to host the application. (I am assuming a linux server is being used)
 2. Git pull this repository into a folder in the server.
 3. Make sure that your server has node and npm installed, if not install them. 
 4. Make sure that mysql is installed, if not install it. Then configure a new mysql server.
