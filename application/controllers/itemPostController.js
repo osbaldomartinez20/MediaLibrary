@@ -8,9 +8,9 @@ const getCount = require('../controllers/getPostController');
 const { v4: uuidv4 } = require('uuid');
 
 //caches for information that is used in the rendered pages.
-let typesCache = new cache.cache(types.retrieve, "1", 1440);
+let typesCache = new cache.cache(types.retrieve, "1", 30);
 let numCache = new cache.cache(getCount.getNumberApproved, "2", 1);
-let originCache = new cache.cache(types.originGet, "5", 1440);
+let originCache = new cache.cache(types.originGet, "5", 30);
 
 // Handle showing submit page on GET
 exports.imagePost_get = (req, res, next) => {

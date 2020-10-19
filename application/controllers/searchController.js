@@ -2,6 +2,7 @@
 const cache = require('../helper/dataCache');
 const queue = require('../helper/cacheQueue');
 const post = require('./getPostController');
+const types = require('./typeController');
 
 //Caches and queue caches that help with retrieving data and reduce db calls
 let characterQueue = new queue.cacheQueue(27);
@@ -11,6 +12,8 @@ let originQueue = new queue.cacheQueue(4);
 let tagQueue = new queue.cacheQueue(150);
 let newestCache = new cache.cache(post.homePagePosts, "3", 5);
 let numCache = new cache.cache(post.getNumberApproved, "2", 1);
+let originCache = new cache.cache(types.originGet, "5", 30);
+let typesCache = new cache.cache(types.retrieve, "1", 30);
 
 // Handle search of posts from keyword from search bar.
 exports.post = (req, res, next) => {

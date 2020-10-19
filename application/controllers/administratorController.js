@@ -9,6 +9,7 @@ const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
 const fs = require('fs');
 const separate = require('../helper/separeteByCommas');
+const filterFuncReWrite = require('../helper/rewriteFilterFunction');
 
 //cache to get the number of approved posts
 let numCache = new cache.cache(post.getNumberApproved, "2", 1);
@@ -442,21 +443,30 @@ exports.addImage_post = (req, res, next) => {
     });
 }
 
-//add a new TSF type to the tsftypes table
 exports.addNewType = (req, res, next) => {
     let { newType } = req.body;
-    //we make sure other is the last item in the table.
-    let sql = "DELETE FROM tsftypes WHERE name = ?;";
-    sql += "INSERT INTO tsftypes (name) VALUES (?);"
-    sql += "INSERT INTO tsftypes (name) VALUES (?);"
-    let placeholders = ["Other", newType, "Other"];
+    let sqlB = "SELECT COUNT(*) as \"total\" FROM tsftypes;"
 
-    db.query(sql, placeholders, (err, result) => {
-        if (err) {
+    db.query(sqlB, (error, results) => {
+        if (error) {
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         }
 
+        let currCount = results[0].total;
+
+        //we make sure other is the last item in the table.
+        let sql = "DELETE FROM tsftypes WHERE name = ?;";
+        sql += "INSERT INTO tsftypes (tid, name) VALUES (?, ?);"
+        sql += "INSERT INTO tsftypes (tid, name) VALUES (?, ?);"
+        let placeholders = ["Other", currCount, newType, currCount+1, "Other"];
+
+        db.query(sql, placeholders, (err, result) => {
+            if (err) {
+                console.log(err);
+            }
+            filterFuncReWrite.writeFunction();
+        });
         req.flash("success", "Successfully added a new type.");
         res.redirect('/masteradmin/settings');
     });

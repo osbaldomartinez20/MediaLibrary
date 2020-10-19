@@ -39,18 +39,10 @@
             <input type="checkbox" id="jtShow" name="jtShow" onclick="showHideJapTitle();" style="cursor: pointer;" />
             <br />
 
-            <label for="Other" id="OtherLabel">Other</label>
-            <input type="checkbox" id="Other" name="Other" onclick="showHide(0);" style="cursor: pointer;" />
-
-            <label for="Transformation" id="TransformationLabel">Transformation(他者変身)</label>
-            <input type="checkbox" id="Transformation" name="Transformation" onclick="showHide(1);"
-                style="cursor: pointer;" />
-
-            <label for="Possession" id="PossessionLabel">Possession(憑依)</label>
-            <input type="checkbox" id="Possession" name="Possession" onclick="showHide(2);" style="cursor: pointer;" />
-
-            <label for="Bodyswap" id="BodyswapLabel">Bodyswap(入れ替わり)</label>
-            <input type="checkbox" id="Bodyswap" name="Bodyswap" onclick="showHide(3);" style="cursor: pointer;" />
+            {{#each types}}
+            <label for="{{this.name}}" id="{{this.name}}Label">{{this.name}}</label>
+            <input type="checkbox" id="{{this.name}}" name="{{this.name}}" onclick="showHide({{this.tid}});" style="cursor: pointer;" />
+            {{/each}}
         </div>
 
         <table class="table table-bordered" id="resultTable" style="font-size: large;">

@@ -4,7 +4,7 @@ const db = require("../config/db");
 
 //get all the types from the tsftypes
 async function getTypes() {
-    let sql = "SELECT name FROM tsftypes";
+    let sql = "SELECT * FROM tsftypes ORDER BY tid;";
 
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql);
@@ -17,7 +17,7 @@ async function getTypes() {
 
 //get all the origins from the origin
 async function getOrigins() {
-    let sql = "SELECT name FROM origin";
+    let sql = "SELECT * FROM origin ORDER BY oid;";
 
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql);
