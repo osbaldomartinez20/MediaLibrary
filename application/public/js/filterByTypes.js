@@ -13,7 +13,7 @@ function showHide(typeIndex) {
     if (document.getElementById(typeList[typeIndex]).checked) {
         //this block hides the post that do not have the type.
         for (let i = 0; i < docSelection.length; i++) {
-            let temp = docSelection[i].getElementsByTagName("TD")[5].childNodes[0].innerText;
+            let temp = docSelection[i].getElementsByTagName("TD")[3].childNodes[0].innerText;
             if (temp != typeList[typeIndex]) {
                 //entries that do not have the type are given the hidden class, which hides said entry.
                 if (!document.getElementById(temp).checked) {
@@ -25,9 +25,8 @@ function showHide(typeIndex) {
         }
     } else {
         //this block removes the hidden class form the entries and makes them to be shown.
-        let oneChecked = false;
         for (let i = 0; i < docSelection.length; i++) {
-            let temp = docSelection[i].getElementsByTagName("TD")[5].childNodes[0].innerText;
+            let temp = docSelection[i].getElementsByTagName("TD")[3].childNodes[0].innerText;
             if (atLeastOneChecked()) {
                 if (document.getElementById(temp).checked) {
                     //entries have their hidden class removed to be able to be shown
@@ -43,6 +42,7 @@ function showHide(typeIndex) {
     }
 }
 
+//function used to check if there is another type being checked off
 function atLeastOneChecked() {
     let checked = false;
     for (let i = 0; i < typeList.length; i++) {
