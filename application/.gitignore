@@ -12,7 +12,7 @@
 
 #folders
 config/db.js
-public/images/
+public/images/upload
 sslcert/
 
 # User-specific files (MonoDevelop/Xamarin Studio)

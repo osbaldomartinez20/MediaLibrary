@@ -7,13 +7,13 @@
     <div class="container-fluid">
         {{> message}}
     </div>
-    <h1>Welcome to your Dashboard, {{loggedIn.username}}!</h1>
+    <h1><b>Welcome to your Dashboard, {{loggedIn.username}}!</b></h1>
 </div>
 
 <div class="container-fluid">
     {{!-- Container for the mod approval section --}}
     <div class="post_container">
-        <h2 id="TableTitle">Moderators To Review</h2>
+        <h2 id="TableTitle"><b>Moderators To Review</b></h2>
         <table id="unapprovedTable" class="table table-bordered">
             <colgroup>
                 <col span="1" style="width: 50%;">
@@ -34,9 +34,9 @@
                     <td scope="row" style="text-align: center;">{{this.username}}</td>
                     <td style="text-align: center;"><a href="/masteradmin/{{this.id}}/approve"
                             id="approve_button"><button
-                                style="background-color: rgb(19, 138, 19); color: black;">Approve</button></a></td>
+                                style="background-color: rgb(19, 138, 19); color: white; font-weight: bold;">Approve</button></a></td>
                     <td style="text-align: center;"><a href="/masteradmin/{{this.id}}/remove" id="remove_button"><button
-                                style="background-color: red; color: black;">Remove</button></a></td>
+                                style="background-color: red; color: white; font-weight: bold;">Remove</button></a></td>
                 </tr>
                 {{/each}}
                 {{/if}}
@@ -50,7 +50,7 @@
 <div class="container-fluid">
     {{!-- Container for the active mod section --}}
 
-    <h2 id="TableTitle">Active Moderators</h2>
+    <h2 id="TableTitle"><b>Active Moderators</b></h2>
     <table id="activeTable" class="table table-bordered">
         <colgroup>
             <col span="1" style="width: 50%;">
@@ -66,7 +66,7 @@
             <tr>
                 <td scope="row" style="text-align: center;">{{this.username}}</td>
                 <td style="text-align: center;"><a href="/masteradmin/{{this.id}}/disapprove"
-                        id="approve_button"><button style="background-color: red; color: black;">Disapprove</button></a>
+                        id="approve_button"><button style="background-color: red; color: white; font-weight: bold;">Disapprove</button></a>
                 </td>
             </tr>
             {{/each}}
