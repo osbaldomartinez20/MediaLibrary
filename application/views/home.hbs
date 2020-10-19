@@ -11,12 +11,10 @@
     </div>
     <div class="home" style="width: 100%;">
         <div style="text-align: center;">
-            <a href="/search/Manga/byorigin"><button
-                    style="background-color: orange; color: white; font-weight: bold;">Manga</button></a>
-            <a href="/search/Doujinshi/byorigin"><button
-                    style="background-color: orange; color: white; font-weight: bold;">Doujinshi</button></a>
-            <a href="/search/Western/byorigin"><button
-                    style="background-color: orange; color: white; font-weight: bold;">Western</button></a>
+            {{#each origins}}
+            <a href="/search/{{this.name}}/byorigin"><button
+                    style="background-color: orange; color: white; font-weight: bold;">{{this.name}}</button></a>
+          {{/each}}
         </div>
         <br />
         <h2 class="firstchar"><a href="/search/symbols/firstletter">#</a> <a href="/search/a/firstletter">a</a>

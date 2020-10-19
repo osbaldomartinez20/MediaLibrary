@@ -41,8 +41,20 @@ exports.post = (req, res, next) => {
         .then((count) => {
             keywordQueue.getCacheById(id).getData(keyword)
                 .then((result) => {
-                    resultNum.count = result.length;
-                    res.render('home', { count: count, post: result, searchCriteria: criteria, resultNum: resultNum });
+                    originCache.getData()
+                        .then((origins) => {
+                            typesCache.getData()
+                                .then((types) => {
+                                    resultNum.count = result.length;
+                                    res.render('home', { count: count, post: result, searchCriteria: criteria, resultNum: resultNum, origins: origins, types: types });
+                                }).catch((error) => {
+                                    req.flash('error', 'There was an internal error.');
+                                    res.redirect('/error');
+                                });
+                        }).catch((error) => {
+                            req.flash('error', 'There was an internal error.');
+                            res.redirect('/error');
+                        });
                 }).catch((error) => {
                     req.flash('error', 'There was an internal error.');
                     res.redirect('/error');
@@ -66,8 +78,20 @@ exports.findByFirstLetter = (req, res, next) => {
         .then((count) => {
             characterQueue.getCacheById(firstChar).getData(firstChar)
                 .then((result) => {
-                    resultNum.count = result.length;
-                    res.render('home', { count: count, post: result, resultNum: resultNum });
+                    originCache.getData()
+                        .then((origins) => {
+                            typesCache.getData()
+                                .then((types) => {
+                                    resultNum.count = result.length;
+                                    res.render('home', { count: count, post: result, resultNum: resultNum, origins: origins, types: types });
+                                }).catch((error) => {
+                                    req.flash('error', 'There was an internal error.');
+                                    res.redirect('/error');
+                                });
+                        }).catch((error) => {
+                            req.flash('error', 'There was an internal error.');
+                            res.redirect('/error');
+                        });
                 }).catch((error) => {
                     req.flash('error', 'There was an internal error.');
                     res.redirect('/error');
@@ -91,8 +115,20 @@ exports.findByType = (req, res, next) => {
         .then((count) => {
             typeQueue.getCacheById(type).getData(type)
                 .then((result) => {
-                    resultNum.count = result.length;
-                    res.render('home', { count: count, post: result, resultNum: resultNum });
+                    originCache.getData()
+                        .then((origins) => {
+                            typesCache.getData()
+                                .then((types) => {
+                                    resultNum.count = result.length;
+                                    res.render('home', { count: count, post: result, resultNum: resultNum, origins: origins, types: types });
+                                }).catch((error) => {
+                                    req.flash('error', 'There was an internal error.');
+                                    res.redirect('/error');
+                                });
+                        }).catch((error) => {
+                            req.flash('error', 'There was an internal error.');
+                            res.redirect('/error');
+                        });
                 }).catch((error) => {
                     req.flash('error', 'There was an internal error.');
                     res.redirect('/error');
@@ -107,17 +143,29 @@ exports.findByType = (req, res, next) => {
 exports.findByOrigin = (req, res, next) => {
     //make a new origin cache and add it to the corresponding queue
     let origin = req.params.origin;
-    let originCache = new cache.cache(post.getByOrigin, origin, 5);
+    let originSCache = new cache.cache(post.getByOrigin, origin, 5);
     let resultNum = {};
     resultNum.term = "titles that have the origin: " + origin;
-    originQueue.addCache(originCache);
+    originQueue.addCache(originSCache);
 
     numCache.getData()
         .then((count) => {
             originQueue.getCacheById(origin).getData(origin)
                 .then((result) => {
-                    resultNum.count = result.length;
-                    res.render('home', { count: count, post: result, resultNum: resultNum });
+                    originCache.getData()
+                        .then((origins) => {
+                            typesCache.getData()
+                                .then((types) => {
+                                    resultNum.count = result.length;
+                                    res.render('home', { count: count, post: result, resultNum: resultNum, origins: origins, types: types });
+                                }).catch((error) => {
+                                    req.flash('error', 'There was an internal error.');
+                                    res.redirect('/error');
+                                });
+                        }).catch((error) => {
+                            req.flash('error', 'There was an internal error.');
+                            res.redirect('/error');
+                        });
                 }).catch((error) => {
                     req.flash('error', 'There was an internal error.');
                     res.redirect('/error');
@@ -141,8 +189,20 @@ exports.findByTag = (req, res, next) => {
         .then((count) => {
             tagQueue.getCacheById(tag).getData(tag)
                 .then((result) => {
-                    resultNum.count = result.length;
-                    res.render('home', { count: count, post: result, resultNum: resultNum });
+                    originCache.getData()
+                        .then((origins) => {
+                            typesCache.getData()
+                                .then((types) => {
+                                    resultNum.count = result.length;
+                                    res.render('home', { count: count, post: result, resultNum: resultNum, origins: origins, types: types });
+                                }).catch((error) => {
+                                    req.flash('error', 'There was an internal error.');
+                                    res.redirect('/error');
+                                });
+                        }).catch((error) => {
+                            req.flash('error', 'There was an internal error.');
+                            res.redirect('/error');
+                        });
                 }).catch((error) => {
                     req.flash('error', 'There was an internal error.');
                     res.redirect('/error');
@@ -158,12 +218,24 @@ exports.findByTag = (req, res, next) => {
 exports.getNewest = (req, res, next) => {
     let newest = {};
     newest.text = "You are seeing the 10 newest posts."
-    
+
     numCache.getData()
         .then((count) => {
             newestCache.getData()
                 .then((result) => {
-                    res.render('home', { count: count, post: result, newest: newest });
+                    originCache.getData()
+                        .then((origins) => {
+                            typesCache.getData()
+                                .then((types) => {
+                                    res.render('home', { count: count, post: result, newest: newest, origins: origins, types: types });;
+                                }).catch((error) => {
+                                    req.flash('error', 'There was an internal error.');
+                                    res.redirect('/error');
+                                });
+                        }).catch((error) => {
+                            req.flash('error', 'There was an internal error.');
+                            res.redirect('/error');
+                        });
                 }).catch((error) => {
                     req.flash('error', 'There was an internal error.');
                     res.redirect('/error');
