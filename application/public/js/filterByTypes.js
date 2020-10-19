@@ -16,17 +16,40 @@ function showHide(typeIndex) {
             let temp = docSelection[i].getElementsByTagName("TD")[5].childNodes[0].innerText;
             if (temp != typeList[typeIndex]) {
                 //entries that do not have the type are given the hidden class, which hides said entry.
-                docSelection[i].classList.add("hidden");
+                if (!document.getElementById(temp).checked) {
+                    docSelection[i].classList.add("hidden");
+                }
+            } else {
+                docSelection[i].classList.remove("hidden");
             }
         }
     } else {
         //this block removes the hidden class form the entries and makes them to be shown.
+        let oneChecked = false;
         for (let i = 0; i < docSelection.length; i++) {
             let temp = docSelection[i].getElementsByTagName("TD")[5].childNodes[0].innerText;
-            if (temp != typeList[typeIndex]) {
+            if (atLeastOneChecked()) {
+                if (document.getElementById(temp).checked) {
+                    //entries have their hidden class removed to be able to be shown
+                    docSelection[i].classList.remove("hidden");
+                } else {
+                    docSelection[i].classList.add("hidden");
+                }
+            } else {
                 //entries have their hidden class removed to be able to be shown
                 docSelection[i].classList.remove("hidden");
             }
         }
     }
+}
+
+function atLeastOneChecked() {
+    let checked = false;
+    for (let i = 0; i < typeList.length; i++) {
+        if (document.getElementById(typeList[i]).checked) {
+            checked = true;
+            break;
+        }
+    }
+    return checked;
 }

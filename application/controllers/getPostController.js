@@ -78,8 +78,7 @@ async function getPostsBasedOnFirstTitleCharacter(firstCharacter) {
     }
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
-            req.flash('error', 'There was an internal error.');
-            res.redirect('/error');
+            
         });
         if (result == undefined) {
             console.log("There was an error getting the posts.");

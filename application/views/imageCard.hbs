@@ -2,27 +2,6 @@
     integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 <link rel="stylesheet" href="/stylesheets/bodyKeep.css">
 <div class="itemContainer">
-    {{#if loggedIn.id}}
-    <div>
-        {{#each postInfo}}{{#unless this.status}} <a href="/moderators/{{this.pid}}/approve"><button
-                style="background-color: rgb(19, 138, 19); color: black">Approve</button></a> {{/unless}}
-        <a href="/moderators/{{this.pid}}/edit"><button style="background-color: blue; color: black">Edit</button></a>
-        <a href="/moderators/{{this.pid}}/confirmdel"><button
-                style="background-color: red; color: black">Remove</button></a>
-        {{/each}}
-    </div>
-    {{/if}}
-    {{#if loggedIn.aid}}
-    <div>
-        {{#each postInfo}}{{#unless this.status}} <a href="/masteradmin/{{this.pid}}/itemapprove"><button
-                style="background-color: rgb(19, 138, 19); color: black">Approve</button></a> {{/unless}}
-        <a href="/masteradmin/{{this.pid}}/itemedit"><button
-                style="background-color: blue; color: black">Edit</button></a>
-        <a href="/masteradmin/{{this.pid}}/itemconfirmdel"><button
-                style="background-color: red; color: black">Remove</button></a>
-        {{/each}}
-    </div>
-    {{/if}}
     <div class="container-fluid">
         {{#each postInfo}}
         <h1>{{this.title}}</h1>
@@ -67,7 +46,30 @@
                 </tr>
             </tbody>
         </table>
-        <br /><br />
+        <br />
+        {{#if loggedIn.id}}
+        <div>
+            {{#each postInfo}}{{#unless this.status}} <a href="/moderators/{{this.pid}}/approve"><button
+                    style="background-color: rgb(19, 138, 19); color: white; font-weight: bold;">Approve</button></a> {{/unless}}
+            <a href="/moderators/{{this.pid}}/edit"><button
+                    style="background-color: blue; color: white; font-weight: bold;">Edit</button></a>
+            <a href="/moderators/{{this.pid}}/confirmdel"><button
+                    style="background-color: red; color: white; font-weight: bold;">Remove</button></a>
+            {{/each}}
+        </div>
+        {{/if}}
+        {{#if loggedIn.aid}}
+        <div>
+            {{#each postInfo}}{{#unless this.status}} <a href="/masteradmin/{{this.pid}}/itemapprove"><button
+                    style="background-color: rgb(19, 138, 19); color: white; font-weight: bold;">Approve</button></a> {{/unless}}
+            <a href="/masteradmin/{{this.pid}}/itemedit"><button
+                    style="background-color: blue; color: white; font-weight: bold;">Edit</button></a>
+            <a href="/masteradmin/{{this.pid}}/itemconfirmdel"><button
+                    style="background-color: red; color: white; font-weight: bold;">Remove</button></a>
+            {{/each}}
+        </div>
+        {{/if}}
+        <br />
         <h3>If you are the owner of this work and want us to remove please contact us at:
             <a
                 href="mailto:tsfcontactus@gmail.com?subject=Please%20remove%20my%20work%20from%20your%20site&body=The%20work%20is%20{{#each postInfo}}{{this.title}}%20with%20postId:%20{{this.pid}}{{/each}}">tsfcontactus@gmail.com</a>
