@@ -11,7 +11,7 @@ const session = require("express-session");
 const flash = require('connect-flash');
 const fs = require('fs');
 
-/*
+///*
 //get the key and certificate information for the https server to use.
 const privateKey  = fs.readFileSync('sslcert/osbaldoiniguez.key', 'utf8');
 const certificate = fs.readFileSync('sslcert/osbaldoiniguez.crt', 'utf8');
@@ -71,18 +71,18 @@ app.use(function(req, res, next) {
     res.redirect('/error');    
 });
 
+/* Start server
 // Set port number
 app.set('port', 3000);
 
 const server = http.Server(app);
-//const httpsServer = https.createServer(credentials, app);
 
-///* Start server
 server.listen(app.get('port'), function () {
     console.log('Starting server on port ' + app.get('port'));
 });
 //*/
-/*
+///*
+const httpsServer = https.createServer(credentials, app);
 //use port 8080 for the https server
 httpsServer.listen(8080, function () {
     console.log('Starting server on port 8080');

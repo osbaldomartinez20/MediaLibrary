@@ -1,6 +1,6 @@
 {
   "name": "tsf_manga_library",
-  "version": "0.9.9",
+  "version": "1.0.0",
   "description": "A library that points to where one could find a specifuc tsf work",
   "main": "server.js",
   "scripts": {
