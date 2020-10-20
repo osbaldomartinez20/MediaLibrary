@@ -81,6 +81,7 @@ server.listen(app.get('port'), function () {
     console.log('Starting server on port ' + app.get('port'));
 });
 //*/
+
 ///*
 const httpsServer = https.createServer(credentials, app);
 //use port 8080 for the https server

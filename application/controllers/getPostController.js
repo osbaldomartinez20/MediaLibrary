@@ -8,7 +8,7 @@ async function getPostInfoById(id) {
     let sql = "SELECT * FROM posts WHERE pid = ?;";
 
     sql += "SELECT * FROM links WHERE pid = ?;";
-    sql += "SELECT * FROM tags WHERE pid = ?";
+    sql += "SELECT * FROM tags WHERE pid = ?;";
 
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
@@ -39,7 +39,7 @@ async function getPostImagesById(id) {
 
 //retrieves the number of posts that have been approved.
 async function getNumberOfApprovedPosts() {
-    let sql = "SELECT COUNT(*) as \"total\" FROM posts WHERE status = 1";
+    let sql = "SELECT COUNT(*) as \"total\" FROM posts WHERE status = 1;";
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql).catch((error) => {
             
@@ -53,7 +53,7 @@ async function getNumberOfApprovedPosts() {
 
 //retrieves the 10 newest approved posts
 async function getTenPosts() {
-    let sql = "SELECT * FROM posts WHERE status = 1 ORDER BY date DESC LIMIT 10";
+    let sql = "SELECT * FROM posts WHERE status = 1 ORDER BY date DESC LIMIT 10;";
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql).catch((error) => {
             
@@ -70,10 +70,10 @@ async function getPostsBasedOnFirstTitleCharacter(firstCharacter) {
     let sql = "";
     let placeholders = [];
     if (firstCharacter == 'symbols') {
-        sql = "SELECT * FROM posts WHERE title NOT RLIKE ? AND status = 1"
+        sql = "SELECT * FROM posts WHERE title NOT RLIKE ? AND status = 1;"
         placeholders.push('[a-z]');
     } else {
-        sql = "SELECT * FROM posts WHERE title LIKE ? AND status = 1";
+        sql = "SELECT * FROM posts WHERE title LIKE ? AND status = 1;";
         placeholders.push(firstCharacter + '%');
     }
     return new Promise(async function (resolve, reject) {
@@ -109,7 +109,7 @@ async function getByKeyWord(keyword) {
 
 //retrieves the posts that have the given type.
 async function getByType(type) {
-    let sql = "SELECT * FROM posts WHERE status = 1 AND type = ?";
+    let sql = "SELECT * FROM posts WHERE status = 1 AND type = ?;";
     let placeholders = [type];
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
@@ -124,7 +124,7 @@ async function getByType(type) {
 
 //retrieves the posts that have the given origin.
 async function getByOrigin(origin) {
-    let sql = "SELECT * FROM posts WHERE status = 1 AND origin = ?";
+    let sql = "SELECT * FROM posts WHERE status = 1 AND origin = ?;";
     let placeholders = [origin];
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
@@ -140,7 +140,7 @@ async function getByOrigin(origin) {
 //retrieves the posts that have the given tag.
 async function getByTag(tag) {
     let sql = "SELECT tags.pid, posts.title, posts.jtitle, posts.author, posts.description, posts.details, posts.type, posts.cover, posts.image" +
-        " FROM tags INNER JOIN posts USING (pid) WHERE tags = ? AND posts.status = 1";
+        " FROM tags INNER JOIN posts USING (pid) WHERE tags = ? AND posts.status = 1;";
     let placeholders = [tag];
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {

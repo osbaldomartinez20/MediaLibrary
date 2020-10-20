@@ -31,4 +31,9 @@ $(document).ready(function () {
         // read the image file as a data URL.
         reader.readAsDataURL(this.files[0]);
     };
+
+    document.getElementById("resetForm").onclick = function () {
+        document.getElementById("img2").src = null;
+        document.getElementById("img").src = null;
+    }
 });
