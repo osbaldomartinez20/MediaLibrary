@@ -345,19 +345,11 @@ exports.editPost_post = (req, res, next) => {
 
         db.query(sql, placeholders, (err, result) => {
             if (err) {
-                req.flash('error', 'Error updating post info.');
-                res.redirect('/masteradmin/imagereview');
-            }
-
-            if ((typeof result !== 'undefined')) {
-                req.flash('success', 'Successfully updated post info.');
-                res.redirect('/masteradmin/imagereview');
-            }
-            else {
-                req.flash('error', 'Error updating post info.');
-                res.redirect('/masteradmin/imagereview');
+                console.log(err);
             }
         });
+        req.flash('success', 'Successfully updated post info.');
+        res.redirect('/masteradmin/imagereview');
     });
 }
 
@@ -459,7 +451,7 @@ exports.addNewType = (req, res, next) => {
         let sql = "DELETE FROM tsftypes WHERE name = ?;";
         sql += "INSERT INTO tsftypes (tid, name) VALUES (?, ?);"
         sql += "INSERT INTO tsftypes (tid, name) VALUES (?, ?);"
-        let placeholders = ["Other", currCount, newType, currCount+1, "Other"];
+        let placeholders = ["Other", currCount, newType, currCount + 1, "Other"];
 
         db.query(sql, placeholders, (err, result) => {
             if (err) {

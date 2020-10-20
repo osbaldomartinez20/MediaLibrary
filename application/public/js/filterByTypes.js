@@ -1,4 +1,4 @@
-var typeList = ["Bodyswap","Possession","Transformation","Genderswap","Skinsuit","Other"];
+var typeList = ["Bodyswap(入れ替わり)","Possession(憑依)","Transformation(他者変身)","Genderswap","Skinsuit","Test","Other"];
 //Contributors: Osbaldo Martinez
 //This file contains the functions that help filtering the results.
 
@@ -9,6 +9,7 @@ let docSelection = document.getElementsByClassName("resultRow");
 if (document.getElementById(typeList[typeIndex]).checked) {
 for (let i = 0; i < docSelection.length; i++) {
 let temp = docSelection[i].getElementsByTagName("TD")[3].childNodes[0].innerText;
+console.log(temp);
 if (temp != typeList[typeIndex]) {
 if (!document.getElementById(temp).checked) {
 docSelection[i].classList.add("hidden");

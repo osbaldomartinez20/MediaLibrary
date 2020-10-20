@@ -443,19 +443,11 @@ exports.editPost_post = (req, res, next) => {
 
         db.query(sql, placeholders, (err, result) => {
             if (err) {
-                req.flash('error', 'Error updating post info.');
-                res.redirect('/moderators/dashboard');
-            }
-
-            if ((typeof result !== 'undefined')) {
-                req.flash('success', 'Successfully updated post info.');
-                res.redirect('/moderators/dashboard');
-            }
-            else {
-                req.flash('error', 'Error updating post info.');
-                res.redirect('/moderators/dashboard');
+                console.log(err);
             }
         });
+        req.flash('success', 'Successfully updated post info.');
+        res.redirect('/moderators/dashboard');
     });
 }
 
