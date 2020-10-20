@@ -1,4 +1,4 @@
-var typeList = ["Bodyswap(入れ替わり)","Possession(憑依)","Transformation(他者変身)","Genderswap","Skinsuit","Test","Other"];
+var typeList = ["Bodyswap(入れ替わり)","Possession(憑依)","Transformation(他者変身)","Other"];
 //Contributors: Osbaldo Martinez
 //This file contains the functions that help filtering the results.
 
