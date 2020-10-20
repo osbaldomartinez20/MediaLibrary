@@ -2,7 +2,8 @@
 const cache = require('../helper/dataCache');
 const queue = require('../helper/cacheQueue');
 const post = require('./getPostController');
-const db = require('../config/db2')
+const db = require('../config/db2');
+const fs = require('fs');
 
 //item queue of 1000 to store the information of posts.
 let itemQueue = new queue.cacheQueue(1000);
@@ -24,10 +25,12 @@ exports.imageCard_get = (req, res, next) => {
                 .then((result) => {
                     res.render('imageCard', { count: count, postInfo: result[0], links: result[1], tags: result[2] });
                 }).catch((error) => {
+                    fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                     req.flash('error', 'There was an internal error.');
                     res.redirect('/error');
                 });
         }).catch((error) => {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         });
@@ -47,10 +50,12 @@ exports.imageCardMod_get = (req, res, next) => {
                 .then((result) => {
                     res.render('imageCard', { count: count, postInfo: result[0], links: result[1], tags: result[2] });
                 }).catch((error) => {
+                    fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                     req.flash('error', 'There was an internal error.');
                     res.redirect('/error');
                 });
         }).catch((error) => {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         });
@@ -76,12 +81,12 @@ exports.getRandomPost = (req, res, next) => {
                     .then((results) => {
                         res.render('imageCard', { count: count, postInfo: results[0], links: results[1], tags: results[2] });
                     }).catch((error) => {
-                        console.log(error);
+                        fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                         req.flash('error', 'There was an internal error.');
                         res.redirect('/error');
                     });
             }).catch((error) => {
-                console.log(error);
+                fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                 req.flash('error', 'There was an internal error.');
                 res.redirect('/error');
             });

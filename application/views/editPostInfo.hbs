@@ -64,8 +64,14 @@
             <textarea rows="5" id="details" name="details" placeholder="Please enter description here"
                 required>{{this.details}}</textarea>
         </div>
-
         <br />
+        <div>
+            <label for="year">Choose a Year of Publication:<br/></label>
+            <input value="{{this.year}}" list="year" placeholder="year of publication" maxlength="10" />
+            <datalist id="year" name="year"></datalist>
+        </div>
+        <br />
+        <script type="text/javascript" src="/js/addYears.js"></script>
         <div>
             <label for="type">Choose a TSF Type:</label>
             <select name="type" id="type" required>
@@ -99,7 +105,7 @@
 
         <br />
         <div>
-            <h5>Links</h5>
+            <h5>Links<br/>(Don't forget the https:// or http:// in the link)</h5>
             <textarea rows="5" id="links" name="links" placeholder="Please enter description here"
                 required>{{links.links}}</textarea>
         </div>

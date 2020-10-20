@@ -1,6 +1,7 @@
 //Contributors: Osbaldo Martinez
 //This file retrieves the values in the posts table.
 const db = require("../config/db");
+const fs = require('fs');
 
 //retrieves all the information in the tables that have the given post id.
 async function getPostInfoById(id) {
@@ -12,7 +13,7 @@ async function getPostInfoById(id) {
 
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
-        
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
         });
         if (result == undefined) {
             console.log("There was an error getting the post info.");
@@ -28,7 +29,7 @@ async function getPostImagesById(id) {
 
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
-            
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
         });
         if (result == undefined) {
             console.log("There was an error getting the post info.");
@@ -42,7 +43,7 @@ async function getNumberOfApprovedPosts() {
     let sql = "SELECT COUNT(*) as \"total\" FROM posts WHERE status = 1;";
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql).catch((error) => {
-            
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
         });
         if (result == undefined) {
             console.log("There was an error getting the number of posts");
@@ -56,7 +57,7 @@ async function getTenPosts() {
     let sql = "SELECT * FROM posts WHERE status = 1 ORDER BY date DESC LIMIT 10;";
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql).catch((error) => {
-            
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
         });
         if (result == undefined) {
             console.log("There was an error getting the posts.");
@@ -78,7 +79,7 @@ async function getPostsBasedOnFirstTitleCharacter(firstCharacter) {
     }
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
-            
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
         });
         if (result == undefined) {
             console.log("There was an error getting the posts.");
@@ -98,7 +99,7 @@ async function getByKeyWord(keyword) {
     }
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
-            
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
         });
         if (result == undefined) {
             console.log("There was an error getting the posts.");
@@ -113,7 +114,7 @@ async function getByType(type) {
     let placeholders = [type];
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
-            
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
         });
         if (result == undefined) {
             console.log("There was an error getting the posts.");
@@ -128,7 +129,7 @@ async function getByOrigin(origin) {
     let placeholders = [origin];
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
-            
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
         });
         if (result == undefined) {
             console.log("There was an error getting the posts.");
@@ -144,6 +145,7 @@ async function getByTag(tag) {
     let placeholders = [tag];
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
         });
         if (result == undefined) {
             console.log("There was an error getting the posts.");

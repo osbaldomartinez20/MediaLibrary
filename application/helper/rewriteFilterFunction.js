@@ -21,7 +21,7 @@ exports.writeFunction = () => {
         functionToWrite += functionFilterByType;
         fs.unlink('./public/js/filterByTypes.js', (err) => {
             if(err) {
-                console.log(err);
+                fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
             }
             fs.writeFileSync('./public/js/filterByTypes.js', functionToWrite);
         });

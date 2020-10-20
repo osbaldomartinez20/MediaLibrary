@@ -5,6 +5,7 @@ const express = require('express');
 const router = express.Router();
 const getPostInfo = require('../controllers/getPostController');
 const cache = require('../helper/dataCache');
+const fs = require('fs');
 
 //num cache that holds the cache for the number of posts approved
 let numCache = new cache.cache(getPostInfo.getNumberApproved, "1", 1);
@@ -17,6 +18,7 @@ router.get('/', (req, res) => {
         .then((count) => {
             res.render('error', { count: count });
         }).catch((error) => {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
             //I would be surprised if somehow this causes an infinite loop.
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
