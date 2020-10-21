@@ -421,7 +421,8 @@ exports.editPost_get = (req, res, next) => {
 
 //updates the post with the given pid with the given information in the form.
 exports.editPost_post = (req, res, next) => {
-    let { pid, title, jtitle, author, description, details, type, origin, tags, links } = req.body;
+    let { pid, title, jtitle, author, description, details, year, type, origin, tags, links } = req.body;
+    let mod = req.user.username;
     let japTitle = "";
     let placeholders = [];
 
@@ -443,8 +444,8 @@ exports.editPost_post = (req, res, next) => {
         let linksList = separate.separateLinks(links);
         let tagsList = separate.separateTags(tags);
 
-        let sql = "UPDATE posts SET title = ?, jtitle = ?, author = ?, description = ?, details = ?, type = ?, origin = ? WHERE pid = ?;";
-        let postPlaceholders = [title, japTitle, author, description, details, type, origin, pid];
+        let sql = "UPDATE posts SET title = ?, jtitle = ?, author = ?, description = ?, details = ?, type = ?, origin = ?, approvedby = ?, year = ? WHERE pid = ?;";
+        let postPlaceholders = [title, japTitle, author, description, details, type, origin, mod, year, pid];
         placeholders.push(...postPlaceholders);
 
         let tempId; //a tempId value to hold the newly generated id of links and tags.

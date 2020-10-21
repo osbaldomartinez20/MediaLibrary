@@ -10,7 +10,7 @@
             {{#each origins}}
             <a href="/search/{{this.name}}/byorigin"><button
                     style="background-color: orange; color: white; font-weight: bold;">{{this.name}}</button></a>
-          {{/each}}
+            {{/each}}
         </div>
         <br />
         <h2 class="firstchar"><a href="/search/symbols/firstletter">#</a> <a href="/search/a/firstletter">a</a>
@@ -35,7 +35,8 @@
 
             {{#each types}}
             <label for="{{this.name}}" id="{{this.name}}Label">{{this.name}}</label>
-            <input type="checkbox" id="{{this.name}}" name="{{this.name}}" onclick="showHide({{this.tid}});" style="cursor: pointer;" />
+            <input type="checkbox" id="{{this.name}}" name="{{this.name}}" onclick="showHide({{this.tid}});"
+                style="cursor: pointer;" />
             {{/each}}
         </div>
 
@@ -75,8 +76,8 @@
                     <td style="text-align: center;">{{this.author}}</td>
                     <td style="text-align: center;"><a href="/search/{{this.type}}/bytype">{{this.type}}</a></td>
                     <td style="text-align: center; white-space: pre-line;">{{this.description}}</td>
-                    <td style="text-align: center; white-space: pre-line;">{{this.details}}<br />Origin: <a
-                            href="/search/{{this.origin}}/byorigin">{{this.origin}}</a></td>
+                    <td style="text-align: center; white-space: pre-line;">{{this.details}}<br />Released on:
+                        {{this.year}}<br />Origin: <a href="/search/{{this.origin}}/byorigin">{{this.origin}}</a></td>
                 </tr>
                 {{/each}}
                 {{else}}

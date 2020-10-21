@@ -311,7 +311,8 @@ exports.itemDeletion = (req, res, next) => {
 
 //edits the information of the post with the pid given in the request body.
 exports.editPost_post = (req, res, next) => {
-    let { pid, title, jtitle, author, description, details, type, tags, links } = req.body;
+    let { pid, title, jtitle, author, description, details, year, type, origin, tags, links } = req.body;
+    let mod = req.user.username;
     let japTitle = "";
     let placeholders = [];
 
@@ -335,8 +336,8 @@ exports.editPost_post = (req, res, next) => {
         let tagsList = separate.separateTags(tags);
 
         //update the post info in the posts table.
-        let sql = "UPDATE posts SET title = ?, jtitle = ?, author = ?, description = ?, details = ?, type = ? WHERE pid = ?;";
-        let postPlaceholders = [title, japTitle, author, description, details, type, pid];
+        let sql = "UPDATE posts SET title = ?, jtitle = ?, author = ?, description = ?, details = ?, type = ?, origin = ?, approvedby = ?, year = ? WHERE pid = ?;";
+        let postPlaceholders = [title, japTitle, author, description, details, type, origin, mod, year, pid];
         placeholders.push(...postPlaceholders);
 
         let tempId; //a tempId value to hold the newly generated id of links and tags.

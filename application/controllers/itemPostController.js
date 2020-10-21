@@ -42,7 +42,7 @@ exports.imagePost_get = (req, res, next) => {
 // Handle submitting sales item for submit on POST
 exports.imagePost_post = (req, res, next) => {
     let postId = uuidv4();
-    let { title, japTitle, author, publication, description, tags, links, type, origin } = req.body;
+    let { title, japTitle, author, publication, description, year, tags, links, type, origin } = req.body;
     let postImages = req.files;
     let postCover = "noCover.png";
     let postImage = "nothing.png";
@@ -94,8 +94,8 @@ exports.imagePost_post = (req, res, next) => {
 
     let insertDate = yyyy + '/' + mm + '/' + dd + ' ' + hh + ':' + mi + ':' + ss;
 
-    let sql = "INSERT INTO posts (pid, title, author, jtitle, description, details, type, cover, image, status, date, origin) VALUES (?,?,?,?,?,?,?,?,?,?,STR_TO_DATE(?,'%Y/%m/%d %H:%i:%s'),?);";
-    let postPlaceholder = [postId, title, author, japTitle, description, publication, type, postCover, postImage, status, insertDate, origin];
+    let sql = "INSERT INTO posts (pid, title, author, jtitle, description, details, type, cover, image, status, date, origin, year) VALUES (?,?,?,?,?,?,?,?,?,?,STR_TO_DATE(?,'%Y/%m/%d %H:%i:%s'),?,?);";
+    let postPlaceholder = [postId, title, author, japTitle, description, publication, type, postCover, postImage, status, insertDate, origin, year];
 
     placeholders.push(...postPlaceholder);
 
