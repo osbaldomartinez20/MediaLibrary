@@ -6,6 +6,7 @@ const router = express.Router();
 const getPostInfo = require('../controllers/getPostController');
 const cache = require('../helper/dataCache');
 const types = require('../controllers/typeController');
+const fs = require('fs');
 
 //num cache that has data fpr the number of approved posts
 let numCache = new cache.cache(getPostInfo.getNumberApproved, "1", 1);
@@ -33,18 +34,22 @@ router.get('/', (req, res) => {
                                 .then((types) => {
                                     res.render('home', { count: count, post: posts, origins: origins, types: types });
                                 }).catch((error) => {
+                                    fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                                     req.flash('error', 'There was an internal error.');
                                     res.redirect('/error');
                                 });
                         }).catch((error) => {
+                            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                             req.flash('error', 'There was an internal error.');
                             res.redirect('/error');
                         });
                 }).catch((error) => {
+                    fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                     req.flash('error', 'There was an internal error.');
                     res.redirect('/error');
                 });
         }).catch((error) => {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         });
@@ -58,6 +63,7 @@ router.get('/about', (req, res) => {
         .then((count) => {
             res.render('about', { count: count });
         }).catch((error) => {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         });

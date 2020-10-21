@@ -1,4 +1,3 @@
-
 <div class="header">
     <h1>Posting Information</h1>
 </div>
@@ -31,12 +30,19 @@
         </div>
         <br />
         <div>
-            <h5>Details of Publication <br />(Like year of release and publisher)</h5>
+            <h5>Details of Publication <br />(Like publisher)</h5>
             <textarea rows="5" id="publication" name="publication"
                 placeholder="Please enter the details of publication of the work such as publisher, year of plubication, magazine, etc."
                 maxlength="250" required></textarea>
         </div>
         <br />
+        <div>
+            <label for="year">Choose a Year of Publication:<br/></label>
+            <input list="year" placeholder="year of publication" maxlength="10" required/>
+            <datalist id="year" name="year"></datalist>
+        </div>
+        <br />
+        <script type="text/javascript" src="/js/addYears.js"></script>
         <div>
             <h5>Tags <br />(Separate them by commas)</h5>
             <textarea id="tags" name="tags" rows="5"
@@ -81,7 +87,7 @@
                 <br>
                 <input type="file" name="coverImage" id="coverImageP" accept="image/png,image/jpg,image/jpeg" />
             </div>
-            <br/>
+            <br />
             <div class="preview">
                 <img id="img" width="100" height="120" />
             </div>
@@ -95,7 +101,7 @@
                 <br>
                 <input type="file" name="mangaImage" id="mangaImage" accept="image/png,image/jpg,image/jpeg" required />
             </div>
-            <br/>
+            <br />
             <div class="preview">
                 <img id="img2" width="100" height="120" />
             </div>
@@ -103,11 +109,11 @@
         <br>
 
         <div class="row justify-content-end mx-0">
-            <button type="reset" class="btn btn-danger"
-                id="resetForm" style="font-weight: bold;">Reset</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="reset" class="btn btn-danger" id="resetForm"
+                style="font-weight: bold;">Reset</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <button type="submit" class="btn btn-success" id="submit" style="font-weight: bold;">Submit</button>
             <div id="card-stack"></div>
         </div>
-        <br/>
+        <br />
     </form>
 </div>

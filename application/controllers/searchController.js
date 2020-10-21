@@ -3,6 +3,7 @@ const cache = require('../helper/dataCache');
 const queue = require('../helper/cacheQueue');
 const post = require('./getPostController');
 const types = require('./typeController');
+const fs = require('fs');
 
 //Caches and queue caches that help with retrieving data and reduce db calls
 let characterQueue = new queue.cacheQueue(27);
@@ -48,18 +49,22 @@ exports.post = (req, res, next) => {
                                     resultNum.count = result.length;
                                     res.render('home', { count: count, post: result, searchCriteria: criteria, resultNum: resultNum, origins: origins, types: types });
                                 }).catch((error) => {
+                                    fs.writeFileSync(__dirname + '/' + Date.now() + 'error.log', error + '');
                                     req.flash('error', 'There was an internal error.');
                                     res.redirect('/error');
                                 });
                         }).catch((error) => {
+                            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                             req.flash('error', 'There was an internal error.');
                             res.redirect('/error');
                         });
                 }).catch((error) => {
+                    fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                     req.flash('error', 'There was an internal error.');
                     res.redirect('/error');
                 });
         }).catch((error) => {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         });
@@ -85,18 +90,22 @@ exports.findByFirstLetter = (req, res, next) => {
                                     resultNum.count = result.length;
                                     res.render('home', { count: count, post: result, resultNum: resultNum, origins: origins, types: types });
                                 }).catch((error) => {
+                                    fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                                     req.flash('error', 'There was an internal error.');
                                     res.redirect('/error');
                                 });
                         }).catch((error) => {
+                            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                             req.flash('error', 'There was an internal error.');
                             res.redirect('/error');
                         });
                 }).catch((error) => {
+                    fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                     req.flash('error', 'There was an internal error.');
                     res.redirect('/error');
                 });
         }).catch((error) => {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         });
@@ -122,18 +131,22 @@ exports.findByType = (req, res, next) => {
                                     resultNum.count = result.length;
                                     res.render('home', { count: count, post: result, resultNum: resultNum, origins: origins, types: types });
                                 }).catch((error) => {
+                                    fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                                     req.flash('error', 'There was an internal error.');
                                     res.redirect('/error');
                                 });
                         }).catch((error) => {
+                            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                             req.flash('error', 'There was an internal error.');
                             res.redirect('/error');
                         });
                 }).catch((error) => {
+                    fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                     req.flash('error', 'There was an internal error.');
                     res.redirect('/error');
                 });
         }).catch((error) => {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         });
@@ -159,18 +172,22 @@ exports.findByOrigin = (req, res, next) => {
                                     resultNum.count = result.length;
                                     res.render('home', { count: count, post: result, resultNum: resultNum, origins: origins, types: types });
                                 }).catch((error) => {
+                                    fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                                     req.flash('error', 'There was an internal error.');
                                     res.redirect('/error');
                                 });
                         }).catch((error) => {
+                            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                             req.flash('error', 'There was an internal error.');
                             res.redirect('/error');
                         });
                 }).catch((error) => {
+                    fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                     req.flash('error', 'There was an internal error.');
                     res.redirect('/error');
                 });
         }).catch((error) => {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         });
@@ -196,18 +213,22 @@ exports.findByTag = (req, res, next) => {
                                     resultNum.count = result.length;
                                     res.render('home', { count: count, post: result, resultNum: resultNum, origins: origins, types: types });
                                 }).catch((error) => {
+                                    fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                                     req.flash('error', 'There was an internal error.');
                                     res.redirect('/error');
                                 });
                         }).catch((error) => {
+                            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                             req.flash('error', 'There was an internal error.');
                             res.redirect('/error');
                         });
                 }).catch((error) => {
+                    fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                     req.flash('error', 'There was an internal error.');
                     res.redirect('/error');
                 });
         }).catch((error) => {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         });
@@ -229,18 +250,22 @@ exports.getNewest = (req, res, next) => {
                                 .then((types) => {
                                     res.render('home', { count: count, post: result, newest: newest, origins: origins, types: types });;
                                 }).catch((error) => {
+                                    fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                                     req.flash('error', 'There was an internal error.');
                                     res.redirect('/error');
                                 });
                         }).catch((error) => {
+                            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                             req.flash('error', 'There was an internal error.');
                             res.redirect('/error');
                         });
                 }).catch((error) => {
+                    fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                     req.flash('error', 'There was an internal error.');
                     res.redirect('/error');
                 });
         }).catch((error) => {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         });

@@ -4,6 +4,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 const db = require('./db2');
+const fs = require('fs');
 
 module.exports = () => {
     //retrieve the aidmin from the admin table
@@ -17,7 +18,9 @@ module.exports = () => {
                 // Match password
                 
                 bcrypt.compare(password, result[0].password, (error, isMatch) => {
-                    if (error) throw error;
+                    if (error) {
+                        fs.writeFileSync(__dirname + '/' + Date.now() + 'error.log', error + '');
+                    }
                     if (isMatch) {
                         return done(null, result[0]);
                     }
@@ -37,7 +40,9 @@ module.exports = () => {
     //logout the admin
     passport.deserializeUser((id, done) => {
         db.query("SELECT * FROM admin WHERE aid = ?", id, (err, result) => {
-            if (err) throw err;
+            if (err) {
+                fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
+            }
 
             return done(null, result[0]);
         });

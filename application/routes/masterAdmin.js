@@ -46,6 +46,9 @@ router.get('/:mid/remove', ensureAdminAuthenticated, administratorController.rem
 //GET request to approve post
 router.get('/:pid/itemapprove', ensureAdminAuthenticated, administratorController.itemApproval);
 
+//GET request to approve post
+router.get('/:pid/itemdisapprove', ensureAdminAuthenticated, administratorController.itemDisapproval);
+
 //GET request to render confirmation of deletion page.
 router.get('/:pid/itemconfirmdel', ensureAdminAuthenticated, modFunctions.confrimDelete);
 

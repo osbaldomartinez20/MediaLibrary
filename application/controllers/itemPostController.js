@@ -6,6 +6,7 @@ const cache = require('../helper/dataCache');
 const separate = require('../helper/separeteByCommas');
 const getCount = require('../controllers/getPostController');
 const { v4: uuidv4 } = require('uuid');
+const fs = require('fs');
 
 //caches for information that is used in the rendered pages.
 let typesCache = new cache.cache(types.retrieve, "1", 30);
@@ -22,14 +23,17 @@ exports.imagePost_get = (req, res, next) => {
                         .then((orig) => {
                             res.render('imagePost', { type: result, count: count, origin: orig });
                         }).catch((error) => {
+                            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                             req.flash('error', 'There was an internal error.');
                             res.redirect('/error');
                         });
                 }).catch((error) => {
+                    fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                     req.flash('error', 'There was an internal error.');
                     res.redirect('/error');
                 });
         }).catch((error) => {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         });
@@ -38,10 +42,10 @@ exports.imagePost_get = (req, res, next) => {
 // Handle submitting sales item for submit on POST
 exports.imagePost_post = (req, res, next) => {
     let postId = uuidv4();
-    let { title, japTitle, author, publication, description, tags, links, type, origin } = req.body;
+    let { title, japTitle, author, publication, description, year, tags, links, type, origin } = req.body;
     let postImages = req.files;
     let postCover = "noCover.png";
-    let postImage = "noCover.png";
+    let postImage = "nothing.png";
     if (postImages.mangaImage != undefined) {
         postImage = postImages.mangaImage[0].filename;
     }
@@ -90,8 +94,8 @@ exports.imagePost_post = (req, res, next) => {
 
     let insertDate = yyyy + '/' + mm + '/' + dd + ' ' + hh + ':' + mi + ':' + ss;
 
-    let sql = "INSERT INTO posts (pid, title, author, jtitle, description, details, type, cover, image, status, date, origin) VALUES (?,?,?,?,?,?,?,?,?,?,STR_TO_DATE(?,'%Y/%m/%d %H:%i:%s'),?);";
-    let postPlaceholder = [postId, title, author, japTitle, description, publication, type, postCover, postImage, status, insertDate, origin];
+    let sql = "INSERT INTO posts (pid, title, author, jtitle, description, details, type, cover, image, status, date, origin, year) VALUES (?,?,?,?,?,?,?,?,?,?,STR_TO_DATE(?,'%Y/%m/%d %H:%i:%s'),?,?);";
+    let postPlaceholder = [postId, title, author, japTitle, description, publication, type, postCover, postImage, status, insertDate, origin, year];
 
     placeholders.push(...postPlaceholder);
 
@@ -117,6 +121,7 @@ exports.imagePost_post = (req, res, next) => {
 
     db.query(sql, placeholders, (err, result) => {
         if (err) {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
             req.flash('error', 'Error posting');
             res.redirect('/submit');
         }

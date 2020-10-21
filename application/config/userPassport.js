@@ -4,6 +4,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 const db = require('./db2');
+const fs = require('fs');
 
 module.exports = () => {
     //retrives the given mod by the username
@@ -16,7 +17,9 @@ module.exports = () => {
                 }
                 // Match password
                 bcrypt.compare(password, result[0].password, (error, isMatch) => {
-                    if (error) throw error;
+                    if (error) {
+                        fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
+                    }
                     if (isMatch) {
                         return done(null, result[0]);
                     }
@@ -36,7 +39,9 @@ module.exports = () => {
     //logout the mod
     passport.deserializeUser((id, done) => {
         db.query("SELECT * FROM mods WHERE id = ?", id, (err, result) => {
-            if (err) throw err;
+            if (err) {
+                fs.writeFileSync(__dirname + '/' + Date.now() + 'error.log', err + '');
+            }
 
             return done(null, result[0]);
         });

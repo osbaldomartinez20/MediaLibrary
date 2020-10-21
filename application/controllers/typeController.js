@@ -1,13 +1,16 @@
 //Contributors: Osbaldo Martinez
 //This file retrieves the values in the tsftypes and origin table.
 const db = require("../config/db");
+const fs = require('fs');
 
 //get all the types from the tsftypes
 async function getTypes() {
     let sql = "SELECT * FROM tsftypes ORDER BY tid;";
 
     return new Promise(async function (resolve, reject) {
-        const result = await db.query(sql);
+        const result = await db.query(sql).catch((err) => {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
+        });
         if (result[0].length < 1) {
             console.log("There was an error getting the types");
         }
@@ -20,7 +23,9 @@ async function getOrigins() {
     let sql = "SELECT * FROM origin ORDER BY oid;";
 
     return new Promise(async function (resolve, reject) {
-        const result = await db.query(sql);
+        const result = await db.query(sql).catch((err) => {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
+        });
         if (result[0].length < 1) {
             console.log("There was an error getting the types");
         }

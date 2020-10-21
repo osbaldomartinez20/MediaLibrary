@@ -33,8 +33,8 @@
                 </thead>
                 <tr class="trCard">
                     <td scope="row" style="text-align: center;">{{this.author}}</th>
-                    <td style="white-space: pre-line; text-align: center;">{{this.details}}<br />Origin: <a
-                            href="/search/{{this.origin}}/byorigin">{{this.origin}}</a></th>
+                    <td style="white-space: pre-line; text-align: center;">{{this.details}}<br />Released on:
+                        {{this.year}}<br />Origin: <a href="/search/{{this.origin}}/byorigin">{{this.origin}}</a></th>
                     <td style="white-space: pre-line; text-align: center;">{{this.description}}</th>
                     <td style="text-align: center;"><a href="/search/{{this.type}}/bytype">{{this.type}}</a></th>
                         {{/each}}
@@ -50,22 +50,30 @@
         {{#if loggedIn.id}}
         <div>
             {{#each postInfo}}{{#unless this.status}} <a href="/moderators/{{this.pid}}/approve"><button
-                    style="background-color: rgb(19, 138, 19); color: white; font-weight: bold;">Approve</button></a> {{/unless}}
+                    style="background-color: rgb(19, 138, 19); color: white; font-weight: bold;">Approve</button></a>
+            {{/unless}}
             <a href="/moderators/{{this.pid}}/edit"><button
                     style="background-color: blue; color: white; font-weight: bold;">Edit</button></a>
             <a href="/moderators/{{this.pid}}/confirmdel"><button
                     style="background-color: red; color: white; font-weight: bold;">Remove</button></a>
+            {{#if this.status}} <a href="/moderators/{{this.pid}}/disapprove"><button
+                    style="background-color: rgb(19, 138, 19); color: white; font-weight: bold;">Disapprove</button></a>
+            {{/if}}
             {{/each}}
         </div>
         {{/if}}
         {{#if loggedIn.aid}}
         <div>
             {{#each postInfo}}{{#unless this.status}} <a href="/masteradmin/{{this.pid}}/itemapprove"><button
-                    style="background-color: rgb(19, 138, 19); color: white; font-weight: bold;">Approve</button></a> {{/unless}}
+                    style="background-color: rgb(19, 138, 19); color: white; font-weight: bold;">Approve</button></a>
+            {{/unless}}
             <a href="/masteradmin/{{this.pid}}/itemedit"><button
                     style="background-color: blue; color: white; font-weight: bold;">Edit</button></a>
             <a href="/masteradmin/{{this.pid}}/itemconfirmdel"><button
                     style="background-color: red; color: white; font-weight: bold;">Remove</button></a>
+            {{#if this.status}} <a href="/masteradmin/{{this.pid}}/itemdisapprove"><button
+                    style="background-color: rgb(19, 138, 19); color: white; font-weight: bold;">Disapprove</button></a>
+            {{/if}}
             {{/each}}
         </div>
         {{/if}}

@@ -20,6 +20,7 @@ exports.login_get = (req, res, next) => {
         .then((count) => {
             res.render('adminLogin', { count: count });
         }).catch((error) => {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         });
@@ -60,12 +61,14 @@ exports.changePassword = (req, res, next) => {
 
     bcrypt.genSalt(10, (err, salt) => {
         if (err) {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         }
 
         bcrypt.hash(password, salt, (err2, hash) => {
             if (err2) {
+                fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err2 + '');
                 req.flash('error', 'There was an internal error.');
                 res.redirect('/error');
             }
@@ -77,6 +80,7 @@ exports.changePassword = (req, res, next) => {
 
             db.query(sql, [hash, uid], (error, result) => {
                 if (error) {
+                    fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                     req.flash('error', 'There was an internal error.');
                     res.redirect('/error');
                 }
@@ -100,6 +104,7 @@ exports.dashboard = (req, res, next) => {
 
     db.query(sql, (err, result) => {
         if (err) {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         }
@@ -122,6 +127,7 @@ exports.dashboard = (req, res, next) => {
                     count: count
                 });
             }).catch((error) => {
+                fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
                 req.flash('error', 'There was an internal error.');
                 res.redirect('/error');
             });
@@ -137,6 +143,7 @@ exports.approve = (req, res, next) => {
 
     db.query(sql, [modId], (err, result) => {
         if (err) {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
             req.flash('error', 'Error approving mod');
             res.redirect('/masteradmin/dashboard');
         }
@@ -161,6 +168,7 @@ exports.disapprove = (req, res, next) => {
 
     db.query(sql, [modId], (err, result) => {
         if (err) {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
             req.flash('error', 'Error disapproving mod');
             res.redirect('/masteradmin/dashboard');
         }
@@ -185,6 +193,7 @@ exports.remove = (req, res, next) => {
 
     db.query(sql, [modId], (err, result) => {
         if (err) {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
             req.flash('error', 'Error removing mod');
             res.redirect('/masteradmin/dashboard');
         }
@@ -209,12 +218,38 @@ exports.itemApproval = (req, res, next) => {
 
     db.query(sql, [pid], (err, result) => {
         if (err) {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
             req.flash('error', 'Error approving item');
             res.redirect('/masteradmin/imagereview');
         }
 
         if (result.changedRows > 0) {
             req.flash('success', 'Sucessfully approved item');
+            res.redirect('/masteradmin/imagereview');
+        }
+        else {
+            req.flash('error', 'Error approving item');
+            res.redirect('/masteradmin/imagereview');
+        }
+    });
+}
+
+//Handles disapproval of item with the given pid
+exports.itemDisapproval = (req, res, next) => {
+    let pid = req.params.pid;
+
+    //0 is disapproved
+    let sql = "UPDATE posts SET status = 0 WHERE pid = ?";
+
+    db.query(sql, [pid], (err, result) => {
+        if (err) {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
+            req.flash('error', 'Error approving item');
+            res.redirect('/masteradmin/imagereview');
+        }
+
+        if (result.changedRows > 0) {
+            req.flash('success', 'Sucessfully disapproved item');
             res.redirect('/masteradmin/imagereview');
         }
         else {
@@ -234,6 +269,7 @@ exports.itemDeletion = (req, res, next) => {
 
     db.query(sql, [pid], (error, result) => {
         if (error) {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         }
@@ -256,6 +292,7 @@ exports.itemDeletion = (req, res, next) => {
 
         db.query(sql, [pid, pid, pid], (error2, result2) => {
             if (error2) {
+                fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error2 + '');
                 req.flash('error', 'There was an internal error.');
                 res.redirect('/error');
             }
@@ -264,12 +301,14 @@ exports.itemDeletion = (req, res, next) => {
                 //cover is also deleted
                 fs.unlink('./public/images/upload/' + coverImage, (err) => {
                     if (err) {
+                        fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
                         req.flash('error', 'There was an internal error.');
                         res.redirect('/error');
                     }
 
                     fs.unlink('./public/images/upload/' + sampleImage, (err2) => {
                         if (err2) {
+                            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err2 + '');
                             req.flash('error', 'There was an internal error.');
                             res.redirect('/error');
                         }
@@ -282,6 +321,7 @@ exports.itemDeletion = (req, res, next) => {
                 //only work image is deleted
                 fs.unlink('./public/images/upload/' + sampleImage, (err2) => {
                     if (err2) {
+                        fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err2 + '');
                         req.flash('error', 'There was an internal error.');
                         res.redirect('/error');
                     }
@@ -296,7 +336,8 @@ exports.itemDeletion = (req, res, next) => {
 
 //edits the information of the post with the pid given in the request body.
 exports.editPost_post = (req, res, next) => {
-    let { pid, title, jtitle, author, description, details, type, tags, links } = req.body;
+    let { pid, title, jtitle, author, description, details, year, type, origin, tags, links } = req.body;
+    let mod = req.user.username;
     let japTitle = "";
     let placeholders = [];
 
@@ -311,6 +352,7 @@ exports.editPost_post = (req, res, next) => {
 
     db.query(sqlDel, delPlaceholders, (error, result) => {
         if (error) {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         }
@@ -319,8 +361,8 @@ exports.editPost_post = (req, res, next) => {
         let tagsList = separate.separateTags(tags);
 
         //update the post info in the posts table.
-        let sql = "UPDATE posts SET title = ?, jtitle = ?, author = ?, description = ?, details = ?, type = ? WHERE pid = ?;";
-        let postPlaceholders = [title, japTitle, author, description, details, type, pid];
+        let sql = "UPDATE posts SET title = ?, jtitle = ?, author = ?, description = ?, details = ?, type = ?, origin = ?, approvedby = ?, year = ? WHERE pid = ?;";
+        let postPlaceholders = [title, japTitle, author, description, details, type, origin, mod, year, pid];
         placeholders.push(...postPlaceholders);
 
         let tempId; //a tempId value to hold the newly generated id of links and tags.
@@ -345,7 +387,7 @@ exports.editPost_post = (req, res, next) => {
 
         db.query(sql, placeholders, (err, result) => {
             if (err) {
-                console.log(err);
+                fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
             }
         });
         req.flash('success', 'Successfully updated post info.');
@@ -384,6 +426,7 @@ exports.addImage_post = (req, res, next) => {
 
     db.query(sql, placeholders, (err, result) => {
         if (err) {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
             req.flash('error', 'Error updating image.');
             res.redirect('/masteradmin/imagereview');
         }
@@ -398,6 +441,7 @@ exports.addImage_post = (req, res, next) => {
                     //we delete only the work image
                     fs.unlink('./public/images/upload/' + image, (err) => {
                         if (err) {
+                            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
                             req.flash('error', 'There was an internal error.');
                             res.redirect('/error');
                         }
@@ -408,6 +452,7 @@ exports.addImage_post = (req, res, next) => {
             } else {
                 fs.unlink('./public/images/upload/' + cover, (err) => {
                     if (err) {
+                        fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
                         req.flash('error', 'There was an internal error.');
                         res.redirect('/error');
                     }
@@ -419,6 +464,7 @@ exports.addImage_post = (req, res, next) => {
                         //we delete both images
                         fs.unlink('./public/images/upload/' + image, (err2) => {
                             if (err2) {
+                                fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err2 + '');
                                 req.flash('error', 'There was an internal error.');
                                 res.redirect('/error');
                             }
@@ -441,6 +487,7 @@ exports.addNewType = (req, res, next) => {
 
     db.query(sqlB, (error, results) => {
         if (error) {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         }
@@ -455,7 +502,7 @@ exports.addNewType = (req, res, next) => {
 
         db.query(sql, placeholders, (err, result) => {
             if (err) {
-                console.log(err);
+                fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
             }
             filterFuncReWrite.writeFunction();
         });
@@ -475,6 +522,7 @@ exports.addNewOrigin = (req, res, next) => {
 
     db.query(sql, placeholders, (err, result) => {
         if (err) {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         }
