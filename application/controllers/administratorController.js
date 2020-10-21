@@ -532,12 +532,6 @@ exports.addNewOrigin = (req, res, next) => {
     });
 }
 
-//finds the post with the given pid in the request body
-exports.findPostById = (req, res, next) => {
-    let { pid } = req.body;
-    res.redirect('/libraryitem/' + pid + '/moderator');
-}
-
 //makes a back up of the database tables, except the admin and mod tables.
 exports.backupDB = (req, res, next) => {
     dbBackup.createNewDBBackup();

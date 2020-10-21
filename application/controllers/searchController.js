@@ -270,3 +270,9 @@ exports.getNewest = (req, res, next) => {
             res.redirect('/error');
         });
 }
+
+//finds the post with the given pid in the request body
+exports.findPostById = (req, res, next) => {
+    let { pid } = req.body;
+    res.redirect('/libraryitem/' + pid + '/moderator');
+}
