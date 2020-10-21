@@ -279,6 +279,30 @@ exports.itemApproval = (req, res, next) => {
     });
 }
 
+//Handles disapproval of post with the given pid
+exports.itemDisapproval = (req, res, next) => {
+    let pid = req.params.pid;
+
+    let sql = "UPDATE posts SET status = 0 WHERE pid = ?";
+
+    db.query(sql, [pid], (err, result) => {
+        if (err) {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
+            req.flash('error', 'Error approving post');
+            res.redirect('/moderators/dashboard');
+        }
+
+        if (result.changedRows > 0) {
+            req.flash('success', 'Sucessfully approved post');
+            res.redirect('/moderators/dashboard');
+        }
+        else {
+            req.flash('error', 'Error approving post');
+            res.redirect('/moderators/dashboard');
+        }
+    });
+}
+
 //renders the confirmDeletion page of the post with the given pid
 exports.confrimDelete = (req, res, next) => {
     let pid = req.params.pid;

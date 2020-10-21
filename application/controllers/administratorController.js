@@ -234,6 +234,31 @@ exports.itemApproval = (req, res, next) => {
     });
 }
 
+//Handles disapproval of item with the given pid
+exports.itemDisapproval = (req, res, next) => {
+    let pid = req.params.pid;
+
+    //0 is disapproved
+    let sql = "UPDATE posts SET status = 0 WHERE pid = ?";
+
+    db.query(sql, [pid], (err, result) => {
+        if (err) {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
+            req.flash('error', 'Error approving item');
+            res.redirect('/masteradmin/imagereview');
+        }
+
+        if (result.changedRows > 0) {
+            req.flash('success', 'Sucessfully disapproved item');
+            res.redirect('/masteradmin/imagereview');
+        }
+        else {
+            req.flash('error', 'Error approving item');
+            res.redirect('/masteradmin/imagereview');
+        }
+    });
+}
+
 //deletes a post with the pid given in the request parameters
 exports.itemDeletion = (req, res, next) => {
     let pid = req.params.pid;

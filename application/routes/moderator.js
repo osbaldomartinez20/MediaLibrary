@@ -33,6 +33,9 @@ router.get('/dashboard', ensureUserAuthenticated, userController.dashboard);
 // GET request for post approval
 router.get('/:pid/approve', ensureUserAuthenticated, userController.itemApproval);
 
+// GET request for post approval
+router.get('/:pid/disapprove', ensureUserAuthenticated, userController.itemDisapproval);
+
 // GET request to get page to confirm deletion
 router.get('/:pid/confirmdel', ensureUserAuthenticated, userController.confrimDelete);
 
