@@ -2,7 +2,7 @@
 //This file has the function to show the jap title of the work
 
 //this function is used in home.hbs
-function showHideJapTitle() {
+let showHideJapTitle = () => {
     //make sure that the jap title has the classes jsel and hidden.
     //check that the id is jsel.
     let docSelection = document.getElementsByClassName("jsel");
