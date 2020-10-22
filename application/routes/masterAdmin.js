@@ -76,5 +76,8 @@ router.post('/neworigin', ensureAdminAuthenticated, administratorController.addN
 //GET request to backup all the tables in the database except admin and mod
 router.get('/dbbackup', ensureAdminAuthenticated, administratorController.backupDB);
 
+//GET request to show all the posts in database
+router.get('/reviewallitems', ensureAdminAuthenticated, modFunctions.showAll);
+
 
 module.exports = router;

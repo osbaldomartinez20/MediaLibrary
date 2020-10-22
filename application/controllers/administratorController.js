@@ -10,6 +10,7 @@ const bcrypt = require('bcryptjs');
 const fs = require('fs');
 const separate = require('../helper/separeteByCommas');
 const filterFuncReWrite = require('../helper/rewriteFilterFunction');
+const { count } = require('console');
 
 //cache to get the number of approved posts
 let numCache = new cache.cache(post.getNumberApproved, "2", 1);
