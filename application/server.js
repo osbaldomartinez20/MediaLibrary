@@ -63,6 +63,7 @@ app.use('/masteradmin', require('./routes/masterAdmin'));
 app.use('/search', require('./routes/search'));
 app.use('/libraryitem', require('./routes/libraryItem'));
 app.use('/submit', require('./routes/submitItem'));
+app.use('/banner', require('./routes/banner'));
 app.use('/error', require('./routes/error'));
 
 // Error-handling middleware

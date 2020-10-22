@@ -42,16 +42,20 @@ exports.imagePost_get = (req, res, next) => {
 // Handle submitting sales item for submit on POST
 exports.imagePost_post = (req, res, next) => {
     let postId = uuidv4();
-    let { title, japTitle, author, publication, description, year, tags, links, type, origin } = req.body;
+    let { title, japTitle, author, publication, description, year, unknown, tags, links, type, origin } = req.body;
     let postImages = req.files;
     let postCover = "noCover.png";
     let postImage = "nothing.png";
-    if (postImages.mangaImage != undefined) {
-        postImage = postImages.mangaImage[0].filename;
-    }
     let postError = [];
     let status = 0;
     let placeholders = [];
+
+    if (postImages.mangaImage != undefined) {
+        postImage = postImages.mangaImage[0].filename;
+    } else {
+        req.flash('error', 'Error only jpg or png images accepted.');
+        res.redirect('/submit')
+    }
 
     //check if the user added a cover for the media work.
     if (postImages.coverImage != undefined) {
@@ -71,6 +75,11 @@ exports.imagePost_post = (req, res, next) => {
     //Check if we don't have a japanese title
     if (!japTitle) {
         japTitle = "";
+    }
+
+    //check to see if unknown is checked
+    if(unknown) {
+        year = "Unknown";
     }
 
     // Render posting error messages if necessary

@@ -25,8 +25,6 @@
 </div>
 <br />
 
-{{#if loggedIn.aid}}
-
 <!-- Add New Type Form -->
 <div style="border-style: dotted; text-align: center;">
     <h2>Search Post By Id</h2>
@@ -41,6 +39,18 @@
     </form>
 </div>
 <br />
+
+{{#if loggedIn.aid}}
+<div style="border-style: dotted; text-align: center;">
+    <h2>Change Site Banner</h2>
+    <br />
+    <h3>Changing The Banner With These Buttons Will Delete Current One</h3>
+    <a href="/banner/change"><button style="background-color: blue; color: white; font-weight: bold;">Add a New
+            Banner</button></a>
+    <br />
+    <a href="/banner/default"><button style="background-color: lightblue; color: white; font-weight: bold;">Change to
+            Default</button></a>
+</div>
 <!-- Add New Type Form -->
 <div style="border-style: dotted; text-align: center;">
     <h2>Add a New Type</h2>
@@ -78,5 +88,5 @@
     <a href="/masteradmin/dbbackup" style="color: black;"><button style="background-color: green;">BackUp
             Database</button></a>
 </div>
-
+<br />
 {{/if}}

@@ -1,0 +1,21 @@
+<!-- Add New Type Form -->
+<script type="text/javascript" src="/js/imagePreview.js"></script>
+<div style="border-style: dotted; text-align: center;">
+    <h2>Search Post By Id</h2>
+    <form action="/banner/change" method="POST" enctype="multipart/form-data">
+        <div>
+            <label for="mangaImage" id="imageLabel2">Add Banner Image<br />Choose up to 1 image to
+                upload (Only PNG)<br></label>
+            <br>
+            <input type="file" name="mangaImage" id="mangaImage" accept="image/png" />
+        </div>
+        <br />
+        <div class="preview">
+            <img id="img2" width="100" height="120" />
+        </div>
+        <div>
+            <button type="submit" id="submit">Submit</button>
+        </div>
+    </form>
+</div>
+<br />

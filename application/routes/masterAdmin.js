@@ -79,5 +79,4 @@ router.get('/dbbackup', ensureAdminAuthenticated, administratorController.backup
 //GET request to show all the posts in database
 router.get('/reviewallitems', ensureAdminAuthenticated, modFunctions.showAll);
 
-
 module.exports = router;

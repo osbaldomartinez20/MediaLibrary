@@ -9,7 +9,6 @@
     <form {{#if loggedIn.id}}action="/moderators/addimage" {{/if}} {{#if loggedIn.aid}}action="/masteradmin/itemaddimage"
         {{/if}} method="POST" enctype="multipart/form-data">
     {{#each postInfo}}
-    
         <div>
             <h5>Post ID:</h5>
             <input type="text" id="pid" name="pid" value="{{this.pid}}" readonly />

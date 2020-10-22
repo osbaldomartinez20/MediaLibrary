@@ -10,7 +10,6 @@ const bcrypt = require('bcryptjs');
 const fs = require('fs');
 const separate = require('../helper/separeteByCommas');
 const filterFuncReWrite = require('../helper/rewriteFilterFunction');
-const { count } = require('console');
 
 //cache to get the number of approved posts
 let numCache = new cache.cache(post.getNumberApproved, "2", 1);
@@ -337,13 +336,17 @@ exports.itemDeletion = (req, res, next) => {
 
 //edits the information of the post with the pid given in the request body.
 exports.editPost_post = (req, res, next) => {
-    let { pid, title, jtitle, author, description, details, year, type, origin, tags, links } = req.body;
+    let { pid, title, jtitle, author, description, details, year, unknown, type, origin, tags, links } = req.body;
     let mod = req.user.username;
     let japTitle = "";
     let placeholders = [];
 
     if (jtitle) {
         japTitle = jtitle;
+    }
+
+    if (unknown) {
+        year = "Unknown";
     }
 
     //Delete tags and links with the pid, because we will be re entering them into database
@@ -401,13 +404,18 @@ exports.addImage_post = (req, res, next) => {
     let { pid, cover, image } = req.body;
     let newImages = req.files;
     let workImage;
-    let coverImage = newImages.coverImage[0].filename;
+    let coverImage = newImages.coverImage[0].filename;;
     let skipWork = true;
     let skipCover = false;
     let placeholders = [];
 
     let sql = "UPDATE posts SET cover = ?";
     placeholders.push(coverImage);
+
+    if (newImages.coverImage == undefined) {
+        req.flash('error', 'Error only jpg or png images accepted.');
+        res.redirect('/masteradmin/imagereview');
+    }
 
     //check the work image info to see if we are replacing it.
     if (newImages.mangaImage != undefined) {
@@ -443,37 +451,32 @@ exports.addImage_post = (req, res, next) => {
                     fs.unlink('./public/images/upload/' + image, (err) => {
                         if (err) {
                             fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
-                            req.flash('error', 'There was an internal error.');
-                            res.redirect('/error');
                         }
-                        req.flash('success', 'Successfully updated image.');
-                        res.redirect('/masteradmin/imagereview');
                     });
+                    req.flash('success', 'Successfully updated image.');
+                    res.redirect('/masteradmin/imagereview');
                 }
             } else {
                 fs.unlink('./public/images/upload/' + cover, (err) => {
                     if (err) {
                         fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
-                        req.flash('error', 'There was an internal error.');
-                        res.redirect('/error');
-                    }
-                    if (skipWork) {
-                        //we only delete the cover image
-                        req.flash('success', 'Successfully updated image.');
-                        res.redirect('/masteradmin/imagereview');
-                    } else {
-                        //we delete both images
-                        fs.unlink('./public/images/upload/' + image, (err2) => {
-                            if (err2) {
-                                fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err2 + '');
-                                req.flash('error', 'There was an internal error.');
-                                res.redirect('/error');
-                            }
-                            req.flash('success', 'Successfully updated image.');
-                            res.redirect('/masteradmin/imagereview');
-                        });
                     }
                 });
+
+                if (skipWork) {
+                    //we only delete the cover image
+                    req.flash('success', 'Successfully updated image.');
+                    res.redirect('/masteradmin/imagereview');
+                } else {
+                    //we delete both images
+                    fs.unlink('./public/images/upload/' + image, (err2) => {
+                        if (err2) {
+                            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err2 + '');
+                        }
+                    });
+                    req.flash('success', 'Successfully updated image.');
+                    res.redirect('/masteradmin/imagereview');
+                }
             }
         } else {
             req.flash('error', 'Error updating image.');
