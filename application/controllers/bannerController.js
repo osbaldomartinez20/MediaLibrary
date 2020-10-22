@@ -1,3 +1,4 @@
+//Contributors: Osbaldo Martinez
 //This file helps with the banner changing functions
 const fs = require('fs');
 const getPostInfo = require('../controllers/getPostController');
@@ -33,4 +34,15 @@ exports.changeBanner = (req, res) => {
             req.flash("Error", "Cannot change banner to default.");
             res.redirect('/masteradmin/settings');
         });
+}
+
+//makes sure that the updating of the banner was successful
+exports.updateBanner = (req, res, next) => {
+    if (req.file) {
+        req.flash("success", "Successfully changed site banner");
+        res.redirect('/masteradmin/settings');
+    } else {
+        req.flash("error", "Error only PNG images accepted.");
+        res.redirect('/masteradmin/settings');
+    }
 }

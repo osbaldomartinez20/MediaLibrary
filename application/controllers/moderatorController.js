@@ -541,6 +541,11 @@ exports.addImage_post = (req, res, next) => {
     let sql = "UPDATE posts SET cover = ?";
     placeholders.push(coverImage);
 
+    if(newImages.coverImage == undefined) {
+        req.flash('error', 'Error only jpg or png images accepted.');
+        res.redirect('/moderators/dashboard');
+    }
+
     if (newImages.mangaImage != undefined) {
         workImage = newImages.mangaImage[0].filename;
         skipWork = false;

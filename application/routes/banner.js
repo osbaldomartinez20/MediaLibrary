@@ -5,13 +5,10 @@ const express = require('express');
 const router = express.Router();
 const banner = require('../middlewares/bannerUpdate');
 const bannerController = require('../controllers/bannerController');
-const { ensureAdminAuthenticated} = require('../controllers/userAuthenticated');
+const { ensureAdminAuthenticated } = require('../controllers/userAuthenticated');
 
 //POST request to change the banner
-router.post('/change', ensureAdminAuthenticated, banner.single("bannerImage"), (req, res) => {
-    req.flash("success", "Successfully changed site banner");
-    res.redirect('/masteradmin/settings');
-});
+router.post('/change', ensureAdminAuthenticated, banner.single("mangaImage"), bannerController.updateBanner);
 
 //GET request to change banner to default
 router.get('/default', ensureAdminAuthenticated, bannerController.defaultBanner);
