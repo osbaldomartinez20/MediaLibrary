@@ -37,9 +37,13 @@
         </div>
         <br />
         <div>
-            <label for="year">Choose a Year of Publication:<br/></label>
-            <input list="year" placeholder="year of publication" maxlength="10" required/>
-            <datalist id="year" name="year"></datalist>
+            <label for="year">Choose a Year of Publication:<br /></label>
+            <input type="number"
+                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                value="{{this.year}}" list="year" name="year" placeholder="year of publication" maxlength="4" />
+            <datalist id="year"></datalist>
+            <label for="unknown" id="unknownLabel">Unknown</label>
+            <input type="checkbox" id="unknown" name="unknown" style="cursor: pointer;"/>
         </div>
         <br />
         <script type="text/javascript" src="/js/addYears.js"></script>

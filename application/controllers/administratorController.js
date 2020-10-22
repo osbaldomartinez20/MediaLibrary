@@ -337,13 +337,17 @@ exports.itemDeletion = (req, res, next) => {
 
 //edits the information of the post with the pid given in the request body.
 exports.editPost_post = (req, res, next) => {
-    let { pid, title, jtitle, author, description, details, year, type, origin, tags, links } = req.body;
+    let { pid, title, jtitle, author, description, details, year, unknown, type, origin, tags, links } = req.body;
     let mod = req.user.username;
     let japTitle = "";
     let placeholders = [];
 
     if (jtitle) {
         japTitle = jtitle;
+    }
+
+    if(unknown) {
+        year = "Unknown";
     }
 
     //Delete tags and links with the pid, because we will be re entering them into database

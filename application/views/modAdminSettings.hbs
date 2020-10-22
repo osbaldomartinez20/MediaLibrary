@@ -25,8 +25,6 @@
 </div>
 <br />
 
-{{#if loggedIn.aid}}
-
 <!-- Add New Type Form -->
 <div style="border-style: dotted; text-align: center;">
     <h2>Search Post By Id</h2>
@@ -41,6 +39,8 @@
     </form>
 </div>
 <br />
+
+{{#if loggedIn.aid}}
 <!-- Add New Type Form -->
 <div style="border-style: dotted; text-align: center;">
     <h2>Add a New Type</h2>
@@ -78,5 +78,5 @@
     <a href="/masteradmin/dbbackup" style="color: black;"><button style="background-color: green;">BackUp
             Database</button></a>
 </div>
-
+<br />
 {{/if}}

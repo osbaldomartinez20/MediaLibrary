@@ -42,7 +42,7 @@ exports.imagePost_get = (req, res, next) => {
 // Handle submitting sales item for submit on POST
 exports.imagePost_post = (req, res, next) => {
     let postId = uuidv4();
-    let { title, japTitle, author, publication, description, year, tags, links, type, origin } = req.body;
+    let { title, japTitle, author, publication, description, year, unknown, tags, links, type, origin } = req.body;
     let postImages = req.files;
     let postCover = "noCover.png";
     let postImage = "nothing.png";
@@ -71,6 +71,11 @@ exports.imagePost_post = (req, res, next) => {
     //Check if we don't have a japanese title
     if (!japTitle) {
         japTitle = "";
+    }
+
+    //check to see if unknown is checked
+    if(unknown) {
+        year = "Unknown";
     }
 
     // Render posting error messages if necessary

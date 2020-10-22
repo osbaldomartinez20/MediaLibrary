@@ -445,13 +445,17 @@ exports.editPost_get = (req, res, next) => {
 
 //updates the post with the given pid with the given information in the form.
 exports.editPost_post = (req, res, next) => {
-    let { pid, title, jtitle, author, description, details, year, type, origin, tags, links } = req.body;
+    let { pid, title, jtitle, author, description, details, year, unknown, type, origin, tags, links } = req.body;
     let mod = req.user.username;
     let japTitle = "";
     let placeholders = [];
 
     if (jtitle) {
         japTitle = jtitle;
+    }
+
+    if(unknown) {
+        year = "Unknown";
     }
 
     let sqlDel = "DELETE FROM links WHERE pid = ?; DELETE FROM tags WHERE pid = ?";

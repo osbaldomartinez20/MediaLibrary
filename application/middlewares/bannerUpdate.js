@@ -8,7 +8,7 @@ const fs = require('fs');
 // Multer storage settings
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        fs.unlinkSync('./public/images/banner_site.png');
+        fs.unlinkSync('./public/images/main/banner_site.png');
         //folder where the images are uploaded
         const dir = "./public/images/main/"; 
         mkdirp(dir, err => cb(err, dir));
