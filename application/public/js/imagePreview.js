@@ -6,7 +6,7 @@
 //make sure that the field to upload the cover image has the id: coverImage
 //and the work image upload field has the id: mangaImage
 //This is used in editPostImage.hbs and imagePost.hbs
-$(document).ready(function () {
+$(document).ready( () => {
 
     document.getElementById("mangaImage").onchange = function () {
         var reader = new FileReader();

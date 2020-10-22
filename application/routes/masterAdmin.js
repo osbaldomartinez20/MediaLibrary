@@ -73,11 +73,11 @@ router.post('/newtype', ensureAdminAuthenticated, administratorController.addNew
 //POST request that adds a new origin to the database
 router.post('/neworigin', ensureAdminAuthenticated, administratorController.addNewOrigin);
 
-//POST request that finds a post info by the post id
-router.post('/findbyid', ensureAdminAuthenticated, administratorController.findPostById);
-
 //GET request to backup all the tables in the database except admin and mod
 router.get('/dbbackup', ensureAdminAuthenticated, administratorController.backupDB);
+
+//GET request to show all the posts in database
+router.get('/reviewallitems', ensureAdminAuthenticated, modFunctions.showAll);
 
 
 module.exports = router;

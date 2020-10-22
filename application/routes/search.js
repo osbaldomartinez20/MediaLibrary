@@ -12,16 +12,23 @@ const searchController = require('../controllers/searchController');
 //finds posts with a given keywork in request body
 router.post('/', searchController.post);
 
+//POST request that finds a post info by the post id
+router.post('/findbyid', searchController.findPostById);
+
 //GET requests for search
 
 //finds the posts that start with the given character
 router.get('/:character/firstletter', searchController.findByFirstLetter);
+
 //finds the posts that have the given type
 router.get('/:type/bytype', searchController.findByType);
+
 //finds the posts that have the given tag
 router.get('/:tag/bytag', searchController.findByTag);
+
 //finds the posts that have the given origin
 router.get('/:origin/byorigin', searchController.findByOrigin);
+
 //finds the 10 newst posts
 router.get('/newest', searchController.getNewest);
 

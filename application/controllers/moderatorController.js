@@ -603,3 +603,22 @@ exports.addImage_post = (req, res, next) => {
         }
     });
 }
+
+//shows all the posts in the database
+exports.showAll = (req, res, next) => {
+    numCache.getData()
+    .then((count) => {
+        post.getAll()
+        .then((result) => {
+            res.render('allPostsMod', {count: count, post: result});
+        }).catch((error) => {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
+        });
+    }).catch((error) => {
+        fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
+        req.flash('error', 'There was an internal error.');
+        res.redirect('/error');
+    });
+}

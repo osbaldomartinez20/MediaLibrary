@@ -60,4 +60,7 @@ router.get('/settings', ensureUserAuthenticated, userController.settings);
 //POST for change password
 router.post('/changepass', ensureUserAuthenticated, userController.changePassword);
 
+//GET request to show all the posts in database
+router.get('/reviewall', ensureUserAuthenticated, userController.showAll);
+
 module.exports = router;

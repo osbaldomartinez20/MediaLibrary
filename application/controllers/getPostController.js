@@ -154,11 +154,25 @@ async function getByTag(tag) {
     });
 }
 
+async function getAllPosts() {
+    let sql = "SELECT * FROM posts ORDER BY date DESC;";
+    return new Promise(async function (resolve, reject) {
+        const result = await db.query(sql).catch((error) => {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
+        });
+        if (result == undefined) {
+            console.log("There was an error getting the posts.");
+        }
+        resolve(result[0]);
+    });
+} 
+
 //exports of the functions
 exports.getPostInfo = getPostInfoById;
 exports.getPostImagesById = getPostImagesById;
 exports.getNumberApproved = getNumberOfApprovedPosts;
 exports.homePagePosts = getTenPosts;
+exports.getAll = getAllPosts;
 exports.getByLetter = getPostsBasedOnFirstTitleCharacter;
 exports.getByKeyWord = getByKeyWord;
 exports.getByType = getByType;

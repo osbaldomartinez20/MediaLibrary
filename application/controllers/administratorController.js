@@ -10,6 +10,7 @@ const bcrypt = require('bcryptjs');
 const fs = require('fs');
 const separate = require('../helper/separeteByCommas');
 const filterFuncReWrite = require('../helper/rewriteFilterFunction');
+const { count } = require('console');
 
 //cache to get the number of approved posts
 let numCache = new cache.cache(post.getNumberApproved, "2", 1);
@@ -530,12 +531,6 @@ exports.addNewOrigin = (req, res, next) => {
         req.flash("success", "Successfully added a new origin.");
         res.redirect('/masteradmin/settings');
     });
-}
-
-//finds the post with the given pid in the request body
-exports.findPostById = (req, res, next) => {
-    let { pid } = req.body;
-    res.redirect('/libraryitem/' + pid + '/moderator');
 }
 
 //makes a back up of the database tables, except the admin and mod tables.
