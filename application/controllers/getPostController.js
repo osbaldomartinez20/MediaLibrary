@@ -140,7 +140,7 @@ async function getByOrigin(origin) {
 
 //retrieves the posts that have the given tag.
 async function getByTag(tag) {
-    let sql = "SELECT tags.pid, posts.title, posts.jtitle, posts.author, posts.description, posts.details, posts.type, posts.cover, posts.image" +
+    let sql = "SELECT tags.pid, posts.title, posts.jtitle, posts.author, posts.description, posts.details, posts.type, posts.cover, posts.image, posts.origin, posts.year" +
         " FROM tags INNER JOIN posts USING (pid) WHERE tags = ? AND posts.status = 1;";
     let placeholders = [tag];
     return new Promise(async function (resolve, reject) {
