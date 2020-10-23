@@ -97,7 +97,6 @@ a {
     ;
 }
 
-
 .errMsg {
   text-align: center;
   color: rgb(250, 250, 250);
@@ -140,6 +139,13 @@ button {
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
+}
+
+.tags {
+  color: white;
+  background-color: black; 
+  border-style: dotted; 
+  text-align: center;
 }
 
 .firstchar {

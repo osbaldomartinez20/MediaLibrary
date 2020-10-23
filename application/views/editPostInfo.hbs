@@ -6,16 +6,16 @@
 {{#if loggedIn.id}}
 <div style="text-align: center;">
     {{#each postInfo}}
-    <a href="/moderators/{{this.pid}}/addimage"><button style="background-color: blue; color: black">Change
-            Images</button></a>
+    <a href="/moderators/{{this.pid}}/addimage"><button
+            style="background-color: blue; color: white; font-weight: bold;">Change Images</button></a>
     {{/each}}
 </div>
 {{/if}}
 {{#if loggedIn.aid}}
 <div style="text-align: center;">
     {{#each postInfo}}
-    <a href="/masteradmin/{{this.pid}}/itemaddimage"><button style="background-color: blue; color: black">Change
-            Images</button></a>
+    <a href="/masteradmin/{{this.pid}}/itemaddimage"><button
+            style="background-color: blue; color: white; font-weight: bold;">Change Images</button></a>
     {{/each}}
 </div>
 {{/if}}
@@ -72,7 +72,7 @@
                 value="{{this.year}}" list="year" name="year" placeholder="year of publication" maxlength="4" />
             <datalist id="year"></datalist>
             <label for="unknown" id="unknownLabel">Unknown</label>
-            <input type="checkbox" id="unknown" name="unknown" style="cursor: pointer;"/>
+            <input type="checkbox" id="unknown" name="unknown" style="cursor: pointer;" />
         </div>
         <br />
         <script type="text/javascript" src="/js/addYears.js"></script>

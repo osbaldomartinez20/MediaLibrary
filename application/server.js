@@ -11,7 +11,7 @@ const session = require("express-session");
 const flash = require('connect-flash');
 const fs = require('fs');
 
-///*
+//*
 //get the key and certificate information for the https server to use.
 const privateKey  = fs.readFileSync('sslcert/osbaldoiniguez.key', 'utf8');
 const certificate = fs.readFileSync('sslcert/osbaldoiniguez.crt', 'utf8');
@@ -64,6 +64,7 @@ app.use('/search', require('./routes/search'));
 app.use('/libraryitem', require('./routes/libraryItem'));
 app.use('/submit', require('./routes/submitItem'));
 app.use('/banner', require('./routes/banner'));
+app.use('/tag', require('./routes/tag'));
 app.use('/error', require('./routes/error'));
 
 // Error-handling middleware
@@ -83,7 +84,7 @@ server.listen(app.get('port'), function () {
 });
 //*/
 
-///*
+//*
 const httpsServer = https.createServer(credentials, app);
 //use port 8080 for the https server
 httpsServer.listen(8080, function () {
