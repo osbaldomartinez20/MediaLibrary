@@ -8,8 +8,8 @@ async function getPostInfoById(id) {
     let placeholders = [id, id, id];
     let sql = "SELECT * FROM posts WHERE pid = ?;";
 
-    sql += "SELECT * FROM links WHERE pid = ?;";
-    sql += "SELECT * FROM tags WHERE pid = ?;";
+    sql += "SELECT links FROM links WHERE pid = ?;";
+    sql += "SELECT tags FROM tags WHERE pid = ?;";
 
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql, placeholders).catch((error) => {
@@ -155,7 +155,7 @@ async function getByTag(tag) {
 }
 
 async function getAllPosts() {
-    let sql = "SELECT * FROM posts ORDER BY date DESC;";
+    let sql = "SELECT pid, title, approvedby, status, date, cover FROM posts ORDER BY date DESC;";
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql).catch((error) => {
             fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');

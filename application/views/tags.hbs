@@ -1,0 +1,10 @@
+<div class="container-fluid">
+    <div>
+        <h2>Tags</h2>
+    </div>
+    <br />
+    {{#each tags}}
+    <a href="/search/{{this.tag}}/bytag"><button class="tags">{{this.tag}}({{this.total}})</button></a>
+    {{/each}}
+    <br />
+</div>
