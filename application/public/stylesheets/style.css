@@ -141,6 +141,12 @@ button {
   cursor: pointer;
 }
 
+#addTag {
+  padding: 5px 10px;
+  font-size: large;
+  margin: 0px 0px;
+}
+
 .tags {
   color: white;
   background-color: black; 

@@ -1,0 +1,24 @@
+<div style="border-style: dotted; text-align: center;">
+    <h2><a href="/libraryitem/{{post.pid}}" target="_blank"></a></h2>
+    <br />
+    <form action="/tag/update" method="POST">
+        <div>
+            <label for="pid">Post Id:</label>
+            <input value="{{post.pid}}" name="pid" id="pid" readonly />
+        </div>
+        <div>
+            <h5>Current Tags:</h5>
+            <textarea rows="5" name="currTags" id="currTags" readonly>{{tags.tag}}</textarea>
+        </div>
+        <br />
+
+        <div>
+            <h5>New Tags:<br />(separate each new tag by a comma)</h5>
+            <textarea rows="5" name="newTags" id="newTags" required></textarea>
+        </div>
+        <br />
+        <div>
+            <button type="submit" id="submit">Submit</button>
+        </div>
+    </form>
+</div>

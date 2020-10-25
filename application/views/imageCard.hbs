@@ -40,7 +40,9 @@
                     <td style="text-align: center;"><a href="/search/{{this.type}}/bytype">{{this.type}}</a></th>
                         {{/each}}
                     <td style="text-align: center;">{{#each tags}} <a
-                            href="/search/{{this.tags}}/bytag">{{this.tags}}</a> <br />{{/each}}</th>
+                            href="/search/{{this.tags}}/bytag">{{this.tags}}</a> <br />{{/each}}{{#each postInfo}}<a
+                            href="/tag/{{this.pid}}/add" target="_blank"><button id="addTag"
+                                style="background-color: lightgray; font-size: 125%;">+</button></a>{{/each}}<br /></th>
                     <td style="text-align: center;">{{#each links}} <a href="{{this.links}}"
                             target="_blank">{{this.links}}</a>
                         <br />{{/each}}</th>
