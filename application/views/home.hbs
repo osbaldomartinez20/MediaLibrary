@@ -67,9 +67,11 @@
                 {{#if post}}
                 {{#each post}}
                 <tr class="resultRow">
-                    <th scope="row"><img src='/images/upload/{{this.cover}}' width="100" height="120"
-                            alt="Responsive image" /></th>
-                    <td><img src='/images/upload/{{this.image}}' width="100" height="120" alt="Responsive image" /></td>
+                    <th scope="row"><a href="/images/upload/{{this.cover}}" target="_blank"><img
+                                src='/images/upload/{{this.cover}}' width="100" height="120"
+                                alt="Responsive image" /></a></th>
+                    <td><a href="/images/upload/{{this.image}}" target="_blank"><img src='/images/upload/{{this.image}}'
+                                width="100" height="120" alt="Responsive image" /></a></td>
                     <td style="text-align: center;"><a href="/libraryitem/{{this.pid}}">{{this.title}}</a><br />
                         <div class="hidden jsel">{{this.jtitle}}</div>
                     </td>
