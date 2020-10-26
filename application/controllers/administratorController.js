@@ -542,3 +542,37 @@ exports.backupDB = (req, res, next) => {
     req.flash('success', 'Successfully backed up the database');
     res.redirect('/masteradmin/settings');
 }
+
+/*
+//this makes the post unable to be dissapproved
+exports.markNotReviewable = (req, res) => {
+    let pid = req.params.pid;
+    //0 cannot be unapproved
+    let sql = "UPDATE posts SET reviewable = 0 WHERE pid = ?;"
+    db.query(sql, [pid], (err, result) => {
+        if (err) {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
+        }
+        req.flash("success", "Successfully made the post unable to be unapproved.");
+        res.redirect('/masteradmin/reviewallitems');
+    });
+}
+
+//this makes the post able to be dissapproved
+exports.markNotReviewable = (req, res) => {
+    let pid = req.params.pid;
+    //1 can be unapproved
+    let sql = "UPDATE posts SET reviewable = 1 WHERE pid = ?;"
+    db.query(sql, [pid], (err, result) => {
+        if (err) {
+            fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
+            req.flash('error', 'There was an internal error.');
+            res.redirect('/error');
+        }
+        req.flash("success", "Successfully made the post able to be unapproved.");
+        res.redirect('/masteradmin/reviewallitems');
+    });
+}
+//*/
