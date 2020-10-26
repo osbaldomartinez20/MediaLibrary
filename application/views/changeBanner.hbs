@@ -1,13 +1,13 @@
 <!-- Add New Type Form -->
 <script type="text/javascript" src="/js/imagePreview.js"></script>
 <div style="border-style: dotted; text-align: center;">
-    <h2>Search Post By Id</h2>
+    <h2>Banner Replace<br />(Preferred dimensions are: 1920 width by 324 height)</h2>
     <form action="/banner/change" method="POST" enctype="multipart/form-data">
         <div>
             <label for="mangaImage" id="imageLabel2">Add Banner Image<br />Choose up to 1 image to
                 upload (Only PNG)<br></label>
             <br>
-            <input type="file" name="mangaImage" id="mangaImage" accept="image/png" />
+            <input type="file" name="mangaImage" id="mangaImage" accept="image/png" required />
         </div>
         <br />
         <div class="preview">
@@ -17,5 +17,7 @@
             <button type="submit" id="submit">Submit</button>
         </div>
     </form>
+    <a href="/masteradmin/settings" style="float: left;"><button
+            style="background-color: red; color: white; font-weight: bold;">BACK</button></a>
 </div>
 <br />

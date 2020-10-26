@@ -14,7 +14,7 @@ let numCache = new cache.cache(post.getNumberApproved, "2", 1);
 exports.imageCard_get = (req, res, next) => {
     let pid = req.params.pid;
     //cache time to live is in minutes so 30 min.
-    //cache is 1 day long because the info will rarely change.
+    //cache is 30 min long because the info will rarely change.
     let itemCache = new cache.cache(post.getPostInfo, pid, 30);
 
     itemQueue.addCache(itemCache);

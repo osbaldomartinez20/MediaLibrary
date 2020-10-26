@@ -63,7 +63,7 @@ a {
     }
     .text-block {
       position: absolute;
-        top: 89%;
+        top: 90%;
         left: 26%;
         transform: translate( -50%, -50% );
         text-align: center;
@@ -81,7 +81,7 @@ a {
     }
     .text-block {
       position: absolute;
-        top: 89%;
+        top: 90%;
         left: 26%;
         transform: translate( -50%, -50% );
         text-align: center;
@@ -139,6 +139,12 @@ button {
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
+}
+
+#addTag {
+  padding: 5px 10px;
+  font-size: large;
+  margin: 0px 0px;
 }
 
 .tags {
