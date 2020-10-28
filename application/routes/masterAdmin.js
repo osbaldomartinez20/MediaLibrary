@@ -79,4 +79,10 @@ router.get('/dbbackup', ensureAdminAuthenticated, administratorController.backup
 //GET request to show all the posts in database
 router.get('/reviewallitems', ensureAdminAuthenticated, modFunctions.showAll);
 
+//GET request for item to not be reviewable
+router.get('/notreviewable/:pid', ensureAdminAuthenticated, administratorController.markNotReviewable);
+
+//GET request for item to not be reviewable
+router.get('/reviewable/:pid', ensureAdminAuthenticated, administratorController.markReviewable);
+
 module.exports = router;
