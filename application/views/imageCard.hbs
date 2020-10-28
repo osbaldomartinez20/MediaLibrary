@@ -76,9 +76,9 @@
                     style="background-color: blue; color: white; font-weight: bold;">Edit</button></a>
             <a href="/masteradmin/{{this.pid}}/itemconfirmdel"><button
                     style="background-color: red; color: white; font-weight: bold;">Remove</button></a>
-            {{#if this.status}} <a href="/masteradmin/{{this.pid}}/itemdisapprove"><button
+            {{#if this.reviewable}}{{#if this.status}} <a href="/masteradmin/{{this.pid}}/itemdisapprove"><button
                     style="background-color: rgb(19, 138, 19); color: white; font-weight: bold;">Disapprove</button></a>
-            {{/if}}
+            {{/if}}{{/if}}
             {{/each}}
         </div>
         {{/if}}

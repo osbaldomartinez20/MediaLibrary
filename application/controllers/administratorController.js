@@ -543,7 +543,7 @@ exports.backupDB = (req, res, next) => {
     res.redirect('/masteradmin/settings');
 }
 
-/*
+
 //this makes the post unable to be dissapproved
 exports.markNotReviewable = (req, res) => {
     let pid = req.params.pid;
@@ -555,13 +555,13 @@ exports.markNotReviewable = (req, res) => {
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         }
-        req.flash("success", "Successfully made the post unable to be unapproved.");
+        req.flash("success", "Successfully made the post unable to be unapproved. Change can take 30 min to happen because of cache.");
         res.redirect('/masteradmin/reviewallitems');
     });
 }
 
 //this makes the post able to be dissapproved
-exports.markNotReviewable = (req, res) => {
+exports.markReviewable = (req, res) => {
     let pid = req.params.pid;
     //1 can be unapproved
     let sql = "UPDATE posts SET reviewable = 1 WHERE pid = ?;"
@@ -571,8 +571,7 @@ exports.markNotReviewable = (req, res) => {
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         }
-        req.flash("success", "Successfully made the post able to be unapproved.");
+        req.flash("success", "Successfully made the post able to be unapproved. Change can take 30 min to happen because of cache.");
         res.redirect('/masteradmin/reviewallitems');
     });
 }
-//*/

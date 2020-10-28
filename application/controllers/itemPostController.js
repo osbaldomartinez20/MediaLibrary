@@ -103,8 +103,8 @@ exports.imagePost_post = (req, res, next) => {
 
     let insertDate = yyyy + '/' + mm + '/' + dd + ' ' + hh + ':' + mi + ':' + ss;
 
-    let sql = "INSERT INTO posts (pid, title, author, jtitle, description, details, type, cover, image, status, date, origin, year) VALUES (?,?,?,?,?,?,?,?,?,?,STR_TO_DATE(?,'%Y/%m/%d %H:%i:%s'),?,?);";
-    let postPlaceholder = [postId, title, author, japTitle, description, publication, type, postCover, postImage, status, insertDate, origin, year];
+    let sql = "INSERT INTO posts (pid, title, author, jtitle, description, details, type, cover, image, status, date, origin, year, reviewable) VALUES (?,?,?,?,?,?,?,?,?,?,STR_TO_DATE(?,'%Y/%m/%d %H:%i:%s'),?,?,?);";
+    let postPlaceholder = [postId, title, author, japTitle, description, publication, type, postCover, postImage, status, insertDate, origin, year, 1];
 
     placeholders.push(...postPlaceholder);
 

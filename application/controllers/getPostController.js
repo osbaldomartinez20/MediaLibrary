@@ -155,7 +155,7 @@ async function getByTag(tag) {
 }
 
 async function getAllPosts() {
-    let sql = "SELECT pid, title, approvedby, status, date, cover FROM posts ORDER BY date DESC;";
+    let sql = "SELECT pid, title, approvedby, status, date, cover, reviewable FROM posts ORDER BY date DESC;";
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql).catch((error) => {
             fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
