@@ -10,6 +10,7 @@ const bcrypt = require('bcryptjs');
 const fs = require('fs');
 const separate = require('../helper/separeteByCommas');
 const filterFuncReWrite = require('../helper/rewriteFilterFunction');
+const cssRewrite = require('../helper/rewriteBackgroundCSS');
 
 //cache to get the number of approved posts
 let numCache = new cache.cache(post.getNumberApproved, "2", 1);
@@ -574,4 +575,18 @@ exports.markReviewable = (req, res) => {
         req.flash("success", "Successfully made the post able to be unapproved. Change can take 30 min to happen because of cache.");
         res.redirect('/masteradmin/reviewallitems');
     });
+}
+
+//This code helps to change the background color by rewriting a CSS file.
+exports.changeBackgroundColor = (req, res) => {
+    let color = req.body.backgroundColor;
+    cssRewrite.writeBackgroundColorCSS(color, 'body', 'backgroundColor.css');
+    res.redirect('/masteradmin/settings');
+}
+
+//This code helps to change the navBar color by rewriting a CSS file.
+exports.changeNavBarColor = (req, res) => {
+    let color = req.body.navColor;
+    cssRewrite.writeBackgroundColorCSS(color, '.navbar', 'navBarColor.css');
+    res.redirect('/masteradmin/settings');
 }
