@@ -1,0 +1,24 @@
+<!-- Add New Type Form -->
+<script type="text/javascript" src="/js/imagePreview.js"></script>
+<div style="border-style: dotted; text-align: center;">
+    <img src="/images/main/favicon.ico"/>
+    <h2>Replace Icon Shown In The Tab<br />(Preferred dimensions are: 32 by 32(or 16 by 16))</h2>
+    <form action="/favicon/change" method="POST" enctype="multipart/form-data">
+        <div>
+            <label for="mangaImage" id="imageLabel2">Add Favicon<br />Choose up to 1 image to
+                upload (Only .ico)<br></label>
+            <br>
+            <input type="file" name="mangaImage" id="mangaImage" required />
+        </div>
+        <br />
+        <div class="preview">
+            <img id="img2" width="32" height="32" />
+        </div>
+        <div>
+            <button type="submit" id="submit">Submit</button>
+        </div>
+    </form>
+    <a href="/masteradmin/settings" style="float: left;"><button
+            style="background-color: red; color: white; font-weight: bold;">BACK</button></a>
+</div>
+<br />

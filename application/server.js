@@ -64,6 +64,7 @@ app.use('/search', require('./routes/search'));
 app.use('/libraryitem', require('./routes/libraryItem'));
 app.use('/submit', require('./routes/submitItem'));
 app.use('/banner', require('./routes/banner'));
+app.use('/favicon', require('./routes/favicon'));
 app.use('/tag', require('./routes/tag'));
 app.use('/error', require('./routes/error'));
 
