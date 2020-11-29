@@ -13,8 +13,8 @@ const fs = require('fs');
 
 //*
 //get the key and certificate information for the https server to use.
-const privateKey  = fs.readFileSync('sslcert/osbaldoiniguez.key', 'utf8');
-const certificate = fs.readFileSync('sslcert/osbaldoiniguez.crt', 'utf8');
+const privateKey  = fs.readFileSync('sslcert/HSSL-5fabb13cdfde3.key', 'utf8');
+const certificate = fs.readFileSync('sslcert/list_tsfcomics_com.crt', 'utf8');
 const credentials = {key: privateKey, cert: certificate};
 //*/
 
