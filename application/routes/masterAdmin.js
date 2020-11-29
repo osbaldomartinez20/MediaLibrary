@@ -85,4 +85,10 @@ router.get('/notreviewable/:pid', ensureAdminAuthenticated, administratorControl
 //GET request for item to not be reviewable
 router.get('/reviewable/:pid', ensureAdminAuthenticated, administratorController.markReviewable);
 
+//POST request to change the background color
+router.post('/backgroundcolor', ensureAdminAuthenticated, administratorController.changeBackgroundColor);
+
+//POST request to change nav bar color
+router.post('/navcolor', ensureAdminAuthenticated, administratorController.changeNavBarColor);
+
 module.exports = router;

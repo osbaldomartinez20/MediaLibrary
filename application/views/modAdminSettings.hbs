@@ -51,6 +51,30 @@
     <a href="/banner/default"><button style="background-color: lightblue; color: white; font-weight: bold;">Change to
             Default</button></a>
 </div>
+<div style="border-style: dotted; text-align: center;">
+    <h2>Change The Background Color</h2>
+    <h3>Use color name, rgb value, or hexadecimal.<br/>(ex: white, rgb(255, 255, 255), or #ffffff)</h3>
+    <form action="/masteradmin/backgroundcolor" method="POST">
+        <div>
+            <input type="text" id="backgroundColor" name="backgroundColor" placeholder="Enter a color." maxlength="50" required/>
+        </div>
+        <div>
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+</div>
+<div style="border-style: dotted; text-align: center;">
+    <h2>Change The NavBar Color</h2>
+    <h3>Use color name, rgb value, or hexadecimal.<br/>(ex: white, rgb(255, 255, 255), or #ffffff)</h3>
+    <form action="/masteradmin/navcolor" method="POST">
+        <div>
+            <input type="text" id="navColor" name="navColor" placeholder="Enter a color." maxlength="50" required/>
+        </div>
+        <div>
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+</div>
 <!-- Add New Type Form -->
 <div style="border-style: dotted; text-align: center;">
     <h2>Add a New Type</h2>
