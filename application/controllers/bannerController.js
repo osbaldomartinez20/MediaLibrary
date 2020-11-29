@@ -31,7 +31,7 @@ exports.changeBanner = (req, res) => {
             res.render('changeBanner', { count: count });
         }).catch((error) => {
             fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');
-            req.flash("Error", "Cannot change banner to default.");
+            req.flash("Error", "Cannot retrieve banner change form.");
             res.redirect('/masteradmin/settings');
         });
 }
