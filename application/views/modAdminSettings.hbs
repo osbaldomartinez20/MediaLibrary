@@ -61,10 +61,15 @@
 </div>
 <div style="border-style: dotted; text-align: center;">
     <h2>Change The Background Color</h2>
-    <h3>Use color name, rgb value, or hexadecimal.<br/>(ex: white, rgb(255, 255, 255), or #ffffff)</h3>
+    <h3>Use color name, rgb value, or hexadecimal.<br />(ex: white, rgb(255, 255, 255), or #ffffff)</h3>
+    <h3>If you want multiple colors add "black;"(or any color + ";") then enter the CSS for linear-gradient
+        background.<br /> (Sample Input: "black; background: linear-gradient(to bottom, red 0%, red 33%, green 33%,
+        green 66%, blue 66%, blue 100%);")</h3>
+    <h3>For more info on multiple colors go <a href="https://stackoverflow.com/questions/35555614/multiple-background-colors-with-css-only" target="_blank">Here</a></h3>
     <form action="/masteradmin/backgroundcolor" method="POST">
         <div>
-            <input type="text" id="backgroundColor" name="backgroundColor" placeholder="Enter a color." maxlength="50" required/>
+            <input type="text" id="backgroundColor" name="backgroundColor" placeholder="Enter a color." maxlength="50"
+                required />
         </div>
         <div>
             <button type="submit">Submit</button>
@@ -73,10 +78,10 @@
 </div>
 <div style="border-style: dotted; text-align: center;">
     <h2>Change The NavBar Color</h2>
-    <h3>Use color name, rgb value, or hexadecimal.<br/>(ex: white, rgb(255, 255, 255), or #ffffff)</h3>
+    <h3>Use color name, rgb value, or hexadecimal.<br />(ex: white, rgb(255, 255, 255), or #ffffff)</h3>
     <form action="/masteradmin/navcolor" method="POST">
         <div>
-            <input type="text" id="navColor" name="navColor" placeholder="Enter a color." maxlength="50" required/>
+            <input type="text" id="navColor" name="navColor" placeholder="Enter a color." maxlength="50" required />
         </div>
         <div>
             <button type="submit">Submit</button>
