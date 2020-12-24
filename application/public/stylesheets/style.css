@@ -50,7 +50,11 @@ a {
 
 .footer {
   width: 100%;
+  font-size: larger;
+}
 
+#feedbackLink {
+  float: right;
 }
 
 @media (min-width:751px){
@@ -61,13 +65,13 @@ a {
     }
     .text-block {
       position: absolute;
-        top: 90%;
-        left: 26%;
+        top: 39%;
+        left: 81.25%;
         transform: translate( -50%, -50% );
         text-align: center;
         color: black;
         font-weight: bold;
-        font-size: 200%;
+        font-size: 210%;
     }
 }
 
@@ -79,13 +83,13 @@ a {
     }
     .text-block {
       position: absolute;
-        top: 90%;
-        left: 26%;
+        top: 39%;
+        left: 81.25%;
         transform: translate( -50%, -50% );
         text-align: center;
         color: black;
         font-weight: bold;
-        font-size: 120%;
+        font-size: 110%;
     }
 }
 
