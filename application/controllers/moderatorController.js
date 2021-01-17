@@ -378,7 +378,7 @@ exports.itemDeletion = (req, res, next) => {
                             res.redirect('/error');
                         }
 
-                        req.flash('success', 'Deleted Post Information.');
+                        req.flash('success', 'Deleted Post Information. Changes may apply after 30 min.');
                         res.redirect('/masteradmin/imagereview');
                     });
                 });
@@ -391,7 +391,7 @@ exports.itemDeletion = (req, res, next) => {
                         res.redirect('/error');
                     }
 
-                    req.flash('success', 'Deleted Post Information.');
+                    req.flash('success', 'Deleted Post Information. Changes may apply after 30 min.');
                     res.redirect('/masteradmin/imagereview');
                 });
             }
@@ -501,7 +501,7 @@ exports.editPost_post = (req, res, next) => {
                 fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
             }
         });
-        req.flash('success', 'Successfully updated post info.');
+        req.flash('success', 'Successfully updated post info. Changes may apply after 30 min.');
         res.redirect('/moderators/dashboard');
     });
 }

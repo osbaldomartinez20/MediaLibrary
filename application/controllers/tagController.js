@@ -107,7 +107,7 @@ exports.updateTags = (req, res) => {
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         }
-        req.flash('success', 'Successfully added new tags. Change will be made public in 30 minutes or less.');
+        req.flash('success', 'Successfully added new tags. Changes may apply after 30 min.');
         res.redirect('/libraryitem/' + pid + '/moderator');
     });
 }
