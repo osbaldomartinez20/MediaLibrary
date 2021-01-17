@@ -57,6 +57,10 @@ a {
   float: right;
 }
 
+#mainTSF {
+  margin-left: 38%; 
+}
+
 @media (min-width:751px){
     .bannerimg {
         display: block; 
