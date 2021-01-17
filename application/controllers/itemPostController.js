@@ -78,7 +78,7 @@ exports.imagePost_post = (req, res, next) => {
     }
 
     //check to see if unknown is checked
-    if(unknown) {
+    if (unknown) {
         year = "Unknown";
     }
 
@@ -135,13 +135,8 @@ exports.imagePost_post = (req, res, next) => {
             res.redirect('/submit');
         }
 
-        if ((typeof result !== 'undefined')) {
-            req.flash('success', 'Successfully submitted for review');
-            res.redirect('/');
-        }
-        else {
-            req.flash('error', 'Error posting');
-            res.redirect('/submit');
-        }
+        req.flash('success', 'Successfully submitted for review');
+        res.redirect('/');
+
     });
 }

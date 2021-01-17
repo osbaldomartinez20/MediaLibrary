@@ -5,6 +5,7 @@
 <script src="/js/showJapTitle.js"></script>
 <script src="/js/sortTable.js"></script>
 <script src="/js/filterByTypes.js"></script>
+<script src="/js/pagination.js"></script>
 <div class="container-fluid">
     <div class="home" style="width: 100%;">
         <div style="text-align: center;">
@@ -83,6 +84,7 @@
                         {{this.year}}<br />Origin: <a href="/search/{{this.origin}}/byorigin">{{this.origin}}</a></td>
                 </tr>
                 {{/each}}
+                <div class="pagination" id="paginationBar" onload="makePagination();"></div>
                 {{else}}
                 <h2 style="text-align: center;">No Posts Could Be Found</h2>
                 {{/if}}
