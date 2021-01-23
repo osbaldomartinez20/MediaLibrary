@@ -1,5 +1,6 @@
 //Contributor: Osbaldo Martinez.
 
+//unused until a quicker sorting algorithm is implemented, or else this will be too slow. 
 //parameter is an int that helps identify what you are sorting
 //n = 1, sort by titles. n = 2, sort by author. Default might do nothing.
 let sortTable = (n) => {
