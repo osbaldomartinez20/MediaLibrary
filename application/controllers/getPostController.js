@@ -52,9 +52,9 @@ async function getNumberOfApprovedPosts() {
     });
 }
 
-//retrieves the 10 newest approved posts
+//retrieves the 100 newest approved posts
 async function getTenPosts() {
-    let sql = "SELECT * FROM posts WHERE status = 1 ORDER BY date DESC LIMIT 10;";
+    let sql = "SELECT * FROM posts WHERE status = 1 ORDER BY date DESC LIMIT 100;";
     return new Promise(async function (resolve, reject) {
         const result = await db.query(sql).catch((error) => {
             fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', error + '');

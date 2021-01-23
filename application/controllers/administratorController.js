@@ -314,7 +314,7 @@ exports.itemDeletion = (req, res, next) => {
                             res.redirect('/error');
                         }
 
-                        req.flash('success', 'Deleted Post Information.');
+                        req.flash('success', 'Deleted Post Information. Changes may apply after 30 min.');
                         res.redirect('/masteradmin/imagereview');
                     });
                 });
@@ -327,7 +327,7 @@ exports.itemDeletion = (req, res, next) => {
                         res.redirect('/error');
                     }
 
-                    req.flash('success', 'Deleted Post Information.');
+                    req.flash('success', 'Deleted Post Information. Changes may apply after 30 min.');
                     res.redirect('/masteradmin/imagereview');
                 });
             }
@@ -395,7 +395,7 @@ exports.editPost_post = (req, res, next) => {
                 fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err + '');
             }
         });
-        req.flash('success', 'Successfully updated post info.');
+        req.flash('success', 'Successfully updated post info. Changes may apply after 30 min.');
         res.redirect('/masteradmin/imagereview');
     });
 }
@@ -445,7 +445,7 @@ exports.addImage_post = (req, res, next) => {
             if (skipCover) {
                 if (skipWork) {
                     //we delete nothing
-                    req.flash('success', 'Successfully updated image.');
+                    req.flash('success', 'Successfully updated image. Changes may apply after 30 min.');
                     res.redirect('/masteradmin/imagereview');
                 } else {
                     //we delete only the work image
@@ -466,7 +466,7 @@ exports.addImage_post = (req, res, next) => {
 
                 if (skipWork) {
                     //we only delete the cover image
-                    req.flash('success', 'Successfully updated image.');
+                    req.flash('success', 'Successfully updated image. Changes may apply after 30 min.');
                     res.redirect('/masteradmin/imagereview');
                 } else {
                     //we delete both images
@@ -475,7 +475,7 @@ exports.addImage_post = (req, res, next) => {
                             fs.writeFileSync(__dirname + '/errors/' + Date.now() + 'error.log', err2 + '');
                         }
                     });
-                    req.flash('success', 'Successfully updated image.');
+                    req.flash('success', 'Successfully updated image. Changes may apply after 30 min.');
                     res.redirect('/masteradmin/imagereview');
                 }
             }
@@ -556,7 +556,7 @@ exports.markNotReviewable = (req, res) => {
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         }
-        req.flash("success", "Successfully made the post unable to be unapproved. Change can take 30 min to happen because of cache.");
+        req.flash("success", "Successfully made the post unable to be unapproved. Changes may apply after 30 min.");
         res.redirect('/masteradmin/reviewallitems');
     });
 }
@@ -572,7 +572,7 @@ exports.markReviewable = (req, res) => {
             req.flash('error', 'There was an internal error.');
             res.redirect('/error');
         }
-        req.flash("success", "Successfully made the post able to be unapproved. Change can take 30 min to happen because of cache.");
+        req.flash("success", "Successfully made the post able to be unapproved. Changes may apply after 30 min.");
         res.redirect('/masteradmin/reviewallitems');
     });
 }
