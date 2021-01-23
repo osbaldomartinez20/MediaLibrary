@@ -1,8 +1,10 @@
+//Contributor: Osbaldo Martinez.
 //This file helps with the pagination of the results
 
 //This determines the number of entries per page.
 const ENTRIES_PER_PAGE = 10;
 
+//function to help traverse trough the pagination
 let showResultsInPage = (page, pages) => {
     let max = page * 10;
     let min = (page * 10) - 10;
@@ -30,6 +32,7 @@ let showResultsInPage = (page, pages) => {
     }
 }
 
+//function that makes the pagination
 $(document).ready(function() {
     let docSelection = document.getElementsByClassName("resultRow");
     let pages = Math.ceil(docSelection.length / ENTRIES_PER_PAGE);
