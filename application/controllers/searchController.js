@@ -238,7 +238,7 @@ exports.findByTag = (req, res, next) => {
 //there is a five minute delay to get most recent approved post because of cache
 exports.getNewest = (req, res, next) => {
     let newest = {};
-    newest.text = "You are seeing the 10 newest posts."
+    newest.text = "You are seeing the 100 newest posts."
 
     numCache.getData()
         .then((count) => {
