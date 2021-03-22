@@ -1,50 +1,11 @@
 //Contributor: Osbaldo Martinez.
 //This file helps with the pagination of the results
-<<<<<<< HEAD
 //This determines the number of entries per page.
 const ENTRIES_PER_PAGE = 10;
 
 //makes the pagination based on the number of results given by the backend.
 let makePagination = () => {
     let hidden = hideShowNSFW();
-
-
-=======
-
-//This determines the number of entries per page.
-const ENTRIES_PER_PAGE = 10;
-
-//function to help traverse trough the pagination
-let showResultsInPage = (page, pages) => {
-    let max = page * 10;
-    let min = (page * 10) - 10;
-
-    let docSelection = document.getElementsByClassName("resultRow");
-
-    for(let i = 0; i < docSelection.length; i++) {
-        if(i >= min && i < max) {
-            docSelection[i].classList.remove("hiddenP");
-            
-        } else {
-            docSelection[i].classList.add("hiddenP");
-        }
-    }
-
-    if(pages > 1) {
-        docSelection = document.getElementsByClassName("pageNumber");
-        for(let i = 0; i < docSelection.length; i++) {
-            if(page - 1 == i) {
-                docSelection[i].classList.add("active");
-            } else {
-                docSelection[i].classList.remove("active");
-            }
-        }
-    }
-}
-
-//function that makes the pagination
-$(document).ready(function() {
->>>>>>> a263e98d528d757b446d23b4a5e52e8df0aabf74
     let docSelection = document.getElementsByClassName("resultRow");
     let pages = Math.ceil((docSelection.length - hidden) / ENTRIES_PER_PAGE);
 
@@ -70,7 +31,6 @@ $(document).ready(function() {
             document.getElementById("paginationBar").appendChild(a);
         }
     }
-<<<<<<< HEAD
 }
 
 //shows the results of the selected page.
@@ -116,6 +76,3 @@ let hideShowNSFW = () => {
     
     return count;
 }
-=======
-});
->>>>>>> a263e98d528d757b446d23b4a5e52e8df0aabf74
