@@ -59,8 +59,8 @@
                     <tr>
                         <th scope="col" style="text-align: center;">Cover</th>
                         <th scope="col" style="text-align: center;">Sample Image</th>
-                        <th scope="col" style="text-align: center; cursor: pointer;" onclick="sortTable(1);">Title</th>
-                        <th scope="col" style="text-align: center; cursor: pointer;" onclick="sortTable(2);">Author</th>
+                        <th scope="col" style="text-align: center;">Title</th>
+                        <th scope="col" style="text-align: center;">Author</th>
                         <th scope="col" style="text-align: center;">Type</th>
                         <th scope="col" style="text-align: center;">Description</th>
                         <th scope="col" style="text-align: center;">Details</th>
@@ -84,11 +84,11 @@
                         {{this.year}}<br />Origin: <a href="/search/{{this.origin}}/byorigin">{{this.origin}}</a></td>
                 </tr>
                 {{/each}}
-                <div class="pagination" id="paginationBar" onload="makePagination();"></div>
                 {{else}}
                 <h2 style="text-align: center;">No Posts Could Be Found</h2>
                 {{/if}}
             </tbody>
         </table>
+        <div class="pagination" id="paginationBar"></div>
     </div>
 </div>

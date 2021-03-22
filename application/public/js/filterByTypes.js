@@ -46,6 +46,4 @@ let atLeastOneChecked = () => {
     return checked;
 }
 
-exports.types = typeList;
-
 //Any changes in this file should be done in the string functionFilterByType in rewriteFilterFunction.js
