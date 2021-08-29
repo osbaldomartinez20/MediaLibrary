@@ -1,19 +1,48 @@
 //Contributor: Osbaldo Martinez.
 //This file helps with the pagination of the results
+
 //This determines the number of entries per page.
 const ENTRIES_PER_PAGE = 10;
 
-//makes the pagination based on the number of results given by the backend.
-let makePagination = () => {
-    let hidden = hideShowNSFW();
+//function to help traverse trough the pagination
+let showResultsInPage = (page, pages) => {
+    let max = page * 10;
+    let min = (page * 10) - 10;
+
     let docSelection = document.getElementsByClassName("resultRow");
-    let pages = Math.ceil((docSelection.length - hidden) / ENTRIES_PER_PAGE);
+
+    for(let i = 0; i < docSelection.length; i++) {
+        if(i >= min && i < max) {
+            docSelection[i].classList.remove("hiddenP");
+            
+        } else {
+            docSelection[i].classList.add("hiddenP");
+        }
+    }
+
+    if(pages > 1) {
+        docSelection = document.getElementsByClassName("pageNumber");
+        for(let i = 0; i < docSelection.length; i++) {
+            if(page - 1 == i) {
+                docSelection[i].classList.add("active");
+            } else {
+                docSelection[i].classList.remove("active");
+            }
+        }
+    }
+}
+
+//function that makes the pagination
+$(document).ready(function() {
+    let docSelection = document.getElementsByClassName("resultRow");
+    let pages = Math.ceil(docSelection.length / ENTRIES_PER_PAGE);
 
     for (let i = 0; i < docSelection.length; i++) {
         if (i >= ENTRIES_PER_PAGE) {
             docSelection[i].classList.add("hiddenP");
         }
     }
+
 
     if (pages > 1) {
         for (let i = 0; i < pages; i++) {
@@ -31,48 +60,4 @@ let makePagination = () => {
             document.getElementById("paginationBar").appendChild(a);
         }
     }
-}
-
-//shows the results of the selected page.
-let showResultsInPage = (page) => {
-    let max = page * 10;
-    let min = (page * 10) - 10;
-
-    let docSelection = document.getElementsByClassName("resultRow");
-
-    for (let i = 0; i < docSelection.length; i++) {
-        if (i >= min || i < max) {
-            docSelection[i].classList.remove("hiddenP");
-        } else {
-            docSelection[i].classList.add("hiddenP");
-        }
-    }
-
-}
-
-let remakePagination = () => {
-    let docSelection = document.getElementById("paginationBar");
-
-    for (let i = 0; i < docSelection.length; i++) {
-        docSelection[i].remove();
-    }
-}
-
-let hideShowNSFW = () => {
-    let NSFW = document.getElementsByClassName("NSFW");
-
-    for (let i = 0; i < NSFW.length; i++) {
-        if (window.sessionStorage.getItem("NSFW") == "0") {
-            NSFW[i].classList.add("hiddenN");
-        } else {
-            NSFW[i].classList.remove("hiddenN");
-        }
-    }
-
-    let count = 0;
-    if (window.sessionStorage.getItem("NSFW") == "0") {
-        count = NSFW.length;
-    }
-    
-    return count;
-}
+});
