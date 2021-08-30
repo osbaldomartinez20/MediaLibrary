@@ -18,6 +18,10 @@ a {
   display: none;
 }
 
+.hiddenN {
+  display: none;
+}
+
 
 .pagination a {
   color: black;

@@ -35,18 +35,18 @@
                     </tr>
                 </thead>
                 <tr class="trCard">
-                    <td scope="row" style="text-align: center;">{{this.author}}</th>
-                    <td style="white-space: pre-line; text-align: center;">{{this.details}}<br /><br />Released on:
+                    <td class="tdc" scope="row" style="text-align: center;">{{this.author}}</th>
+                    <td class="tdc" style="white-space: pre-line; text-align: center;">{{this.details}}<br /><br />Released on:
                         {{this.year}}<br /><br />Origin: <a href="/search/{{this.origin}}/byorigin">{{this.origin}}</a>
                         </th>
-                    <td style="white-space: pre-line; text-align: center;">{{this.description}}</th>
-                    <td style="text-align: center;"><a href="/search/{{this.type}}/bytype">{{this.type}}</a></th>
+                    <td class="tdc" style="white-space: pre-line; text-align: center;">{{this.description}}</th>
+                    <td class="tdc" style="text-align: center;"><a href="/search/{{this.type}}/bytype">{{this.type}}</a></th>
                         {{/each}}
-                    <td style="text-align: center;">{{#each tags}} <a
+                    <td class="tdc" style="text-align: center;">{{#each tags}} <a
                             href="/search/{{this.tags}}/bytag">{{this.tags}}</a> <br />{{/each}}{{#each postInfo}}<a
                             href="/tag/{{this.pid}}/add" target="_blank"><button id="addTag"
                                 style="background-color: lightgray; font-size: 125%;">+</button></a>{{/each}}<br /></th>
-                    <td style="text-align: center;">{{#each links}} <a href="{{this.links}}"
+                    <td class="tdc" style="text-align: center;">{{#each links}} <a href="{{this.links}}"
                             target="_blank">{{this.links}}</a>
                         <br />{{/each}}</th>
                 </tr>
