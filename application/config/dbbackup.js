@@ -20,7 +20,7 @@ exports.createNewDBBackup = async function() {
         connection: {
             host: 'localhost',
             user: 'root',
-            password: 'TSFCWebApp',
+            password: '2020WebApp',
             database: 'tsfc',
         },
         tables: ['issues', 'links', 'origin', 'posts', 'tags', 'tsftypes'],
